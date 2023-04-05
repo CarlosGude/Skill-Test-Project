@@ -22,3 +22,17 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Controller\ApiController:
+        class: App\Controller\ApiController
+        arguments:
+            $factory: "@App\\Factory\\DataTransformationFactory"
+
+    UserDataTransformerOutput:
+        public: false
+        class: App\DataTransformer\Output\UserDataTransformerOutput
+
+    App\Factory\DataTransformationFactory:
+        public: false
+        arguments:
+            $outputs:
+                user: "@UserDataTransformerOutput"

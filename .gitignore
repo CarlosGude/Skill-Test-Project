@@ -53,3 +53,10 @@
 
 #add ide files
 .idea
+
+.env.local
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+###< symfony/phpunit-bridge ###
+
