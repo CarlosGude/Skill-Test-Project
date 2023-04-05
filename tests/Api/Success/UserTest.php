@@ -9,6 +9,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class UserTest extends KernelTestCase
 {
+    public const API_USER = 'api/user';
+
     protected function setUp(): void
     {
         AbstractTest::setUp();
@@ -21,7 +23,7 @@ class UserTest extends KernelTestCase
 
         /** @var HttpClientInterface $httpClient */
         $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('GET','http://localhost/api/user');
+        $response = $httpClient->request('GET',AbstractTest::getBaseUrl().self::API_USER);
         $body = $response->toArray();
 
         $this->assertEquals(200,$response->getStatusCode());
@@ -54,7 +56,7 @@ class UserTest extends KernelTestCase
 
         /** @var HttpClientInterface $httpClient */
         $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('POST','http://localhost/api/user',[
+        $response = $httpClient->request('POST',AbstractTest::getBaseUrl().self::API_USER,[
             'json' => [
                 'name' => 'test',
                 'email' => 'email@test.com',
