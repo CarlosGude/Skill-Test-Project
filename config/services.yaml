@@ -29,10 +29,16 @@ services:
 
     UserDataTransformerOutput:
         public: false
-        class: App\DataTransformer\Output\UserDataTransformerOutput
+        class: App\DataTransformer\Output\UserOutputDataTransformer
+
+    UserDataTransformerInput:
+        public: false
+        class: App\DataTransformer\Input\UserInputDataTransformer
 
     App\Factory\DataTransformationFactory:
         public: false
         arguments:
             $outputs:
                 user: "@UserDataTransformerOutput"
+            $inputs:
+                user: "@UserDataTransformerInput"

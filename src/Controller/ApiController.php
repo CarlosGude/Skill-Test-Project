@@ -5,7 +5,8 @@ namespace App\Controller;
 use App\Factory\DataTransformationFactoryInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
@@ -17,10 +18,39 @@ class ApiController extends AbstractController
      */
     #[Route('/api/{entity}', name: 'get_entity',methods: ['GET'])]
     #[Route('/api/{entity}/{id}/{field}', name: 'get_entity_one',methods: ['GET'])]
-    public function index(string $entity, ?string $id, ?string $field = 'id'): JsonResponse
+    public function get(string $entity, ?string $id, ?string $field = 'id'): Response
     {
-        return $this->json([
-            'data' => $this->factory->transformation($entity,$id,$field)
-        ]);
+        $data = $this->factory->get($entity,$id,$field);
+        $response = new Response($data);
+        if(!$data){
+            $response->setStatusCode(404);
+        }
+        $response->headers->set('Content-Type', 'text/json');
+
+        return $response;
+    }
+
+    #[Route('/api/{entity}', name: 'post_entity',methods: ['POST'])]
+    public function post(string $entity, RequestStack $request): Response
+    {
+        $response = $this->factory->post($entity,json_decode($request->getMainRequest()->getContent(),true));
+
+        if(is_array($response)){
+            return $this->json($response,400);
+        }
+
+        $response = new Response($response,201);
+        $response->headers->set('Content-Type', 'text/json');
+        return $response;
+
+    }
+
+    #[Route('/api/{entity}/{id}', name: 'delete_entity',methods: ['DELETE'])]
+    public function delete(string $entity, string|int $id): Response
+    {
+        $response = $this->factory->delete($entity,$id);
+
+        return new Response(null,$response? 204:404);
+
     }
 }
