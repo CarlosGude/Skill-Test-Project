@@ -6,7 +6,8 @@ namespace App\Dto\Output;
 
 use App\Entity\AbstractEntity;
 use App\Entity\User;
-use Exception;
+use App\Exceptions\EntityOutputException;
+
 
 class UserOutputDto implements OutputInterface
 {
@@ -16,12 +17,14 @@ class UserOutputDto implements OutputInterface
     public ?string $name;
 
     /**
-     * @throws Exception
+     * @param AbstractEntity $entity
+     * @return $this
+     * @throws EntityOutputException
      */
     public function get(AbstractEntity $entity): self
     {
         if(!$entity instanceof User){
-            throw new Exception();//TODO Crear custom exception
+            throw new EntityOutputException();
         }
 
         $this->id = $entity->getId();

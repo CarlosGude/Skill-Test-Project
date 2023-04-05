@@ -7,7 +7,8 @@ namespace App\Factory;
 use App\DataTransformer\Input\AbstractInputDataTransformer;
 use App\DataTransformer\Output\AbstractOutputDataTransformer;
 use App\Entity\AbstractEntity;
-use Exception;
+use App\Exceptions\DataTransformerException;
+use App\Exceptions\EntityOutputException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -21,10 +22,10 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
 
     /**
      * @param string $entity
-     * @param string|null $field
-     * @param string|int|null $id
+     * @param int|string|null $id
+     * @param string $field
      * @return string|null
-     * @throws Exception
+     * @throws EntityOutputException
      */
     public function get(string $entity, int|string|null $id, string $field = 'id'):? string
     {
@@ -34,7 +35,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
 
         $output = $this->outputs[$entity];
         if(!$output instanceof AbstractOutputDataTransformer){
-            throw new Exception();
+            throw new EntityOutputException();
         }
 
         return $output->get($id,$field);
@@ -43,8 +44,9 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
     /**
      * @param string $entity
      * @param array $data
-     * @return string|null
-     * @throws Exception
+     * @return string|array
+     * @throws EntityOutputException
+     * @throws DataTransformerException
      */
     public function post(string $entity, array $data): string | array
     {
@@ -54,7 +56,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
 
         $input = $this->inputs[$entity];
         if(!$input instanceof AbstractInputDataTransformer){
-            throw new Exception();
+            throw new EntityOutputException();
         }
 
         $data = $input->post($data);
@@ -66,6 +68,12 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
 
     }
 
+    /**
+     * @param string $entity
+     * @param int|string $id
+     * @return AbstractEntity|null
+     * @throws EntityOutputException
+     */
     public function delete(string $entity, int|string $id):? AbstractEntity
     {
         if(!is_array($this->inputs)){
@@ -74,7 +82,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
 
         $input = $this->inputs[$entity];
         if(!$input instanceof AbstractInputDataTransformer){
-            throw new Exception();
+            throw new EntityOutputException();
         }
 
         $data = $input->delete($id);
