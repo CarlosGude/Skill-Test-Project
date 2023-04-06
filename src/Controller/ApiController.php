@@ -7,6 +7,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
@@ -48,7 +49,12 @@ class ApiController extends AbstractController
     #[Route('/api/{entity}/{id}', name: 'delete_entity',methods: ['DELETE'])]
     public function delete(string $entity, string|int $id): Response
     {
-        $response = $this->factory->delete($entity,$id);
+        $user = $this->getUser();
+        if(!$user){
+            throw new AccessDeniedHttpException();
+        }
+
+        $response = $this->factory->delete($entity,$id, $user);
 
         return new Response(null,$response? 204:404);
 

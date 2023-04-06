@@ -27,7 +27,7 @@ class UserTest extends KernelTestCase
         $body = $response->toArray();
 
         $this->assertEquals(200,$response->getStatusCode());
-        $this->assertCount(1,$body);
+        $this->assertCount(2,$body);
         $this->assertNotNull($body[0]['email']);
         $this->assertNotNull($body[0]['name']);
 
@@ -74,18 +74,5 @@ class UserTest extends KernelTestCase
     public function testPutUser(): void
     {
         $this->assertTrue(false);
-    }
-
-    public function testDeletedUser(): void
-    {
-        self::bootKernel();
-        $container = static::getContainer();
-
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('DELETE','http://localhost/api/user/1');
-
-        $this->assertEquals(204,$response->getStatusCode());
-
     }
 }

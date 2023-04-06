@@ -7,6 +7,8 @@ use App\Dto\Input\InputInterface;
 use App\Entity\AbstractEntity;
 use App\Exceptions\DataTransformerException;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -50,12 +52,18 @@ abstract class AbstractInputDataTransformer
         return $entity;
     }
 
-    public function delete(int|string $id):? AbstractEntity
+    protected abstract function security(AbstractEntity $entity, UserInterface $user): bool;
+
+    public function delete(int|string $id, UserInterface $user):? AbstractEntity
     {
         $entity = $this->find($id);
 
         if(!$entity){
             return null;
+        }
+
+        if(!$this->security($entity,$user)){
+            throw new AccessDeniedHttpException();
         }
 
         $entity->setDeletedAt();

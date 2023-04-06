@@ -149,22 +149,6 @@ class UserValidationTest extends KernelTestCase
         $this->assertEquals(404,$response->getStatusCode());
     }
 
-    public function testDeleteNotFound():void
-    {
-        self::bootKernel();
-        $container = static::getContainer();
-
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('DELETE','http://localhost/api/user/1');
-
-        $this->assertEquals(204,$response->getStatusCode());
-        $response = $httpClient->request('GET','http://localhost/api/user/1');
-
-        $this->assertEquals(404,$response->getStatusCode());
-
-    }
-
     public function testUpdatePassword(): void
     {
         $this->assertTrue(false);

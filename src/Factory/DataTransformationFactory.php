@@ -10,6 +10,7 @@ use App\Entity\AbstractEntity;
 use App\Exceptions\DataTransformerException;
 use App\Exceptions\EntityOutputException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DataTransformationFactory implements DataTransformationFactoryInterface
@@ -74,7 +75,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      * @return AbstractEntity|null
      * @throws EntityOutputException
      */
-    public function delete(string $entity, int|string $id):? AbstractEntity
+    public function delete(string $entity, int|string $id, UserInterface $user):? AbstractEntity
     {
         if(!is_array($this->inputs)){
             throw new NotFoundHttpException();
@@ -85,7 +86,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
             throw new EntityOutputException();
         }
 
-        $data = $input->delete($id);
+        $data = $input->delete($id,$user);
         if(!$data instanceof AbstractEntity){
             return null;
         }
