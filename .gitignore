@@ -60,3 +60,9 @@
 .phpunit.result.cache
 ###< symfony/phpunit-bridge ###
 
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/dev/*.pem
+/config/jwt/test/*.pem
+/config/jwt/prod/*.pem
+###< lexik/jwt-authentication-bundle ###
