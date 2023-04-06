@@ -48,6 +48,7 @@ security:
         - { path: ^/api/login_check, roles: PUBLIC_ACCESS  }
         - { path: ^/api/article, roles: PUBLIC_ACCESS, methods: [GET]  }
         - { path: ^/api/article, roles: IS_AUTHENTICATED_FULLY, methods: [POST,PUT,DELETE]  }
+        - { path: ^/admin, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/user, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
