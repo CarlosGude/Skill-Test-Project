@@ -5,6 +5,7 @@ namespace App\DataTransformer\Input;
 
 use App\Dto\Input\InputInterface;
 use App\Entity\AbstractEntity;
+use App\Entity\OwnerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -32,10 +33,13 @@ abstract class AbstractInputDataTransformer
     }
 
 
-    public function post(array $data):array | AbstractEntity
+    public function post(array $data, ?UserInterface $user = null):array | AbstractEntity
     {
         $input = $this->getInputDto($data);
         $entity = $input->post();
+        if($entity instanceof OwnerInterface && $user){
+            $entity->setUser($user);
+        }
         $violationList = $this->validator->validate($input);
 
         foreach ($this->validator->validate($entity) as $entityError){

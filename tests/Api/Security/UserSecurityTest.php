@@ -11,6 +11,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * Class UserSecurityTest
+ * @package App\Tests\Api\Security
+ * TODO: Refactorizar esta mierda antes de que me den ganas de arrancarme los ojos.
+ */
 class UserSecurityTest extends KernelTestCase
 {
     public const API_LOGIN = 'api/login_check';

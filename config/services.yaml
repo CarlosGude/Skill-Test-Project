@@ -35,10 +35,20 @@ services:
         public: false
         class: App\DataTransformer\Input\UserInputDataTransformer
 
+    ArticleDataTransformerOutput:
+        public: false
+        class: App\DataTransformer\Output\ArticleOutputDataTransformer
+
+    ArticleDataTransformerInput:
+        public: false
+        class: App\DataTransformer\Input\ArticleInputDataTransformer
+
     App\Factory\DataTransformationFactory:
         public: false
         arguments:
             $outputs:
                 user: "@UserDataTransformerOutput"
+                article: "@ArticleDataTransformerOutput"
             $inputs:
                 user: "@UserDataTransformerInput"
+                article: "@ArticleDataTransformerInput"

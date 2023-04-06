@@ -35,7 +35,7 @@ class ApiController extends AbstractController
     public function post(string $entity, RequestStack $request): Response
     {
         $body = json_decode($request->getMainRequest()->getContent(),true);
-        $response = $this->factory->post($entity,$body);
+        $response = $this->factory->post($entity,$body,$this->getUser());
 
         if(is_array($response)){
             return $this->json($response,400);

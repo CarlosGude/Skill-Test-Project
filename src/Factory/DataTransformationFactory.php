@@ -49,7 +49,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      * @throws EntityOutputException
      * @throws DataTransformerException
      */
-    public function post(string $entity, array $data): string | array
+    public function post(string $entity, array $data, ?UserInterface $user = null): string | array
     {
         if(!is_array($this->inputs)){
             throw new NotFoundHttpException();
@@ -60,7 +60,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
             throw new EntityOutputException();
         }
 
-        $data = $input->post($data);
+        $data = $input->post($data, $user);
         if($data instanceof AbstractEntity){
             return $this->get($entity,$data->getId());
         }

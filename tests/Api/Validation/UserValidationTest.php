@@ -7,6 +7,12 @@ use App\Tests\Api\AbstractTest;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * Class UserValidationTest
+ * @package App\Tests\Api\Validation
+ *
+ * TODO: Refactorizar esta mierda antes de que me den ganas de arrancarme los ojos.
+ */
 class UserValidationTest extends KernelTestCase
 {
     protected function setUp(): void

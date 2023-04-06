@@ -7,6 +7,11 @@ use App\Tests\Api\AbstractTest;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
+/**
+ * Class UserTest
+ * @package App\Tests\Api\Success
+ * TODO: Refactorizar esta mierda antes de que me den ganas de arrancarme los ojos.
+ */
 class UserTest extends KernelTestCase
 {
     public const API_USER = 'api/user';
@@ -33,14 +38,14 @@ class UserTest extends KernelTestCase
 
     }
 
-    public function testGetDataOfUser(): void
+    public function testGetUser(): void
     {
         self::bootKernel();
         $container = static::getContainer();
 
         /** @var HttpClientInterface $httpClient */
         $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('GET','http://localhost/api/user/1');
+        $response = $httpClient->request('GET',AbstractTest::getBaseUrl().self::API_USER.'/1');
         $body = $response->toArray();
 
         $this->assertEquals(200,$response->getStatusCode());
@@ -49,7 +54,7 @@ class UserTest extends KernelTestCase
 
     }
 
-    public function testPostOfUser(): void
+    public function testCreateUser(): void
     {
         self::bootKernel();
         $container = static::getContainer();
