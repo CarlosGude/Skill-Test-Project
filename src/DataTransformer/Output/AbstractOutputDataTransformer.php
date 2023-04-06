@@ -30,7 +30,7 @@ abstract class AbstractOutputDataTransformer
         return $this->serializer->serialize($this->entityToDto($data),'json');
     }
 
-    protected function entityToDto(array|AbstractEntity $data): array|OutputInterface
+    private function entityToDto(array|AbstractEntity $data): array|OutputInterface
     {
         if(is_array($data)){
             $response = array();
@@ -44,7 +44,7 @@ abstract class AbstractOutputDataTransformer
 
         $dto = $this->getOutputDto();
 
-        return$dto->get($data);
+        return $dto->get($data);
     }
 
     protected function getAllItems(): array

@@ -5,9 +5,9 @@ namespace App\DataTransformer\Input;
 
 use App\Dto\Input\InputInterface;
 use App\Entity\AbstractEntity;
-use App\Exceptions\DataTransformerException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -52,14 +52,43 @@ abstract class AbstractInputDataTransformer
         return $entity;
     }
 
+    public function put(int|string $id, UserInterface $user,array $data):array | AbstractEntity
+    {
+        $input = $this->getInputDto($data);
+        $entity = $this->find($id);
+
+        if(!$entity){
+            throw new NotFoundHttpException();
+        }
+
+        if(!$this->security($entity,$user)){
+            throw new AccessDeniedHttpException();
+        }
+        $input->initialized($entity);
+        $entity = $input->put($entity,$data);
+        $violationList = $this->validator->validate($input);
+
+        foreach ($this->validator->validate($entity) as $entityError){
+            $violationList->add($entityError);
+        }
+
+        if($violationList->count() !== 0 ){
+            return $this->getErrors($violationList);
+        }
+
+        $this->entityManager->flush();
+
+        return $entity;
+    }
+
     protected abstract function security(AbstractEntity $entity, UserInterface $user): bool;
 
-    public function delete(int|string $id, UserInterface $user):? AbstractEntity
+    public function delete(int|string $id, UserInterface $user): AbstractEntity
     {
         $entity = $this->find($id);
 
         if(!$entity){
-            return null;
+            throw new NotFoundHttpException();
         }
 
         if(!$this->security($entity,$user)){

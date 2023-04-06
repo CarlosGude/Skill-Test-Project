@@ -75,6 +75,30 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      * @return AbstractEntity|null
      * @throws EntityOutputException
      */
+    public function put(string $entity, int|string $id, UserInterface $user, array $body):? string
+    {
+        if(!is_array($this->inputs)){
+            throw new NotFoundHttpException();
+        }
+
+        $input = $this->inputs[$entity];
+        if(!$input instanceof AbstractInputDataTransformer){
+            throw new EntityOutputException();
+        }
+
+        $data = $input->put($id,$user,$body);
+        if(!$data instanceof AbstractEntity){
+            return null;
+        }
+        return $this->get($entity,$data->getId());
+    }
+
+    /**
+     * @param string $entity
+     * @param int|string $id
+     * @return AbstractEntity|null
+     * @throws EntityOutputException
+     */
     public function delete(string $entity, int|string $id, UserInterface $user):? AbstractEntity
     {
         if(!is_array($this->inputs)){

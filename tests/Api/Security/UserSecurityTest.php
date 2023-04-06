@@ -40,9 +40,47 @@ class UserSecurityTest extends KernelTestCase
         return $body['token'];
     }
 
-    public function testAnUserCanEditAnotherUser():void
+    public function testPutUser(): void
     {
-        $this->assertTrue(false);
+        self::bootKernel();
+        $container = static::getContainer();
+
+        /** @var HttpClientInterface $httpClient */
+        $httpClient = $container->get(HttpClientInterface::class);
+        $token = $this->getToken();
+        $response = $httpClient->request('PUT',AbstractTest::getBaseUrl().UserTest::API_USER.'/1',[
+            'headers' =>['Authorization' =>  'bearer '.$token],
+            'json' => ['name' => 'TEST CHANGE NAME']
+        ]);
+
+        $body = $response->toArray();
+        $this->assertEquals(200,$response->getStatusCode());
+        $this->assertEquals('TEST CHANGE NAME',$body['name']);
+
+    }
+
+    public function testTheUserAuthorizedCanNotEditAnotherUser(): void
+    {
+        self::bootKernel();
+        $container = static::getContainer();
+
+        /** @var HttpClientInterface $httpClient */
+        $httpClient = $container->get(HttpClientInterface::class);
+
+        /** @var EntityManagerInterface $manager */
+        $manager = $container->get(EntityManagerInterface::class);
+
+        /** @var User $anotherUser */
+        $anotherUser = $manager->getRepository(User::class)->findOneBy(['email' => 'another@gmail.com']);
+
+        $token = $this->getToken();
+        $response = $httpClient->request('PUT',AbstractTest::getBaseUrl().UserTest::API_USER.'/'.$anotherUser->getId(),[
+            'headers' =>['Authorization' =>  'bearer '.$token],
+            'json' => ['name' => 'TEST CHANGE NAME']
+        ]);
+
+        $this->assertEquals(403,$response->getStatusCode());
+
     }
 
     public function testSuccessLogin():void
@@ -124,6 +162,32 @@ class UserSecurityTest extends KernelTestCase
         $response = $httpClient->request('GET','http://localhost/api/user/1');
 
         $this->assertEquals(404,$response->getStatusCode());
+
+    }
+
+    public function testUpdatePassword(): void
+    {
+        self::bootKernel();
+        $container = static::getContainer();
+
+        /** @var EntityManagerInterface $manager */
+        $manager = $container->get(EntityManagerInterface::class);
+
+        /** @var User $authorizedUser */
+        $authorizedUser = $manager->getRepository(User::class)->findOneBy(['email' => 'carlos@gmail.com']);
+        $oldPassword = $authorizedUser->getPassword();
+
+        /** @var HttpClientInterface $httpClient */
+        $httpClient = $container->get(HttpClientInterface::class);
+        $token = $this->getToken();
+        $response = $httpClient->request('PUT',AbstractTest::getBaseUrl().UserTest::API_USER.'/1',[
+            'headers' =>['Authorization' =>  'bearer '.$token],
+            'json' => ['password' => 'TEST_CHANGE_PASSWORD']
+        ]);
+
+        $authorizedUser = $manager->getRepository(User::class)->findOneBy(['email' => 'carlos@gmail.com']);
+        $this->assertEquals(200,$response->getStatusCode());
+        $this->assertNotEquals($authorizedUser->getPassword(),$oldPassword);
 
     }
 }

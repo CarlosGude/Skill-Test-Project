@@ -149,8 +149,4 @@ class UserValidationTest extends KernelTestCase
         $this->assertEquals(404,$response->getStatusCode());
     }
 
-    public function testUpdatePassword(): void
-    {
-        $this->assertTrue(false);
-    }
 }

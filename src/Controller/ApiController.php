@@ -34,7 +34,8 @@ class ApiController extends AbstractController
     #[Route('/api/{entity}', name: 'post_entity',methods: ['POST'])]
     public function post(string $entity, RequestStack $request): Response
     {
-        $response = $this->factory->post($entity,json_decode($request->getMainRequest()->getContent(),true));
+        $body = json_decode($request->getMainRequest()->getContent(),true);
+        $response = $this->factory->post($entity,$body);
 
         if(is_array($response)){
             return $this->json($response,400);
@@ -44,6 +45,23 @@ class ApiController extends AbstractController
         $response->headers->set('Content-Type', 'text/json');
         return $response;
 
+    }
+
+    #[Route('/api/{entity}/{id}', name: 'put_entity',methods: ['put'])]
+    public function put(RequestStack $request, string $entity, string|int $id): Response
+    {
+        $user = $this->getUser();
+        if(!$user){
+            throw new AccessDeniedHttpException();
+        }
+
+        $body = json_decode($request->getMainRequest()->getContent(),true);
+        $response = $this->factory->put($entity,$id, $user,$body);
+
+        $response = new Response($response,200);
+        $response->headers->set('Content-Type', 'text/json');
+
+        return $response;
     }
 
     #[Route('/api/{entity}/{id}', name: 'delete_entity',methods: ['DELETE'])]

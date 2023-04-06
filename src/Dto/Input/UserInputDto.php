@@ -6,6 +6,7 @@ namespace App\Dto\Input;
 
 use App\Entity\AbstractEntity;
 use App\Entity\User;
+use App\Exceptions\NotExceptedEntityException;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -33,6 +34,29 @@ class UserInputDto implements InputInterface
         $this->name = $data['name'] ?? null;
         $this->email = $data['email'] ?? null;
         $this->password = $data['password'] ?? null;
+    }
+
+    public function initialized(AbstractEntity $entity)
+    {
+        if(!$entity instanceof User){
+            throw new NotExceptedEntityException();
+        }
+        $this->name = $this->name ?? $entity->getName();
+        $this->email = $this->email ?? $entity->getEmail();
+        $this->password = $this->password ?? $entity->getPassword();
+    }
+
+    public function put(AbstractEntity $entity,array $data): AbstractEntity
+    {
+        if(!$entity instanceof User){
+            throw new NotExceptedEntityException();
+        }
+
+        $entity->setName($data['name'] ?? $this->name);
+        $entity->setEmail($data['email'] ?? $this->email);
+        $entity->setPassword($data['password'] ?? $this->password);
+
+        return $entity;
     }
 
     public function post(): AbstractEntity

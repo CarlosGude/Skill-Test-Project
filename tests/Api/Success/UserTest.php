@@ -70,9 +70,4 @@ class UserTest extends KernelTestCase
         $this->assertNotNull($body['name']);
 
     }
-
-    public function testPutUser(): void
-    {
-        $this->assertTrue(false);
-    }
 }

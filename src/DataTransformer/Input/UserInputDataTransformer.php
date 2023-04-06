@@ -31,6 +31,6 @@ class UserInputDataTransformer extends AbstractInputDataTransformer
         if(!$entity instanceof User){
             throw new  NotExceptedEntityException();
         }
-        return $entity === $user;
+        return $entity->getId() === $user->getId();
     }
 }
