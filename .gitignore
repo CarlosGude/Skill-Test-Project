@@ -66,3 +66,5 @@
 /config/jwt/test/*.pem
 /config/jwt/prod/*.pem
 ###< lexik/jwt-authentication-bundle ###
+
+/public/bundles/*
