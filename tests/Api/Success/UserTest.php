@@ -22,6 +22,7 @@ class UserTest extends AbstractTest
         $this->assertGreaterThan(1,$body = $response->toArray());
         $this->assertNotNull($body[0]['email']);
         $this->assertNotNull($body[0]['name']);
+        $this->assertIsArray($body[0]['articles']);
 
     }
 
@@ -39,6 +40,7 @@ class UserTest extends AbstractTest
         $this->assertIsArray($body = $response->toArray());
         $this->assertNotNull($body['email']);
         $this->assertNotNull($body['name']);
+        $this->assertIsArray($body['articles']);
 
     }
 
