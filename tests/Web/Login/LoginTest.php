@@ -31,6 +31,36 @@ class LoginTest extends WebTestCase
         $this->assertSelectorTextContains('h2', 'admin');
     }
 
+    public function testUnActiveUserLogin(): void
+    {
+        $client = static::createClient();
+        $client->followRedirects(true);
+        $client->request('GET', '/login');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h1', 'Login');
+        $client->submitForm('Sign in', [
+            'email' => 'noActiveUser@email.test',
+            'password' => 'noActiveUser1',
+        ]);
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function testDeletedUserLogin(): void
+    {
+        $client = static::createClient();
+        $client->followRedirects(true);
+        $client->request('GET', '/login');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h1', 'Login');
+        $client->submitForm('Sign in', [
+            'email' => 'deletedUser@email.test',
+            'password' => 'deletedUser1',
+        ]);
+
+        $this->assertResponseStatusCodeSame(403);
+    }
+
     public function testFailLogin(): void
     {
         $client = static::createClient();

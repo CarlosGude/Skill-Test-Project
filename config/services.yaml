@@ -52,3 +52,11 @@ services:
             $inputs:
                 user: "@UserDataTransformerInput"
                 article: "@ArticleDataTransformerInput"
+
+    SendActiveUserEmail:
+        public: false
+        class: App\Email\SendActiveUserEmail
+
+    App\MessageHandler\UserCreateMessageHandler:
+        arguments:
+            $activateUserEmail: "@SendActiveUserEmail"

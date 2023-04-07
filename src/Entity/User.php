@@ -41,6 +41,12 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Article::class, orphanRemoval: true)]
     private Collection $articles;
 
+    #[ORM\Column(length: 255)]
+    private ?string $token = null;
+
+    #[ORM\Column]
+    private bool $active = false;
+
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_USER = 'ROLE_USER';
 
@@ -49,6 +55,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         parent::__construct();
         $this->roles[] = 'ROLE_USER';
         $this->articles = new ArrayCollection();
+        $this->token = uniqid();
     }
 
     #[Pure] public function __toString(): string
@@ -183,6 +190,30 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
                 $article->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(): self
+    {
+        $this->token = uniqid();
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }

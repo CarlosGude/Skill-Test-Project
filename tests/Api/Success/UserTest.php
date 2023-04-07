@@ -12,7 +12,7 @@ use App\Tests\Api\AbstractTest;
  */
 class UserTest extends AbstractTest
 {
-    public const API_USER = 'api/user';
+    public const API_USER = '/api/user';
     public array $user = ['name' => 'test', 'email' => 'test@test.com', 'password' => 'password1'];
 
     public function testGetListOfUsers(): void

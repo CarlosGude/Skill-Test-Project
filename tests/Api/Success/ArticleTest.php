@@ -12,7 +12,7 @@ use App\Tests\Api\AbstractTest;
  */
 class ArticleTest extends AbstractTest
 {
-    public const API_ARTICLE = 'api/article';
+    public const API_ARTICLE = '/api/article';
     public array $article = ['title' => 'TITLE TEST', 'body' => 'BODY TEST'];
 
     public function testGetListOfArticles(): void

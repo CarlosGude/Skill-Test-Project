@@ -17,6 +17,7 @@ class BaseController extends AbstractController
     #[Route('/', name: 'app_base')]
     public function index(): Response
     {
+
         // TODO: Pendiente de crear la vista
         return $this->render('base/index.html.twig', [
             'controller_name' => 'BaseController',

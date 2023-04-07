@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,5 +31,26 @@ class SecurityController extends AbstractController
     public function logout(): void
     {
         throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    #[Route('/activate/user/{token}', name: 'app_activate_user')]
+    public function index(string $token, EntityManagerInterface $manager): Response
+    {
+        /** @var User $user */
+        $user = $manager->getRepository(User::class)->findOneBy(['token' => $token]);
+
+        if(!$user){
+            //TODO Add alert
+            return $this->redirectToRoute('app_base');
+        }
+
+        $user->setActive(true);
+        $user->setToken();
+
+        $manager->flush();
+
+        //TODO Add alert
+        return $this->redirectToRoute('app_base');
+
     }
 }

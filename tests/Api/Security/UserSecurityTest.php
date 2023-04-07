@@ -6,6 +6,7 @@ namespace App\Tests\Api\Security;
 
 use App\DataFixtures\UserFixtures;
 use App\Entity\User;
+use App\Message\EntityEvent;
 use App\Tests\Api\AbstractTest;
 use App\Tests\Api\Success\UserTest;
 
@@ -15,19 +16,32 @@ use App\Tests\Api\Success\UserTest;
  */
 class UserSecurityTest extends AbstractTest
 {
+    public const ACTIVATE_USER = '/activate/user/';
     public function testPostUser(): void
     {
 
+        $userData = $this->logins['test'];
         $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
-            'name' => 'TEST CHANGE NAME',
-            'email' => 'test_created@email.com',
-            'password' => 'TEST_PASSWORD_1',
+            'name' => $userData['name'],
+            'email' => $userData['email'],
+            'password' => $userData['password'],
         ]);
 
         $body = $response->toArray();
         $this->assertEquals(201,$response->getStatusCode());
-        $this->assertEquals('TEST CHANGE NAME',$body['name']);
+        $this->assertEquals($userData['name'],$body['name']);
+        $this->assertEquals($userData['email'],$body['email']);
+        $this->assertCount(1, $this->transport->get());
+        $this->assertInstanceOf(EntityEvent::class, $this->transport->get()[0]->getMessage());
 
+        $this->getToken('test',403);
+
+        /** @var User $user */
+        $user = $this->getRepository(User::class)->findOneBy(['email' => $userData['email']]);
+
+        $this->makeRequest(self::METHOD_GET,self::ACTIVATE_USER.$user->getToken());
+
+        $this->getToken('test');
     }
 
     public function testPutUser(): void
@@ -59,9 +73,19 @@ class UserSecurityTest extends AbstractTest
         $this->assertEquals(UserFixtures::getUsers()['admin']['email'],$token->username);
     }
 
+    public function testUnActiveUserLogin():void
+    {
+        $this->getToken('noActiveUser',403);
+    }
+
+    public function testDeletedUserLogin():void
+    {
+        $this->getToken('noActiveUser',403);
+    }
+
     public function testFailureLogin():void
     {
-        $this->getToken('failLogin');
+        $this->getToken('failLogin',401);
     }
 
     public function testDeletedUser(): void

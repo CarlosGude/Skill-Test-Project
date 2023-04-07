@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -21,16 +22,20 @@ abstract class AbstractTest extends KernelTestCase
     protected const METHOD_PUT ='PUT';
     protected const METHOD_DELETE ='DELETE';
 
-    public const API_LOGIN = 'api/login_check';
+    public const API_LOGIN = '/api/login_check';
 
     protected array $logins = [
         'admin' => ['email' => 'admin@email.test', 'password' => 'password1admin'],
         'anotherUser' => ['email' => 'test@email.test', 'password' => 'password1'],
-        'failLogin' => ['email' => 'failLogin@email.test', 'password' => 'failLogin']
+        'noActiveUser' => ['email' => 'noActiveUser@email.test', 'password' => 'noActiveUser1'],
+        'deletedUser' => ['email' => 'deletedUser@email.test', 'password' => 'deletedUser1'],
+        'failLogin' => ['email' => 'failLogin@email.test', 'password' => 'failLogin'],
+        'test' => ['email' => 'test_created@email.com', 'password' => 'TEST_PASSWORD_1','name' => 'TEST'],
     ];
 
     protected ?HttpClientInterface $httpClient;
     protected ?EntityManagerInterface $manager;
+    protected ?DoctrineTransport $transport;
 
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
@@ -41,6 +46,7 @@ abstract class AbstractTest extends KernelTestCase
 
         $this->httpClient = $container->get(HttpClientInterface::class);
         $this->manager = $container->get(EntityManagerInterface::class);
+        $this->transport = $container->get('messenger.transport.events');
     }
 
     protected function setUp(): void
@@ -72,7 +78,7 @@ abstract class AbstractTest extends KernelTestCase
         );
     }
 
-    protected function getToken(string $user = 'admin'):? string
+    protected function getToken(string $user = 'admin',int $expectCode = 200):? string
     {
         $response = $this->httpClient->request(
             self::METHOD_POST,
@@ -81,7 +87,7 @@ abstract class AbstractTest extends KernelTestCase
         );
 
         if ($response->getStatusCode() !== 200){
-            $this->assertEquals(401,$response->getStatusCode());
+            $this->assertEquals($expectCode,$response->getStatusCode());
             return null;
         }
         $body = $response->toArray();
