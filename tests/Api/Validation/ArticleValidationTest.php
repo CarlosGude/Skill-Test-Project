@@ -33,8 +33,8 @@ class ArticleValidationTest extends KernelTestCase
 
         $response = $httpClient->request('POST',AbstractTest::getBaseUrl().self::API_LOGIN,[
             'json' => [
-                'email' => 'carlos@gmail.com',
-                'password' => 'carlos@gmail.com'
+                'email' => 'admin@email.test',
+                'password' => 'password1admin'
             ]
         ]);
         $body = $response->toArray();

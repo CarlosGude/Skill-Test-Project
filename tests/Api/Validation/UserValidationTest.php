@@ -72,7 +72,7 @@ class UserValidationTest extends KernelTestCase
         $response = $httpClient->request('POST','http://localhost/api/user',[
             'json' => [
                 'name' => 'test',
-                'email' => 'carlos@gmail.com',
+                'email' => 'admin@email.test',
                 'password' => 'password1'
             ]
         ]);

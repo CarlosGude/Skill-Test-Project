@@ -1,0 +1,16 @@
+id: ID
+uuid: UUID
+dashboard: Dashboard
+deleted: Soft delete
+createdAt: Created at
+updatedAt: Updated at
+
+article:
+  label: Articles
+  title: Title
+  body: Body
+  author: Author
+  showDeleted: Show deleted articles?
+
+user:
+  label: Users

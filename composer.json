@@ -24,6 +24,7 @@
         "symfony/runtime": "6.2.*",
         "symfony/security-bundle": "6.2.*",
         "symfony/serializer": "6.2.*",
+        "symfony/translation": "6.2.*",
         "symfony/twig-bundle": "6.2.*",
         "symfony/uid": "6.2.*",
         "symfony/validator": "6.2.*",
@@ -36,7 +37,9 @@
         "phpunit/phpunit": "^9.5",
         "symfony/css-selector": "6.2.*",
         "symfony/maker-bundle": "^1.48",
-        "symfony/phpunit-bridge": "^6.2"
+        "symfony/phpunit-bridge": "^6.2",
+        "symfony/stopwatch": "6.2.*",
+        "symfony/web-profiler-bundle": "6.2.*"
     },
     "config": {
         "allow-plugins": {

@@ -15,12 +15,12 @@ class LoginTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Login');
         $client->submitForm('Sign in', [
-            'email' => 'carlos@gmail.com',
-            'password' => 'carlos@gmail.com',
+            'email' => 'admin@email.test',
+            'password' => 'password1admin',
         ]);
 
         $this->assertSelectorTextContains('h1', 'Hello BaseController!');
-        $this->assertSelectorTextContains('h2', 'Carlos Gude');
+        $this->assertSelectorTextContains('h2', 'admin');
     }
 
     public function testFailLogin(): void

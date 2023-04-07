@@ -37,8 +37,8 @@ class ArticleSecurityTest extends KernelTestCase
 
         $response = $httpClient->request('POST',AbstractTest::getBaseUrl().self::API_LOGIN,[
             'json' => [
-                'email' => 'carlos@gmail.com',
-                'password' => 'carlos@gmail.com'
+                'email' => 'admin@email.test',
+                'password' => 'password1admin'
             ]
         ]);
         $body = $response->toArray();
@@ -118,10 +118,10 @@ class ArticleSecurityTest extends KernelTestCase
         $manager = $container->get(EntityManagerInterface::class);
 
         /** @var User $anotherUser */
-        $anotherUser = $manager->getRepository(User::class)->findOneBy(['email' => 'another@gmail.com']);
+        $anotherUser = $manager->getRepository(User::class)->findOneBy(['email' => 'test@email.test']);
         $articles = $manager->getRepository(Article::class)->findBy(['user' => $anotherUser]);
 
-        $this->assertGreaterThan(0,$articles);
+        $this->assertGreaterThan(1,$articles);
 
         /** @var Article $article */
         $article = $articles[0];
@@ -183,11 +183,11 @@ class ArticleSecurityTest extends KernelTestCase
         $manager = $container->get(EntityManagerInterface::class);
 
         /** @var User $anotherUser */
-        $anotherUser = $manager->getRepository(User::class)->findOneBy(['email' => 'another@gmail.com']);
+        $anotherUser = $manager->getRepository(User::class)->findOneBy(['email' => 'test@email.test']);
 
         $articles = $manager->getRepository(Article::class)->findBy(['user' => $anotherUser]);
 
-        $this->assertGreaterThan(0,$articles);
+        $this->assertGreaterThan(1,$articles);
 
         /** @var Article $article */
         $article = $articles[0];

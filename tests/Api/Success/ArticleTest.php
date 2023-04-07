@@ -56,7 +56,7 @@ class ArticleTest extends KernelTestCase
         /** @var EntityManagerInterface $manager */
         $manager = $container->get(EntityManagerInterface::class);
 
-        $user = $manager->getRepository(User::class)->findOneBy(['email' => 'carlos@gmail.com']);
+        $user = $manager->getRepository(User::class)->findOneBy(['email' => 'admin@email.test']);
         $articles = $manager->getRepository(Article::class)->findBy(['user' => $user]);
 
         $this->assertGreaterThan(0,$articles);

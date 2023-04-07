@@ -34,8 +34,8 @@ class BasicNavigationTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Login');
         $client->submitForm('Sign in', [
-            'email' => 'carlos@gmail.com',
-            'password' => 'carlos@gmail.com',
+            'email' => 'admin@email.test',
+            'password' => 'password1admin',
         ]);
         $client->request('GET', '/dashboard');
 

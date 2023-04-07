@@ -10,9 +10,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DashboardController extends AbstractDashboardController
 {
+    public function __construct(protected TranslatorInterface $translator){
+
+    }
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
@@ -24,14 +28,17 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Blog Ipglobal');
+            ->setTitle('Blog Ipglobal')
+            ->setTranslationDomain('messages');
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Article', 'fa fa-pencil-square-o',Article::class);
-        yield MenuItem::linkToCrud('User', 'fa fa-user',User::class);
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToDashboard($this->translator->trans('dashboard'), 'fa fa-home');
+        yield MenuItem::linkToCrud($this->translator->trans('article.label'), 'fa fa-pencil-square-o',Article::class);
+
+        if (in_array(User::ROLE_ADMIN, $this->getUser()->getRoles())) {
+            yield MenuItem::linkToCrud($this->translator->trans('user.label'), 'fa fa-user',User::class);
+        }
     }
 }

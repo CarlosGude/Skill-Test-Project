@@ -18,6 +18,12 @@ abstract class AbstractEntity
     #[ORM\Column(nullable: true)]
     protected ?DateTime $deletedAt = null;
 
+    #[ORM\Column(nullable: false)]
+    protected DateTime $createdAt;
+
+    #[ORM\Column(nullable: false)]
+    protected DateTime $updatedAt ;
+
     public function __construct(){
         $this->uuid = Uuid::v4();
     }
@@ -55,5 +61,41 @@ abstract class AbstractEntity
         return $this;
     }
 
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime $createdAt
+     * @return AbstractEntity
+     */
+    public function setCreatedAt(): AbstractEntity
+    {
+        $this->createdAt = new DateTime();
+        $this->updatedAt = new DateTime();
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getUpdatedAt(): DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param DateTime $updatedAt
+     * @return AbstractEntity
+     */
+    public function setUpdatedAt(): AbstractEntity
+    {
+        $this->updatedAt = new DateTime();
+        return $this;
+    }
 
 }

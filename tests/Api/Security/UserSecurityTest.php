@@ -35,8 +35,8 @@ class UserSecurityTest extends KernelTestCase
 
         $response = $httpClient->request('POST',AbstractTest::getBaseUrl().self::API_LOGIN,[
             'json' => [
-                'email' => 'carlos@gmail.com',
-                'password' => 'carlos@gmail.com'
+                'email' => 'admin@email.test',
+                'password' => 'password1admin'
             ]
         ]);
         $body = $response->toArray();
@@ -76,7 +76,7 @@ class UserSecurityTest extends KernelTestCase
         $manager = $container->get(EntityManagerInterface::class);
 
         /** @var User $anotherUser */
-        $anotherUser = $manager->getRepository(User::class)->findOneBy(['email' => 'another@gmail.com']);
+        $anotherUser = $manager->getRepository(User::class)->findOneBy(['email' => 'test@email.test']);
 
         $token = $this->getToken();
         $response = $httpClient->request('PUT',AbstractTest::getBaseUrl().UserTest::API_USER.'/'.$anotherUser->getId(),[
@@ -92,7 +92,7 @@ class UserSecurityTest extends KernelTestCase
     {
         $token = $this->getToken();
         $token = json_decode(base64_decode(str_replace('_', '/', str_replace('-','+',explode('.', $token)[1]))));
-        $this->assertEquals('carlos@gmail.com',$token->username);
+        $this->assertEquals('admin@email.test',$token->username);
     }
 
     public function testFailureLogin():void
@@ -104,7 +104,7 @@ class UserSecurityTest extends KernelTestCase
         $httpClient = $container->get(HttpClientInterface::class);
         $response = $httpClient->request('POST',AbstractTest::getBaseUrl().self::API_LOGIN,[
             'json' => [
-                'email' => 'carlos@gmail.com',
+                'email' => 'admin@email.test',
                 'password' => 'fail'
             ]
         ]);
@@ -139,7 +139,7 @@ class UserSecurityTest extends KernelTestCase
         $manager = $container->get(EntityManagerInterface::class);
 
         /** @var User $anotherUser */
-        $anotherUser = $manager->getRepository(User::class)->findOneBy(['email' => 'another@gmail.com']);
+        $anotherUser = $manager->getRepository(User::class)->findOneBy(['email' => 'test@email.test']);
 
         $token = $this->getToken();
         $response = $httpClient->request('DELETE',AbstractTest::getBaseUrl().UserTest::API_USER.'/'.$anotherUser->getId(),[
@@ -179,7 +179,7 @@ class UserSecurityTest extends KernelTestCase
         $manager = $container->get(EntityManagerInterface::class);
 
         /** @var User $authorizedUser */
-        $authorizedUser = $manager->getRepository(User::class)->findOneBy(['email' => 'carlos@gmail.com']);
+        $authorizedUser = $manager->getRepository(User::class)->findOneBy(['email' => 'admin@email.test']);
         $oldPassword = $authorizedUser->getPassword();
 
         /** @var HttpClientInterface $httpClient */
@@ -190,7 +190,7 @@ class UserSecurityTest extends KernelTestCase
             'json' => ['password' => 'TEST_CHANGE_PASSWORD']
         ]);
 
-        $authorizedUser = $manager->getRepository(User::class)->findOneBy(['email' => 'carlos@gmail.com']);
+        $authorizedUser = $manager->getRepository(User::class)->findOneBy(['email' => 'admin@email.test']);
         $this->assertEquals(200,$response->getStatusCode());
         $this->assertNotEquals($authorizedUser->getPassword(),$oldPassword);
 
