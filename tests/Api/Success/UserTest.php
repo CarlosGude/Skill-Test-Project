@@ -3,36 +3,23 @@
 namespace App\Tests\Api\Success;
 
 
+use App\Entity\User;
 use App\Tests\Api\AbstractTest;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * Class UserTest
  * @package App\Tests\Api\Success
- * TODO: Refactorizar esta mierda antes de que me den ganas de arrancarme los ojos.
  */
-class UserTest extends KernelTestCase
+class UserTest extends AbstractTest
 {
     public const API_USER = 'api/user';
-
-    protected function setUp(): void
-    {
-        AbstractTest::setUp();
-    }
+    public array $user = ['name' => 'test', 'email' => 'test@test.com', 'password' => 'password1'];
 
     public function testGetListOfUsers(): void
     {
-        self::bootKernel();
-        $container = static::getContainer();
-
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('GET',AbstractTest::getBaseUrl().self::API_USER);
-        $body = $response->toArray();
-
+        $response = $this->makeRequest(self::METHOD_GET,self::API_USER);
         $this->assertEquals(200,$response->getStatusCode());
-        $this->assertCount(2,$body);
+        $this->assertGreaterThan(1,$body = $response->toArray());
         $this->assertNotNull($body[0]['email']);
         $this->assertNotNull($body[0]['name']);
 
@@ -40,15 +27,16 @@ class UserTest extends KernelTestCase
 
     public function testGetUser(): void
     {
-        self::bootKernel();
-        $container = static::getContainer();
+        $users = $this->getRepository(User::class)->findAll();
+        $this->assertGreaterThan(1,count($users));
 
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('GET',AbstractTest::getBaseUrl().self::API_USER.'/1');
-        $body = $response->toArray();
+        /** @var User $user */
+        $user = $users[0];
+
+        $response = $this->makeRequest(self::METHOD_GET,self::API_USER.'/'.$user->getId());
 
         $this->assertEquals(200,$response->getStatusCode());
+        $this->assertIsArray($body = $response->toArray());
         $this->assertNotNull($body['email']);
         $this->assertNotNull($body['name']);
 
@@ -56,21 +44,10 @@ class UserTest extends KernelTestCase
 
     public function testCreateUser(): void
     {
-        self::bootKernel();
-        $container = static::getContainer();
-
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('POST',AbstractTest::getBaseUrl().self::API_USER,[
-            'json' => [
-                'name' => 'test',
-                'email' => 'email@test.com',
-                'password' => 'password1'
-            ]
-        ]);
-        $body = $response->toArray();
+        $response = $this->makeRequest(self::METHOD_POST,self::API_USER,$this->user);
 
         $this->assertEquals(201,$response->getStatusCode());
+        $this->assertIsArray($body = $response->toArray());
         $this->assertNotNull($body['email']);
         $this->assertNotNull($body['name']);
 

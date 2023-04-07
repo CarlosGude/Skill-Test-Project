@@ -11,14 +11,9 @@ use Doctrine\Persistence\ObjectManager;
 class UserFixtures extends Fixture
 {
 
-    protected array $users = [
-        ['name' => 'admin','email' => 'admin@email.test', 'password' => 'password1admin','roles'=> [User::ROLE_ADMIN]],
-        ['name' => 'Test','email' => 'test@email.test', 'password' => 'password1','roles'=> [User::ROLE_USER]],
-    ];
-
     public function load(ObjectManager $manager)
     {
-        foreach ($this->users as $userData){
+        foreach (self::getUsers() as $userData){
             $user = new User();
             $user->setName($userData['name']);
             $user->setEmail($userData['email']);
@@ -29,5 +24,13 @@ class UserFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    public static function getUsers(): array
+    {
+        return [
+            'admin' => ['name' => 'admin','email' => 'admin@email.test', 'password' => 'password1admin','roles'=> [User::ROLE_ADMIN]],
+            'anotherUser' =>['name' => 'Test','email' => 'test@email.test', 'password' => 'password1','roles'=> [User::ROLE_USER]],
+        ];
     }
 }

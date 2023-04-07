@@ -6,6 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class LoginTest extends WebTestCase
 {
+    protected function setUp(): void
+    {
+        echo(exec('php bin/console cache:clear ') . PHP_EOL);
+        echo(exec('php bin/console doctrine:database:drop --force ') . PHP_EOL);
+        echo(exec('php bin/console doctrine:database:create ') . PHP_EOL);
+        echo(exec('php bin/console doctrine:migrations:migrate -n ') . PHP_EOL);
+        echo(exec('php bin/console doctrine:fixtures:load -n ') . PHP_EOL);
+    }
 
     public function testLogin(): void
     {

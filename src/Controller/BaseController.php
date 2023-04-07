@@ -24,7 +24,7 @@ class BaseController extends AbstractController
         ]);
     }
 
-    #[Route('/article/{id}', name: 'app_base')]
+    #[Route('/article/{id}', name: 'article_detail')]
     public function getArticle(int $id): Response
     {
         $article = $this->manager->getRepository(Article::class)->findOneBy(['id' => $id, 'deletedAt' => null]);
@@ -39,7 +39,7 @@ class BaseController extends AbstractController
         ]);
     }
 
-    #[Route('/author/{id}', name: 'app_base')]
+    #[Route('/author/{id}', name: 'author_detail')]
     public function getAuthor(int $id): Response
     {
         $author = $this->manager->getRepository(User::class)->findOneBy(['id' => $id, 'deletedAt' => null]);

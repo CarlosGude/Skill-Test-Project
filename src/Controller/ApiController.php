@@ -35,7 +35,7 @@ class ApiController extends AbstractController
     public function post(string $entity, RequestStack $request): Response
     {
         $body = json_decode($request->getMainRequest()->getContent(),true);
-        $response = $this->factory->post($entity,$body,$this->getUser());
+        $response = $this->factory->post($entity,$body);
 
         if(is_array($response)){
             return $this->json($response,400);
@@ -56,7 +56,7 @@ class ApiController extends AbstractController
         }
 
         $body = json_decode($request->getMainRequest()->getContent(),true);
-        $response = $this->factory->put($entity,$id, $user,$body);
+        $response = $this->factory->put($entity,$id,$body);
 
         $response = new Response($response,200);
         $response->headers->set('Content-Type', 'text/json');
@@ -72,7 +72,7 @@ class ApiController extends AbstractController
             throw new AccessDeniedHttpException();
         }
 
-        $response = $this->factory->delete($entity,$id, $user);
+        $response = $this->factory->delete($entity,$id);
 
         return new Response(null,$response? 204:404);
 

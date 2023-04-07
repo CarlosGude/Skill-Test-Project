@@ -18,7 +18,7 @@ class UserVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [self::POST, self::PUT]) && $subject instanceof User;
+        return in_array($attribute, [self::POST, self::PUT, self::DELETE]) && $subject instanceof User;
     }
 
     /**
@@ -37,7 +37,7 @@ class UserVoter extends Voter
             case self::PUT:
                 return $user instanceof UserInterface && $user === $subject;
             case self::DELETE:
-                return $this->security->isGranted(User::ROLE_ADMIN);
+                return $this->security->isGranted(User::ROLE_ADMIN) && $subject !== $user;
         }
 
         return false;

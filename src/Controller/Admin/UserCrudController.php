@@ -45,9 +45,6 @@ class UserCrudController extends AbstractCrudController
     /**
      * @param string $pageName
      * @return iterable
-     * TODO: AÑANDIR TRADUCCIONES
-     * TODO: NO MOSTRAR SI NO ES ADMIN. Si no lo es, mostrar link para editar su usuario.
-     * TODO: Cambiar password.
      */
     public function configureFields(string $pageName): iterable
     {

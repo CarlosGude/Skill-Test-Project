@@ -10,7 +10,6 @@ use App\Entity\AbstractEntity;
 use App\Exceptions\DataTransformerException;
 use App\Exceptions\EntityOutputException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DataTransformationFactory implements DataTransformationFactoryInterface
@@ -49,7 +48,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      * @throws EntityOutputException
      * @throws DataTransformerException
      */
-    public function post(string $entity, array $data, ?UserInterface $user = null): string | array
+    public function post(string $entity, array $data): string | array
     {
         if(!is_array($this->inputs)){
             throw new NotFoundHttpException();
@@ -60,7 +59,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
             throw new EntityOutputException();
         }
 
-        $data = $input->post($data, $user);
+        $data = $input->post($data);
         if($data instanceof AbstractEntity){
             return $this->get($entity,$data->getId());
         }
@@ -75,7 +74,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      * @return AbstractEntity|null
      * @throws EntityOutputException
      */
-    public function put(string $entity, int|string $id, UserInterface $user, array $body):? string
+    public function put(string $entity, int|string $id, array $body):? string
     {
         if(!is_array($this->inputs)){
             throw new NotFoundHttpException();
@@ -86,7 +85,8 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
             throw new EntityOutputException();
         }
 
-        $data = $input->put($id,$user,$body);
+        $data = $input->put($id,$body);
+
         if(!$data instanceof AbstractEntity){
             return null;
         }
@@ -99,7 +99,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      * @return AbstractEntity|null
      * @throws EntityOutputException
      */
-    public function delete(string $entity, int|string $id, UserInterface $user):? AbstractEntity
+    public function delete(string $entity, int|string $id):? AbstractEntity
     {
         if(!is_array($this->inputs)){
             throw new NotFoundHttpException();
@@ -110,7 +110,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
             throw new EntityOutputException();
         }
 
-        $data = $input->delete($id,$user);
+        $data = $input->delete($id);
         if(!$data instanceof AbstractEntity){
             return null;
         }

@@ -28,15 +28,10 @@ class ArticleVoter extends Voter
     {
         $user = $token->getUser();
 
+        return match ($attribute) {
+            self::POST => true,
+            default => $user instanceof UserInterface && $user->getId() === $subject->getUser()->getId(),
+        };
 
-        switch ($attribute) {
-            case self::POST:
-                return true;
-            case self::PUT:
-            case self::DELETE:
-                return $user instanceof UserInterface && $user === $subject->getUser();
-        }
-
-        return false;
     }
 }

@@ -29,7 +29,7 @@ abstract class AbstractInputDataTransformer
 
     protected function find(int $id):? AbstractEntity
     {
-        return $this->entityManager->getRepository($this->getClass())->find($id);
+        return $this->entityManager->getRepository($this->getClass())->findOneBy(['id' => $id,'deletedAt' => null]);
     }
 
 
@@ -69,6 +69,11 @@ abstract class AbstractInputDataTransformer
 
         $input->initialized($entity);
         $entity = $input->put($entity,$data);
+
+        if(!$this->voter->isGranted('PUT',$entity)){
+            throw new AccessDeniedException();
+        }
+
         $violationList = $this->validator->validate($input);
 
         foreach ($this->validator->validate($entity) as $entityError){

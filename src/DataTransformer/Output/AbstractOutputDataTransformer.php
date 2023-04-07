@@ -49,7 +49,7 @@ abstract class AbstractOutputDataTransformer
 
     protected function getAllItems(): array
     {
-        return $this->entityManager->getRepository($this->getClass())->findAll(['deletedAt' => null]);
+        return $this->entityManager->getRepository($this->getClass())->findBy(['deletedAt' => null]);
     }
 
     protected function getItem( string $field, int|string $id)

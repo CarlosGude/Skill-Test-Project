@@ -41,7 +41,7 @@ class UserOutputDto implements OutputInterface
         if($this->getNestedElements){
             /** @var Article $article */
             foreach ($entity->getArticles() as $article){
-                if(!$article->getDeletedAt()){
+                if(!is_null($article->getDeletedAt())){
                     $this->articles[] = (new ArticleOutputDto(false))->get($article);
                 }
             }

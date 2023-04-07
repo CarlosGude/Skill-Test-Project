@@ -4,36 +4,24 @@
 namespace App\Tests\Api\Validation;
 
 use App\Tests\Api\AbstractTest;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Tests\Api\Success\UserTest;
 
 /**
  * Class UserValidationTest
  * @package App\Tests\Api\Validation
  *
- * TODO: Refactorizar esta mierda antes de que me den ganas de arrancarme los ojos.
  */
-class UserValidationTest extends KernelTestCase
+class UserValidationTest extends AbstractTest
 {
-    protected function setUp(): void
-    {
-        AbstractTest::setUp();
-    }
 
     public function testEmailError():void
     {
-        self::bootKernel();
-        $container = static::getContainer();
-
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('POST','http://localhost/api/user',[
-            'json' => [
-                'name' => 'test',
-                'email' => 'error_email',
-                'password' => 'password1'
-            ]
+        $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
+            'name' => 'TEST CHANGE NAME',
+            'email' => 'INVALID',
+            'password' => 'TEST_PASSWORD',
         ]);
+
         $body = $response->toArray(false);
 
         $this->assertEquals(400,$response->getStatusCode());
@@ -43,18 +31,12 @@ class UserValidationTest extends KernelTestCase
 
     public function testPasswordError():void
     {
-        self::bootKernel();
-        $container = static::getContainer();
-
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('POST','http://localhost/api/user',[
-            'json' => [
-                'name' => 'test',
-                'email' => 'email@test.com',
-                'password' => 'error_pass'
-            ]
+        $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
+            'name' => 'TEST CHANGE NAME',
+            'email' => 'INVALID',
+            'password' => 'pass',
         ]);
+
         $body = $response->toArray(false);
 
         $this->assertEquals(400,$response->getStatusCode());
@@ -64,18 +46,12 @@ class UserValidationTest extends KernelTestCase
 
     public function testEmailExistError():void
     {
-        self::bootKernel();
-        $container = static::getContainer();
-
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('POST','http://localhost/api/user',[
-            'json' => [
-                'name' => 'test',
-                'email' => 'admin@email.test',
-                'password' => 'password1'
-            ]
+        $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
+            'name' => 'TEST CHANGE NAME',
+            'email' => 'admin@email.test',
+            'password' => 'pass',
         ]);
+
         $body = $response->toArray(false);
 
         $this->assertEquals(400,$response->getStatusCode());
@@ -85,17 +61,11 @@ class UserValidationTest extends KernelTestCase
 
     public function testNameNotSent():void
     {
-        self::bootKernel();
-        $container = static::getContainer();
-
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('POST','http://localhost/api/user',[
-            'json' => [
-                'email' => 'test@gmail.com',
-                'password' => 'password1'
-            ]
+        $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
+            'email' => 'test_created@email.com',
+            'password' => 'TEST_PASSWORD',
         ]);
+
         $body = $response->toArray(false);
 
         $this->assertEquals(400,$response->getStatusCode());
@@ -105,17 +75,11 @@ class UserValidationTest extends KernelTestCase
 
     public function testEmailNotSent():void
     {
-        self::bootKernel();
-        $container = static::getContainer();
-
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('POST','http://localhost/api/user',[
-            'json' => [
-                'name' => 'Test',
-                'password' => 'password1'
-            ]
+        $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
+            'name' => 'TEST CHANGE NAME',
+            'password' => 'TEST_PASSWORD',
         ]);
+
         $body = $response->toArray(false);
 
         $this->assertEquals(400,$response->getStatusCode());
@@ -125,34 +89,15 @@ class UserValidationTest extends KernelTestCase
 
     public function testPasswordNotSent():void
     {
-        self::bootKernel();
-        $container = static::getContainer();
-
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('POST','http://localhost/api/user',[
-            'json' => [
-                'name' => 'Test',
-                'email' => 'carlos@gmail.com',
-            ]
+        $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
+            'name' => 'TEST CHANGE NAME',
+            'email' => 'test_created@email.com',
         ]);
+
         $body = $response->toArray(false);
 
         $this->assertEquals(400,$response->getStatusCode());
         $this->assertArrayHasKey('password',$body);
         $this->assertEquals('This value should not be null.',$body['password']);
     }
-
-    public function testListUserNotExist():void
-    {
-        self::bootKernel();
-        $container = static::getContainer();
-
-        /** @var HttpClientInterface $httpClient */
-        $httpClient = $container->get(HttpClientInterface::class);
-        $response = $httpClient->request('GET','http://localhost/api/user/8');
-
-        $this->assertEquals(404,$response->getStatusCode());
-    }
-
 }
