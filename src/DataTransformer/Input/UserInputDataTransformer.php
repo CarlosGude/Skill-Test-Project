@@ -15,7 +15,7 @@ class UserInputDataTransformer extends AbstractInputDataTransformer
         return User::class;
     }
 
-    protected function getInputDto($data): InputInterface
+    protected function getInputDto(array $data): InputInterface
     {
         return new UserInputDto($data);
     }

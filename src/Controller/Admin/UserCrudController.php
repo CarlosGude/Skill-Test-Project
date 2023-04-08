@@ -38,7 +38,7 @@ class UserCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $delete);
     }
 
-    public function softDeleted(AdminContext $context)
+    public function softDeleted(AdminContext $context): void
     {
         /** @var User $user */
         $user = $context->getEntity()->getInstance();
@@ -48,9 +48,9 @@ class UserCrudController extends AbstractCrudController
 
     /**
      * @param string $pageName
-     * @return iterable
+     * @return array
      */
-    public function configureFields(string $pageName): iterable
+    public function configureFields(string $pageName): array
     {
         return [
             IdField::new('id')->setLabel($this->translator->trans('id'))->onlyOnIndex(),

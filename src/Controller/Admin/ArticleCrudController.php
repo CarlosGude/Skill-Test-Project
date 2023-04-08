@@ -23,11 +23,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\TextFilter;
 use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ArticleCrudController extends AbstractCrudController
 {
-    public function __construct(protected TranslatorInterface $translator)
+    public function __construct(
+        protected TranslatorInterface $translator,
+        protected Security $security
+    )
     {
 
     }
@@ -43,7 +47,7 @@ class ArticleCrudController extends AbstractCrudController
             ->add(Crud::PAGE_INDEX, $delete);
     }
 
-    public function softDeleted(AdminContext $context)
+    public function softDeleted(AdminContext $context): void
     {
         /** @var Article $article */
         $article = $context->getEntity()->getInstance();
@@ -57,7 +61,7 @@ class ArticleCrudController extends AbstractCrudController
 
         $qb->andWhere('entity.deletedAt is null');
 
-        if (!in_array(User::ROLE_ADMIN, $this->getUser()->getRoles())) {
+        if ($this->security->isGranted(User::ROLE_ADMIN)) {
             $qb->andWhere('entity.user = :user');
             $qb->setParameter('user', $this->getUser());
         }
@@ -79,9 +83,9 @@ class ArticleCrudController extends AbstractCrudController
 
     /**
      * @param string $pageName
-     * @return iterable
+     * @return array
      */
-    public function configureFields(string $pageName): iterable
+    public function configureFields(string $pageName): array
     {
         return [
             IdField::new('uuid')->setLabel($this->translator->trans('uuid'))->hideOnIndex()->setFormTypeOption('disabled','disabled'),

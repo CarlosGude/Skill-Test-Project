@@ -3,6 +3,7 @@
 namespace App\Security\Voter;
 
 use App\Entity\Article;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,7 +31,7 @@ class ArticleVoter extends Voter
 
         return match ($attribute) {
             self::POST => true,
-            default => $user instanceof UserInterface && $user->getId() === $subject->getUser()->getId(),
+            default => $user instanceof User && $user->getId() === $subject->getUser()->getId(),
         };
 
     }

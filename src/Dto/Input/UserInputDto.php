@@ -36,7 +36,7 @@ class UserInputDto implements InputInterface
         $this->password = $data['password'] ?? null;
     }
 
-    public function initialized(AbstractEntity $entity)
+    public function initialized(AbstractEntity $entity): void
     {
         if(!$entity instanceof User){
             throw new NotExceptedEntityException();

@@ -4,10 +4,10 @@
 namespace App\Entity\Interfaces;
 
 
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\User;
 
 interface OwnerInterface
 {
-    public function setUser(UserInterface $user): self;
-    public function getUser():? UserInterface;
+    public function setUser(User $user): self;
+    public function getUser():? User;
 }

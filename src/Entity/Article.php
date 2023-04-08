@@ -63,19 +63,19 @@ class Article extends AbstractEntity implements OwnerInterface, SlugInterface
         return $this;
     }
 
-    public function getUser(): ?UserInterface
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?UserInterface $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getFieldToSlug(): string
+    public function getFieldToSlug():? string
     {
         return $this->getTitle();
     }

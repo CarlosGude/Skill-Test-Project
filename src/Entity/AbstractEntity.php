@@ -70,7 +70,6 @@ abstract class AbstractEntity
     }
 
     /**
-     * @param DateTime $createdAt
      * @return AbstractEntity
      */
     public function setCreatedAt(): AbstractEntity
@@ -89,7 +88,6 @@ abstract class AbstractEntity
     }
 
     /**
-     * @param DateTime $updatedAt
      * @return AbstractEntity
      */
     public function setUpdatedAt(): AbstractEntity

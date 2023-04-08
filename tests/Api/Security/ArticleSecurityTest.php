@@ -77,7 +77,7 @@ class ArticleSecurityTest extends AbstractTest
         $user = $this->getRepository(User::class)->findOneBy(['email' => 'admin@email.test']);
         $articles = $this->getRepository(Article::class)->findBy(['user' => $user]);
 
-        $this->assertGreaterThan(0,$articles);
+        $this->assertGreaterThan(1,$articles);
 
         /** @var Article $article */
         $article = $articles[0];

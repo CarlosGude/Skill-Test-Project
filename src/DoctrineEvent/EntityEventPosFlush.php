@@ -24,7 +24,6 @@ class EntityEventPosFlush
     public function onFlush(OnFlushEventArgs $args): void
     {
         $em = $args->getObjectManager();
-        /** @var UnitOfWork $uow */
         $uow = $em->getUnitOfWork();
 
         /** @var AbstractEntity $insertion */

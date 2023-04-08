@@ -29,17 +29,19 @@ class UserVoter extends Voter
      */
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
+        /** @var null|User $user */
         $user = $token->getUser();
 
-        switch ($attribute) {
-            case self::POST:
-                return true;
-            case self::PUT:
-                return $user instanceof UserInterface && $user === $subject;
-            case self::DELETE:
-                return $this->security->isGranted(User::ROLE_ADMIN) && $subject !== $user;
+        if(!$user){
+            return false;
         }
 
-        return false;
+        return match ($attribute) {
+            self::POST => true,
+            self::PUT => $user === $subject,
+            self::DELETE => $this->security->isGranted(User::ROLE_ADMIN) && $subject !== $user,
+            default => false,
+        };
+
     }
 }

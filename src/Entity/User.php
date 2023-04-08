@@ -67,7 +67,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return $this->getName().'['.$this->getEmail().']';
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -111,7 +111,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword():? string
     {
         return $this->password;
     }
@@ -126,7 +126,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -135,7 +135,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     /**
      * @return string|null
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -239,7 +239,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return 'name';
     }
 
-    public function getFieldToSlug(): string
+    public function getFieldToSlug():? string
     {
         return $this->getName();
     }

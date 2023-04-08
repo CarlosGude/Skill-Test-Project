@@ -25,7 +25,7 @@ abstract class AbstractInputDataTransformer
     }
 
     protected abstract function getClass(): string;
-    protected abstract function getInputDto($data): InputInterface;
+    protected abstract function getInputDto(array $data): InputInterface;
 
     protected function find(string $id):? AbstractEntity
     {
@@ -58,7 +58,7 @@ abstract class AbstractInputDataTransformer
         return $entity;
     }
 
-    public function put(int|string $id,array $data):array | AbstractEntity
+    public function put(string $id,array $data):array | AbstractEntity
     {
         $input = $this->getInputDto($data);
         $entity = $this->find($id);

@@ -43,11 +43,10 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
     /**
      * @param string $entity
      * @param array $data
-     * @return string|array
+     * @return string|null
      * @throws EntityOutputException
-     * @throws DataTransformerException
      */
-    public function post(string $entity, array $data): string | array
+    public function post(string $entity, array $data):array|string
     {
         if(!is_array($this->inputs)){
             throw new NotFoundHttpException();
@@ -67,13 +66,15 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
 
     }
 
+
     /**
      * @param string $entity
-     * @param int|string $id
-     * @return AbstractEntity|null
+     * @param string $id
+     * @param array $body
+     * @return string|null
      * @throws EntityOutputException
      */
-    public function put(string $entity, int|string $id, array $body):? string
+    public function put(string $entity, string $id, array $body):? string
     {
         if(!is_array($this->inputs)){
             throw new NotFoundHttpException();

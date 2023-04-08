@@ -27,7 +27,7 @@ class ArticleInputDto implements InputInterface
         $this->body = $data['body'] ?? null;
     }
 
-    public function initialized(AbstractEntity $entity)
+    public function initialized(AbstractEntity $entity): void
     {
         if(!$entity instanceof Article){
             throw new NotExceptedEntityException();

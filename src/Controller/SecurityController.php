@@ -38,7 +38,7 @@ class SecurityController extends AbstractController
     #[Route('/activate/user/{token}', name: 'app_activate_user')]
     public function index(string $token, EntityManagerInterface $manager, TranslatorInterface $translator): Response
     {
-        /** @var User $user */
+        /** @var null|User $user */
         $user = $manager->getRepository(User::class)->findOneBy(['token' => $token]);
 
         if(!$user){

@@ -15,7 +15,7 @@ class ArticleInputDataTransformer extends AbstractInputDataTransformer
         return Article::class;
     }
 
-    protected function getInputDto($data): InputInterface
+    protected function getInputDto(array $data): InputInterface
     {
         return new ArticleInputDto($data);
     }

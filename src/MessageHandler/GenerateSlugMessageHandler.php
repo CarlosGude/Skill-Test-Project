@@ -19,7 +19,7 @@ class GenerateSlugMessageHandler
 
     public function __construct(protected EntityManagerInterface $manager){}
 
-    public function __invoke(EntityEvent $message)
+    public function __invoke(EntityEvent $message): void
     {
         $this->message = $message;
 

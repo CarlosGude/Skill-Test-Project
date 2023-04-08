@@ -34,6 +34,7 @@ class ApiController extends AbstractController
     #[Route('/api/{entity}', name: 'post_entity',methods: ['POST'])]
     public function post(string $entity, RequestStack $request): Response
     {
+        /** @var array $body */
         $body = json_decode($request->getMainRequest()->getContent(),true);
         $response = $this->factory->post($entity,$body);
 
@@ -55,6 +56,7 @@ class ApiController extends AbstractController
             throw new AccessDeniedHttpException();
         }
 
+        /** @var array $body */
         $body = json_decode($request->getMainRequest()->getContent(),true);
         $response = $this->factory->put($entity,$id,$body);
 
