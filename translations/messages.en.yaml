@@ -5,7 +5,12 @@ deleted: Soft delete
 createdAt: Created at
 updatedAt: Updated at
 
+home:
+  welcome: Welcome to ip-global blog
+
 article:
+  anotherArticles: Another articles of author
+  allArticlesOf: All articles of author
   label: Articles
   title: Title
   body: Body
@@ -13,6 +18,7 @@ article:
   showDeleted: Show deleted articles?
 
 user:
+  sendEmail: Send email to
   label: Users
   username: Username
   email: Email

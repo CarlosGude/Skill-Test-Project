@@ -1,22 +1,13 @@
 <?php
 
 
-namespace App\Tests\Web\Login;
+namespace App\Tests\Web\Navigation;
 
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class BasicNavigationTest extends WebTestCase
+class DashboardNavigationTest extends WebTestCase
 {
-    public function testHome(): void
-    {
-        $client = static::createClient();
-        $client->request('GET', '/');
-
-        $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Hello BaseController!');
-        $this->assertSelectorTextContains('#login', 'Go to login');
-    }
 
     public function testDashboardFail(): void
     {
@@ -37,9 +28,8 @@ class BasicNavigationTest extends WebTestCase
             'email' => 'admin@email.test',
             'password' => 'password1admin',
         ]);
-        $client->request('GET', '/dashboard');
+        $client->request('GET', '/admin');
 
         $this->assertResponseStatusCodeSame(200);
-        $this->assertSelectorTextContains('h1','This is your private zone');
     }
 }

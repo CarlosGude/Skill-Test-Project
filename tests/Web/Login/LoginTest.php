@@ -27,8 +27,7 @@ class LoginTest extends WebTestCase
             'password' => 'password1admin',
         ]);
 
-        $this->assertSelectorTextContains('h1', 'Hello BaseController!');
-        $this->assertSelectorTextContains('h2', 'admin');
+        $this->assertSelectorTextContains('h1', 'Welcome to ip-global blog');
     }
 
     public function testUnActiveUserLogin(): void

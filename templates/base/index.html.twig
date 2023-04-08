@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BaseController!{% endblock %}
+{% block title %}{{ 'home.welcome' | trans }}{% endblock %}
 
 {% block body %}
 <style>
@@ -9,16 +9,19 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-    <h2>{% if app.user %}{{ app.user.name }}{% endif %}</h2>
-    <p>
-        {% if app.user %}<a id="logout" href="{{ path('app_logout') }}">Logout</a>{% else %}<a id="login" href="{{ path('app_login') }}">Go to login{% endif %}</a>
-    </p>
+    <h1>{{ 'home.welcome' | trans }}</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/blog-ipglobal/src/Controller/BaseController.php'|file_link(0) }}">src/Controller/BaseController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/blog-ipglobal/templates/base/index.html.twig'|file_link(0) }}">templates/base/index.html.twig</a></code></li>
-    </ul>
+    <div id="articles">
+        {% for article in articles %}
+            <div id="{{ article.slug }}">
+                <h2><a href="{{ path('article_detail',{'slug':article.slug}) }}">{{ article.title }}</a> </h2>
+                <p>
+                    <a href="{{ path('author_detail',{'slug':article.user.slug}) }}">{{ article.user.name }}</a>
+                </p>
+                <p>{{ article.body }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
 </div>
 {% endblock %}

@@ -33,8 +33,7 @@ class BaseController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        // TODO: Pendiente de crear la vista.
-        return $this->render('base/index.html.twig', [
+        return $this->render('base/article.html.twig', [
             'controller_name' => 'BaseController',
             'article' => $article
         ]);
@@ -48,8 +47,7 @@ class BaseController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        // TODO: Pendiente de crear la vista.
-        return $this->render('base/index.html.twig', [
+        return $this->render('base/author.html.twig', [
             'controller_name' => 'BaseController',
             'author' => $author
         ]);
