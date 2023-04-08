@@ -4,7 +4,9 @@
 namespace App\Exceptions;
 
 
-class EntityOutputException extends \Exception
+use Exception;
+
+class EntityOutputException extends Exception
 {
 
 }
