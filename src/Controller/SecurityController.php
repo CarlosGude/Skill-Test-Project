@@ -7,8 +7,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SecurityController extends AbstractController
 {
@@ -34,14 +36,13 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/activate/user/{token}', name: 'app_activate_user')]
-    public function index(string $token, EntityManagerInterface $manager): Response
+    public function index(string $token, EntityManagerInterface $manager, TranslatorInterface $translator): Response
     {
         /** @var User $user */
         $user = $manager->getRepository(User::class)->findOneBy(['token' => $token]);
 
         if(!$user){
-            //TODO Add alert
-            return $this->redirectToRoute('app_base');
+            throw new NotFoundHttpException();
         }
 
         $user->setActive(true);
@@ -49,7 +50,7 @@ class SecurityController extends AbstractController
 
         $manager->flush();
 
-        //TODO Add alert
+        $this->addFlash('success', $translator->trans('user.activated'));
         return $this->redirectToRoute('app_base');
 
     }

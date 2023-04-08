@@ -18,7 +18,6 @@ class BaseController extends AbstractController
     public function index(): Response
     {
 
-        // TODO: Pendiente de crear la vista
         return $this->render('base/index.html.twig', [
             'controller_name' => 'BaseController',
             'articles' => $this->manager->getRepository(Article::class)->findAll()

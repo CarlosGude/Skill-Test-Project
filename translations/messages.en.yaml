@@ -18,6 +18,7 @@ article:
   showDeleted: Show deleted articles?
 
 user:
+  activated: The user is active. Got to login
   sendEmail: Send email to
   label: Users
   username: Username
