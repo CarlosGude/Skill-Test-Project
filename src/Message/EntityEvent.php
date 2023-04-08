@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Message;
-
 
 class EntityEvent
 {
@@ -14,18 +12,17 @@ class EntityEvent
         public string $event,
         public string $uuid,
         public array $changeFields = array()
-    )
-    {
+    ) {
     }
 
     public function hasChangeField(string $field): bool
     {
-        return array_key_exists($field,$this->changeFields);
+        return array_key_exists($field, $this->changeFields);
     }
 
     public function getNewValue(string $field): mixed
     {
-        if(!$this->hasChangeField($field)){
+        if(!$this->hasChangeField($field)) {
             return null;
         }
 
@@ -34,7 +31,7 @@ class EntityEvent
 
     public function getOldValue(string $field): mixed
     {
-        if(!$this->hasChangeField($field)){
+        if(!$this->hasChangeField($field)) {
             return null;
         }
 

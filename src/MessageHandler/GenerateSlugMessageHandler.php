@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\MessageHandler;
 
 use App\Email\AbstractEmail;
@@ -17,7 +16,9 @@ class GenerateSlugMessageHandler
 {
     protected EntityEvent $message;
 
-    public function __construct(protected EntityManagerInterface $manager){}
+    public function __construct(protected EntityManagerInterface $manager)
+    {
+    }
 
     public function __invoke(EntityEvent $message): void
     {
@@ -26,13 +27,13 @@ class GenerateSlugMessageHandler
         /** @var SlugInterface $slugEntity */
         $slugEntity = $this->manager->getRepository($message->class)->findOneBy(['uuid' => $message->uuid]);
 
-        if(!$slugEntity instanceof SlugInterface){
+        if(!$slugEntity instanceof SlugInterface) {
             return;
         }
 
         $slug = StringToSlugService::transformation($slugEntity->getFieldToSlug());
 
-        if(!$this->slugNeedAnUpdate($message,$slugEntity)){
+        if(!$this->slugNeedAnUpdate($message, $slugEntity)) {
             return;
         }
 
@@ -48,17 +49,17 @@ class GenerateSlugMessageHandler
     {
         return $this->manager->createQueryBuilder()
             ->select(['entity'])
-            ->from($this->message->getClass(),'entity')
+            ->from($this->message->getClass(), 'entity')
             ->where('entity.slug like :slug')
             ->andWhere('entity.slug != :uuid')
-            ->setParameter(':slug','%'.$slug.'%')
-            ->setParameter(':uuid',$this->message->uuid)
+            ->setParameter(':slug', '%'.$slug.'%')
+            ->setParameter(':uuid', $this->message->uuid)
             ->getQuery()->getResult();
     }
 
     protected function slugNeedAnUpdate(EntityEvent $message, SlugInterface $entity): bool
     {
-        if($message->getEvent() === EntityEvent::EVENT_CREATE){
+        if($message->getEvent() === EntityEvent::EVENT_CREATE) {
             return true;
         }
 

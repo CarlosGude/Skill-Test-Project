@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Entity;
 
 use DateTime;
@@ -8,10 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Uid\UuidV4;
 
-
 abstract class AbstractEntity
 {
-
     #[ORM\Column]
     protected string $uuid;
 
@@ -24,7 +21,8 @@ abstract class AbstractEntity
     #[ORM\Column(nullable: false)]
     protected DateTime $updatedAt ;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->uuid = Uuid::v4();
     }
 

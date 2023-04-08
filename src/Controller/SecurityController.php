@@ -17,8 +17,8 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-         if ($this->getUser()) {
-             return $this->redirectToRoute('app_base');
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_base');
         }
 
         // get the login error if there is one
@@ -41,7 +41,7 @@ class SecurityController extends AbstractController
         /** @var null|User $user */
         $user = $manager->getRepository(User::class)->findOneBy(['token' => $token]);
 
-        if(!$user){
+        if(!$user) {
             throw new NotFoundHttpException();
         }
 

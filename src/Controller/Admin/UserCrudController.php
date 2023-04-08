@@ -54,7 +54,7 @@ class UserCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->setLabel($this->translator->trans('id'))->onlyOnIndex(),
-            IdField::new('uuid')->setLabel($this->translator->trans('uuid'))->hideOnIndex()->setFormTypeOption('disabled','disabled'),
+            IdField::new('uuid')->setLabel($this->translator->trans('uuid'))->hideOnIndex()->setFormTypeOption('disabled', 'disabled'),
             TextField::new('name')->setLabel($this->translator->trans('user.name')),
             EmailField::new('email')->setLabel($this->translator->trans('user.email')),
             TextField::new('password')->setFormType(PasswordType::class)->setLabel($this->translator->trans('user.password'))->hideOnIndex()->hideWhenUpdating(),

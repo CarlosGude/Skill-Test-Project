@@ -19,7 +19,7 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $users = $manager->getRepository(User::class)->findAll();
-        for ($i=0; random_int(10,20) >= $i;$i++){
+        for ($i=0; random_int(10, 20) >= $i;$i++) {
             $article = new Article();
             $article->setTitle('Title article '.$i);
             $article->setSlug(StringToSlugService::transformation($article->getFieldToSlug()));

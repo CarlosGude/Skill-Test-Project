@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\DataTransformer\Output;
 
 use App\Dto\Output\OutputInterface;
@@ -9,7 +8,6 @@ use App\Entity\User;
 
 class UserOutputDataTransformer extends AbstractOutputDataTransformer
 {
-
     protected function getOutputDto(): OutputInterface
     {
         return new UserOutputDto();

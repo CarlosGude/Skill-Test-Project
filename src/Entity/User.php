@@ -21,7 +21,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 )]
 class User extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, SlugInterface
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -111,7 +110,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword():? string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -239,7 +238,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return 'name';
     }
 
-    public function getFieldToSlug():? string
+    public function getFieldToSlug(): ?string
     {
         return $this->getName();
     }

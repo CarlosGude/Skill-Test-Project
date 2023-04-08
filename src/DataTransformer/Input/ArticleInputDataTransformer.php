@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\DataTransformer\Input;
 
 use App\Dto\Input\ArticleInputDto;
@@ -9,7 +8,6 @@ use App\Entity\Article;
 
 class ArticleInputDataTransformer extends AbstractInputDataTransformer
 {
-
     protected function getClass(): string
     {
         return Article::class;

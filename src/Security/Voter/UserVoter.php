@@ -14,7 +14,9 @@ class UserVoter extends Voter
     public const POST = 'POST';
     public const DELETE = 'DELETE';
 
-    public function __construct(protected Security $security){}
+    public function __construct(protected Security $security)
+    {
+    }
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -32,7 +34,7 @@ class UserVoter extends Voter
         /** @var null|User $user */
         $user = $token->getUser();
 
-        if(!$user){
+        if(!$user) {
             return false;
         }
 

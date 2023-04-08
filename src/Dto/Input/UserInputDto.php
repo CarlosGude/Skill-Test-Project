@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Dto\Input;
-
 
 use App\Entity\AbstractEntity;
 use App\Entity\User;
@@ -11,7 +9,6 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Regex;
-
 
 class UserInputDto implements InputInterface
 {
@@ -38,7 +35,7 @@ class UserInputDto implements InputInterface
 
     public function initialized(AbstractEntity $entity): void
     {
-        if(!$entity instanceof User){
+        if(!$entity instanceof User) {
             throw new NotExceptedEntityException();
         }
         $this->name = $this->name ?? $entity->getName();
@@ -46,9 +43,9 @@ class UserInputDto implements InputInterface
         $this->password = $this->password ?? $entity->getPassword();
     }
 
-    public function put(AbstractEntity $entity,array $data): AbstractEntity
+    public function put(AbstractEntity $entity, array $data): AbstractEntity
     {
-        if(!$entity instanceof User){
+        if(!$entity instanceof User) {
             throw new NotExceptedEntityException();
         }
 

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\DataTransformer\Output;
 
 use App\Dto\Output\OutputInterface;
@@ -12,29 +11,29 @@ abstract class AbstractOutputDataTransformer
 {
     public function __construct(
         protected EntityManagerInterface $entityManager,
-        protected SerializerInterface $serializer)
-    {
+        protected SerializerInterface $serializer
+    ) {
     }
 
-    protected abstract function getClass(): string;
-    protected abstract function getOutputDto(): OutputInterface;
+    abstract protected function getClass(): string;
+    abstract protected function getOutputDto(): OutputInterface;
 
-    public function get( ?string $uuid):? string
+    public function get(?string $uuid): ?string
     {
         $data = ($uuid) ? $this->getItem($uuid) : $this->getAllItems();
 
-        if(empty($data)){
+        if(empty($data)) {
             return null;
         }
 
-        return $this->serializer->serialize($this->entityToDto($data),'json');
+        return $this->serializer->serialize($this->entityToDto($data), 'json');
     }
 
     private function entityToDto(array|AbstractEntity $data): array|OutputInterface
     {
-        if(is_array($data)){
+        if(is_array($data)) {
             $response = array();
-            foreach ($data as $item){
+            foreach ($data as $item) {
                 $dto = $this->getOutputDto();
                 $response[] = $dto->get($item);
             }

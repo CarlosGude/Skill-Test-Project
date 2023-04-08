@@ -31,8 +31,7 @@ class ArticleCrudController extends AbstractCrudController
     public function __construct(
         protected TranslatorInterface $translator,
         protected Security $security
-    )
-    {
+    ) {
 
     }
 
@@ -76,9 +75,9 @@ class ArticleCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters): Filters
     {
         return $filters
-            ->add(TextFilter::new('title',$this->translator->trans('article.title')))
-            ->add(DeletedAtFilter::new('deletedAt',$this->translator->trans('article.showDeleted')))
-            ;
+            ->add(TextFilter::new('title', $this->translator->trans('article.title')))
+            ->add(DeletedAtFilter::new('deletedAt', $this->translator->trans('article.showDeleted')))
+        ;
     }
 
     /**
@@ -88,7 +87,7 @@ class ArticleCrudController extends AbstractCrudController
     public function configureFields(string $pageName): array
     {
         return [
-            IdField::new('uuid')->setLabel($this->translator->trans('uuid'))->hideOnIndex()->setFormTypeOption('disabled','disabled'),
+            IdField::new('uuid')->setLabel($this->translator->trans('uuid'))->hideOnIndex()->setFormTypeOption('disabled', 'disabled'),
             TextField::new('title')->setLabel($this->translator->trans('article.title')),
             TextEditorField::new('body')->hideOnIndex()->setLabel($this->translator->trans('article.body')),
             DateTimeField::new('createdAt')->hideOnForm()->setLabel($this->translator->trans('createdAt')),

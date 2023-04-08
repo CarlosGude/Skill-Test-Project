@@ -1,15 +1,12 @@
 <?php
 
-
 namespace App\Dto\Input;
-
 
 use App\Entity\AbstractEntity;
 use App\Entity\Article;
 use App\Exceptions\NotExceptedEntityException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
-
 
 class ArticleInputDto implements InputInterface
 {
@@ -29,16 +26,16 @@ class ArticleInputDto implements InputInterface
 
     public function initialized(AbstractEntity $entity): void
     {
-        if(!$entity instanceof Article){
+        if(!$entity instanceof Article) {
             throw new NotExceptedEntityException();
         }
         $this->title = $this->title ?? $entity->getTitle();
         $this->body = $this->body ?? $entity->getBody();
     }
 
-    public function put(AbstractEntity $entity,array $data): AbstractEntity
+    public function put(AbstractEntity $entity, array $data): AbstractEntity
     {
-        if(!$entity instanceof Article){
+        if(!$entity instanceof Article) {
             throw new NotExceptedEntityException();
         }
 

@@ -12,7 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BaseController extends AbstractController
 {
-    public function __construct(protected EntityManagerInterface $manager){}
+    public function __construct(protected EntityManagerInterface $manager)
+    {
+    }
 
     #[Route('/', name: 'app_base')]
     public function index(): Response
@@ -28,7 +30,7 @@ class BaseController extends AbstractController
     public function getArticle(string $slug): Response
     {
         $article = $this->manager->getRepository(Article::class)->findOneBy(['slug' => $slug, 'deletedAt' => null]);
-        if(!$article){
+        if(!$article) {
             throw new NotFoundHttpException();
         }
 
@@ -42,7 +44,7 @@ class BaseController extends AbstractController
     public function getAuthor(string $slug): Response
     {
         $author = $this->manager->getRepository(User::class)->findOneBy(['slug' => $slug, 'deletedAt' => null]);
-        if(!$author){
+        if(!$author) {
             throw new NotFoundHttpException();
         }
 

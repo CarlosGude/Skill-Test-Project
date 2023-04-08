@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\DataFixtures;
-
 
 use App\Entity\User;
 use App\Services\StringToSlugService;
@@ -11,10 +9,9 @@ use Doctrine\Persistence\ObjectManager;
 
 class UserFixtures extends Fixture
 {
-
     public function load(ObjectManager $manager): void
     {
-        foreach (self::getUsers() as $userData){
+        foreach (self::getUsers() as $userData) {
             $user = new User();
             $user->setName($userData['name']);
             $user->setEmail($userData['email']);
@@ -23,7 +20,7 @@ class UserFixtures extends Fixture
             $user->setRoles($userData['roles']);
             $user->setActive($userData['active']);
 
-            if(array_key_exists('deleted',$userData) && $userData['deleted']){
+            if(array_key_exists('deleted', $userData) && $userData['deleted']) {
                 $user->setDeletedAt();
             }
 

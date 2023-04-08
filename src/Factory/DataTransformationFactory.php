@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Factory;
-
 
 use App\DataTransformer\Input\AbstractInputDataTransformer;
 use App\DataTransformer\Output\AbstractOutputDataTransformer;
@@ -18,7 +16,8 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
         protected ValidatorInterface $validator,
         protected array $outputs,
         protected array $inputs,
-    ){}
+    ) {
+    }
 
     /**
      * @param string $entity
@@ -26,14 +25,14 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      * @return string|null
      * @throws EntityOutputException
      */
-    public function get(string $entity, ?string $id = null):? string
+    public function get(string $entity, ?string $id = null): ?string
     {
-        if(!is_array($this->outputs)){
+        if(!is_array($this->outputs)) {
             throw new NotFoundHttpException();
         }
 
         $output = $this->outputs[$entity];
-        if(!$output instanceof AbstractOutputDataTransformer){
+        if(!$output instanceof AbstractOutputDataTransformer) {
             throw new EntityOutputException();
         }
 
@@ -46,20 +45,20 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      * @return string|null
      * @throws EntityOutputException
      */
-    public function post(string $entity, array $data):array|string
+    public function post(string $entity, array $data): array|string
     {
-        if(!is_array($this->inputs)){
+        if(!is_array($this->inputs)) {
             throw new NotFoundHttpException();
         }
 
         $input = $this->inputs[$entity];
-        if(!$input instanceof AbstractInputDataTransformer){
+        if(!$input instanceof AbstractInputDataTransformer) {
             throw new EntityOutputException();
         }
 
         $data = $input->post($data);
-        if($data instanceof AbstractEntity){
-            return $this->get($entity,$data->getUuid());
+        if($data instanceof AbstractEntity) {
+            return $this->get($entity, $data->getUuid());
         }
 
         return $data;
@@ -74,23 +73,23 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      * @return string|null
      * @throws EntityOutputException
      */
-    public function put(string $entity, string $id, array $body):? string
+    public function put(string $entity, string $id, array $body): ?string
     {
-        if(!is_array($this->inputs)){
+        if(!is_array($this->inputs)) {
             throw new NotFoundHttpException();
         }
 
         $input = $this->inputs[$entity];
-        if(!$input instanceof AbstractInputDataTransformer){
+        if(!$input instanceof AbstractInputDataTransformer) {
             throw new EntityOutputException();
         }
 
-        $data = $input->put($id,$body);
+        $data = $input->put($id, $body);
 
-        if(!$data instanceof AbstractEntity){
+        if(!$data instanceof AbstractEntity) {
             return null;
         }
-        return $this->get($entity,$data->getUuid());
+        return $this->get($entity, $data->getUuid());
     }
 
     /**
@@ -99,14 +98,14 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      * @return AbstractEntity|null
      * @throws EntityOutputException
      */
-    public function delete(string $entity, int|string $id):? AbstractEntity
+    public function delete(string $entity, int|string $id): ?AbstractEntity
     {
-        if(!is_array($this->inputs)){
+        if(!is_array($this->inputs)) {
             throw new NotFoundHttpException();
         }
 
         $input = $this->inputs[$entity];
-        if(!$input instanceof AbstractInputDataTransformer){
+        if(!$input instanceof AbstractInputDataTransformer) {
             throw new EntityOutputException();
         }
 

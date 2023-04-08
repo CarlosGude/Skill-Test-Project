@@ -18,7 +18,7 @@ class DashboardController extends AbstractDashboardController
     public function __construct(
         protected TranslatorInterface $translator,
         protected Security $security
-    ){
+    ) {
 
     }
     #[Route('/admin', name: 'admin')]
@@ -40,10 +40,10 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard($this->translator->trans('dashboard'), 'fa fa-home');
-        yield MenuItem::linkToCrud($this->translator->trans('article.label'), 'fa fa-pencil-square-o',Article::class);
+        yield MenuItem::linkToCrud($this->translator->trans('article.label'), 'fa fa-pencil-square-o', Article::class);
 
         if ($this->security->isGranted(User::ROLE_ADMIN)) {
-            yield MenuItem::linkToCrud($this->translator->trans('user.label'), 'fa fa-user',User::class);
+            yield MenuItem::linkToCrud($this->translator->trans('user.label'), 'fa fa-user', User::class);
         }
     }
 }

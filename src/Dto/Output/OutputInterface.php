@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Dto\Output;
-
 
 use App\Entity\AbstractEntity;
 
