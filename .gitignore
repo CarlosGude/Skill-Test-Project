@@ -55,6 +55,7 @@
 .idea
 
 .env.local
+.env.dev.local
 .env.test.local
 
 ###> symfony/phpunit-bridge ###
