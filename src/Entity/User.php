@@ -62,7 +62,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         $this->token = uniqid();
     }
 
-    #[Pure] public function __toString(): string
+    public function __toString(): string
     {
         return $this->getName().'['.$this->getEmail().']';
     }
