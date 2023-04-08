@@ -69,3 +69,4 @@
 ###< lexik/jwt-authentication-bundle ###
 
 /public/bundles/*
+/config/secrets/dev/dev.decrypt.private.php
