@@ -8,7 +8,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserCrudController extends AbstractCrudController
@@ -51,9 +55,10 @@ class UserCrudController extends AbstractCrudController
         return [
             IdField::new('id')->setLabel($this->translator->trans('id'))->onlyOnIndex(),
             IdField::new('uuid')->setLabel($this->translator->trans('uuid'))->hideOnIndex()->setFormTypeOption('disabled','disabled'),
-            IdField::new('name')->setLabel($this->translator->trans('user.name')),
-            IdField::new('email')->setLabel($this->translator->trans('user.email')),
-            IdField::new('password')->setLabel($this->translator->trans('user.password'))->hideOnIndex()->hideWhenUpdating(),
+            TextField::new('name')->setLabel($this->translator->trans('user.name')),
+            EmailField::new('email')->setLabel($this->translator->trans('user.email')),
+            TextField::new('password')->setFormType(PasswordType::class)->setLabel($this->translator->trans('user.password'))->hideOnIndex()->hideWhenUpdating(),
+            BooleanField::new('active')->setLabel($this->translator->trans('user.active')),
         ];
     }
 }
