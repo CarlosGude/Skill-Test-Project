@@ -17,18 +17,18 @@ class UserCreateMessageHandler
 
     public function __invoke(EntityEvent $message): void
     {
-        if($message->getClass() !== User::class) {
+        if (User::class !== $message->getClass()) {
             return;
         }
 
-        if($message->getEvent() !== EntityEvent::EVENT_CREATE) {
+        if (EntityEvent::EVENT_CREATE !== $message->getEvent()) {
             return;
         }
 
-        /** @var null|User $user */
+        /** @var User|null $user */
         $user = $this->manager->getRepository(User::class)->findOneBy(['uuid' => $message->uuid]);
 
-        if(!$user) {
+        if (!$user) {
             return;
         }
 

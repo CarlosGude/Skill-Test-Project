@@ -12,7 +12,7 @@ class UserDashboardController extends AbstractController
     #[Route('/dashboard', name: 'app_dashboard')]
     public function index(): Response
     {
-        if(!$this->getUser()) {
+        if (!$this->getUser()) {
             throw new UnauthorizedHttpException('Only authenticated users can be access to dashboard');
         }
 

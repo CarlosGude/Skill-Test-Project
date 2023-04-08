@@ -11,6 +11,7 @@ use Symfony\Component\Routing\RouterInterface;
 abstract class AbstractEmail
 {
     protected ?Email $email;
+
     public function __construct(protected MailerInterface $mailer, protected RouterInterface $router)
     {
     }
@@ -19,7 +20,7 @@ abstract class AbstractEmail
 
     public function send(): void
     {
-        if(!$this->email) {
+        if (!$this->email) {
             return;
         }
         try {
@@ -28,5 +29,4 @@ abstract class AbstractEmail
             throw $e;
         }
     }
-
 }

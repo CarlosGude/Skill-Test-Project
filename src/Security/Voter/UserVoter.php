@@ -6,7 +6,6 @@ use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserVoter extends Voter
 {
@@ -20,21 +19,18 @@ class UserVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [self::POST, self::PUT, self::DELETE]) && $subject instanceof User;
+        return in_array($attribute, [self::POST, self::PUT, self::DELETE], true) && $subject instanceof User;
     }
 
     /**
-     * @param string $attribute
      * @param User $subject
-     * @param TokenInterface $token
-     * @return bool
      */
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        /** @var null|User $user */
+        /** @var User|null $user */
         $user = $token->getUser();
 
-        if(!$user) {
+        if (!$user) {
             return false;
         }
 
@@ -44,6 +40,5 @@ class UserVoter extends Voter
             self::DELETE => $this->security->isGranted(User::ROLE_ADMIN) && $subject !== $user,
             default => false,
         };
-
     }
 }

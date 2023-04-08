@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Factory\DataTransformationFactoryInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +16,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     #[Route('/api/{entity}', name: 'get_entity', methods: ['GET'])]
     #[Route('/api/{entity}/{id}', name: 'get_entity_one', methods: ['GET'])]
@@ -25,7 +24,7 @@ class ApiController extends AbstractController
     {
         $data = $this->factory->get($entity, $id);
         $response = new Response($data);
-        if(!$data) {
+        if (!$data) {
             $response->setStatusCode(404);
         }
         $response->headers->set('Content-Type', 'text/json');
@@ -40,21 +39,21 @@ class ApiController extends AbstractController
         $body = json_decode($request->getMainRequest()->getContent(), true);
         $response = $this->factory->post($entity, $body);
 
-        if(is_array($response)) {
+        if (is_array($response)) {
             return $this->json($response, 400);
         }
 
         $response = new Response($response, 201);
         $response->headers->set('Content-Type', 'text/json');
-        return $response;
 
+        return $response;
     }
 
     #[Route('/api/{entity}/{id}', name: 'put_entity', methods: ['put'])]
     public function put(RequestStack $request, string $entity, string|int $id): Response
     {
         $user = $this->getUser();
-        if(!$user) {
+        if (!$user) {
             throw new AccessDeniedHttpException();
         }
 
@@ -72,13 +71,12 @@ class ApiController extends AbstractController
     public function delete(string $entity, string|int $id): Response
     {
         $user = $this->getUser();
-        if(!$user) {
+        if (!$user) {
             throw new AccessDeniedHttpException();
         }
 
         $response = $this->factory->delete($entity, $id);
 
         return new Response(null, $response ? 204 : 404);
-
     }
 }

@@ -1,14 +1,10 @@
 <?php
 
-
 namespace App\Tests\Api;
-
-
 
 use App\MessageHandler\GenerateSlugMessageHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransport;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
@@ -17,11 +13,10 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 abstract class AbstractTest extends KernelTestCase
 {
-
-    protected const METHOD_POST ='POST';
-    protected const METHOD_GET ='GET';
-    protected const METHOD_PUT ='PUT';
-    protected const METHOD_DELETE ='DELETE';
+    protected const METHOD_POST = 'POST';
+    protected const METHOD_GET = 'GET';
+    protected const METHOD_PUT = 'PUT';
+    protected const METHOD_DELETE = 'DELETE';
 
     public const API_LOGIN = '/api/login_check';
 
@@ -31,7 +26,7 @@ abstract class AbstractTest extends KernelTestCase
         'noActiveUser' => ['email' => 'noActiveUser@email.test', 'password' => 'noActiveUser1'],
         'deletedUser' => ['email' => 'deletedUser@email.test', 'password' => 'deletedUser1'],
         'failLogin' => ['email' => 'failLogin@email.test', 'password' => 'failLogin'],
-        'test' => ['email' => 'test_created@email.com', 'password' => 'TEST_PASSWORD_1','name' => 'TEST'],
+        'test' => ['email' => 'test_created@email.com', 'password' => 'TEST_PASSWORD_1', 'name' => 'TEST'],
     ];
 
     protected ?HttpClientInterface $httpClient;
@@ -54,34 +49,31 @@ abstract class AbstractTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        echo(exec('php bin/console cache:clear ') . PHP_EOL);
-        echo(exec('php bin/console doctrine:database:drop --force ') . PHP_EOL);
-        echo(exec('php bin/console doctrine:database:create ') . PHP_EOL);
-        echo(exec('php bin/console doctrine:migrations:migrate -n ') . PHP_EOL);
-        echo(exec('php bin/console doctrine:fixtures:load -n ') . PHP_EOL);
+        echo exec('php bin/console cache:clear ').PHP_EOL;
+        echo exec('php bin/console doctrine:database:drop --force ').PHP_EOL;
+        echo exec('php bin/console doctrine:database:create ').PHP_EOL;
+        echo exec('php bin/console doctrine:migrations:migrate -n ').PHP_EOL;
+        echo exec('php bin/console doctrine:fixtures:load -n ').PHP_EOL;
     }
 
     /**
-     * @param string $method
-     * @param $uri
-     * @return ResponseInterface
      * @throws TransportExceptionInterface
-     * @throws Exception
+     * @throws \Exception
      */
     protected function makeRequest(string $method, string $uri, array $data = [], ?string $user = 'admin'): ResponseInterface
     {
-        if(in_array($method,[self::METHOD_POST,self::METHOD_PUT]) && empty($data)){
-                throw new Exception('The methods post and put requires a body');
+        if (in_array($method, [self::METHOD_POST, self::METHOD_PUT], true) && empty($data)) {
+            throw new \Exception('The methods post and put requires a body');
         }
 
         return $this->httpClient->request(
             $method,
             $_ENV['TEST_URL'].$uri,
-            ['headers' =>['Authorization' => is_null($user) ? null : 'bearer '.$this->getToken($user)],'json' => $data]
+            ['headers' => ['Authorization' => is_null($user) ? null : 'bearer '.$this->getToken($user)], 'json' => $data]
         );
     }
 
-    protected function getToken(string $user = 'admin',int $expectCode = 200):? string
+    protected function getToken(string $user = 'admin', int $expectCode = 200): ?string
     {
         $response = $this->httpClient->request(
             self::METHOD_POST,
@@ -89,12 +81,13 @@ abstract class AbstractTest extends KernelTestCase
             ['json' => $this->logins[$user]]
         );
 
-        if ($response->getStatusCode() !== 200){
-            $this->assertEquals($expectCode,$response->getStatusCode());
+        if (200 !== $response->getStatusCode()) {
+            $this->assertEquals($expectCode, $response->getStatusCode());
+
             return null;
         }
         $body = $response->toArray();
-        $this->assertEquals(200,$response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
 
         return $body['token'];
     }
@@ -103,5 +96,4 @@ abstract class AbstractTest extends KernelTestCase
     {
         return $this->manager->getRepository($class);
     }
-
 }

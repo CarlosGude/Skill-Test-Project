@@ -6,7 +6,6 @@ use App\Entity\Article;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class ArticleVoter extends Voter
 {
@@ -16,14 +15,11 @@ class ArticleVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [self::POST, self::PUT, self::DELETE]) && $subject instanceof Article;
+        return in_array($attribute, [self::POST, self::PUT, self::DELETE], true) && $subject instanceof Article;
     }
 
     /**
-     * @param string $attribute
      * @param Article $subject
-     * @param TokenInterface $token
-     * @return bool
      */
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
@@ -33,6 +29,5 @@ class ArticleVoter extends Voter
             self::POST => true,
             default => $user instanceof User && $user->getId() === $subject->getUser()->getId(),
         };
-
     }
 }

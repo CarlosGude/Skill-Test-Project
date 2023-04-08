@@ -24,20 +24,20 @@ abstract class AbstractInputDataTransformer
     }
 
     abstract protected function getClass(): string;
+
     abstract protected function getInputDto(array $data): InputInterface;
 
     protected function find(string $id): ?AbstractEntity
     {
-        return $this->entityManager->getRepository($this->getClass())->findOneBy(['uuid' => $id,'deletedAt' => null]);
+        return $this->entityManager->getRepository($this->getClass())->findOneBy(['uuid' => $id, 'deletedAt' => null]);
     }
 
-
-    public function post(array $data): array | AbstractEntity
+    public function post(array $data): array|AbstractEntity
     {
         $input = $this->getInputDto($data);
         $entity = $input->post();
 
-        if(!$this->voter->isGranted('POST', $entity)) {
+        if (!$this->voter->isGranted('POST', $entity)) {
             throw new AccessDeniedException();
         }
 
@@ -47,7 +47,7 @@ abstract class AbstractInputDataTransformer
             $violationList->add($entityError);
         }
 
-        if($violationList->count() !== 0) {
+        if (0 !== $violationList->count()) {
             return $this->getErrors($violationList);
         }
 
@@ -57,19 +57,19 @@ abstract class AbstractInputDataTransformer
         return $entity;
     }
 
-    public function put(string $id, array $data): array | AbstractEntity
+    public function put(string $id, array $data): array|AbstractEntity
     {
         $input = $this->getInputDto($data);
         $entity = $this->find($id);
 
-        if(!$entity) {
+        if (!$entity) {
             throw new NotFoundHttpException();
         }
 
         $input->initialized($entity);
         $entity = $input->put($entity, $data);
 
-        if(!$this->voter->isGranted('PUT', $entity)) {
+        if (!$this->voter->isGranted('PUT', $entity)) {
             throw new AccessDeniedException();
         }
 
@@ -79,7 +79,7 @@ abstract class AbstractInputDataTransformer
             $violationList->add($entityError);
         }
 
-        if($violationList->count() !== 0) {
+        if (0 !== $violationList->count()) {
             return $this->getErrors($violationList);
         }
 
@@ -92,11 +92,11 @@ abstract class AbstractInputDataTransformer
     {
         $entity = $this->find($id);
 
-        if(!$entity) {
+        if (!$entity) {
             throw new NotFoundHttpException();
         }
 
-        if(!$this->voter->isGranted('DELETE', $entity)) {
+        if (!$this->voter->isGranted('DELETE', $entity)) {
             throw new AccessDeniedException();
         }
 
@@ -109,15 +109,12 @@ abstract class AbstractInputDataTransformer
 
     protected function getErrors(ConstraintViolationListInterface $list): array
     {
-        $errors = array();
+        $errors = [];
         /** @var ConstraintViolationInterface $error */
         foreach ($list as $error) {
             $errors[$error->getPropertyPath()] = $error->getMessage();
-
         }
 
         return $errors;
     }
-
-
 }

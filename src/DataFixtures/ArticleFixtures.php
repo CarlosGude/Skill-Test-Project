@@ -10,16 +10,14 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class AppFixtures
- * @package App\DataFixtures
- *
+ * Class AppFixtures.
  */
 class ArticleFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
         $users = $manager->getRepository(User::class)->findAll();
-        for ($i=0; random_int(10, 20) >= $i;$i++) {
+        for ($i = 0; random_int(10, 20) >= $i; ++$i) {
             $article = new Article();
             $article->setTitle('Title article '.$i);
             $article->setSlug(StringToSlugService::transformation($article->getFieldToSlug()));
@@ -38,6 +36,4 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
             UserFixtures::class,
         ];
     }
-
-
 }

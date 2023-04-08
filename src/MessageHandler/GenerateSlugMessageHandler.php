@@ -2,10 +2,7 @@
 
 namespace App\MessageHandler;
 
-use App\Email\AbstractEmail;
-use App\Entity\Article;
 use App\Entity\Interfaces\SlugInterface;
-use App\Entity\User;
 use App\Message\EntityEvent;
 use App\Services\StringToSlugService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,18 +24,18 @@ class GenerateSlugMessageHandler
         /** @var SlugInterface $slugEntity */
         $slugEntity = $this->manager->getRepository($message->class)->findOneBy(['uuid' => $message->uuid]);
 
-        if(!$slugEntity instanceof SlugInterface) {
+        if (!$slugEntity instanceof SlugInterface) {
             return;
         }
 
         $slug = StringToSlugService::transformation($slugEntity->getFieldToSlug());
 
-        if(!$this->slugNeedAnUpdate($message, $slugEntity)) {
+        if (!$this->slugNeedAnUpdate($message, $slugEntity)) {
             return;
         }
 
-        //I love this line.
-        !empty($existSlug = $this->existSlug($slug)) && $slug .='-'.count($existSlug);
+        // I love this line.
+        !empty($existSlug = $this->existSlug($slug)) && $slug .= '-'.count($existSlug);
 
         $slugEntity->setSlug($slug);
 
@@ -59,10 +56,10 @@ class GenerateSlugMessageHandler
 
     protected function slugNeedAnUpdate(EntityEvent $message, SlugInterface $entity): bool
     {
-        if($message->getEvent() === EntityEvent::EVENT_CREATE) {
+        if (EntityEvent::EVENT_CREATE === $message->getEvent()) {
             return true;
         }
 
-        return $message->getEvent() === EntityEvent::EVENT_UPDATE && $message->hasChangeField($entity->getFieldName());
+        return EntityEvent::EVENT_UPDATE === $message->getEvent() && $message->hasChangeField($entity->getFieldName());
     }
 }

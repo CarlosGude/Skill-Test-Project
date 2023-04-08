@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Tests\Web\Navigation;
-
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class DashboardNavigationTest extends WebTestCase
 {
-
     public function testDashboardFail(): void
     {
         $client = static::createClient();

@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BasicNavigationTest extends WebTestCase
 {
-
     protected ?EntityManagerInterface $manager;
     protected ?KernelBrowser $client;
 
@@ -21,7 +20,6 @@ class BasicNavigationTest extends WebTestCase
         $container = static::getContainer();
 
         $this->manager = $container->get(EntityManagerInterface::class);
-
     }
 
     public function testHome(): void

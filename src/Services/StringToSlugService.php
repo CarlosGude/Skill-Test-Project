@@ -8,6 +8,7 @@ class StringToSlugService
     {
         $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $stingToSlug)));
         $slug = preg_replace('/-+/', '-', $slug);
+
         return trim($slug, '-');
     }
 }

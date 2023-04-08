@@ -17,5 +17,4 @@ class UserInputDataTransformer extends AbstractInputDataTransformer
     {
         return new UserInputDto($data);
     }
-
 }

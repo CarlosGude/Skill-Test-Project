@@ -15,7 +15,7 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
-        if(!$user->isActive()) {
+        if (!$user->isActive()) {
             throw new AccessDeniedHttpException();
         }
     }
@@ -26,7 +26,7 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
-        if($user->getDeletedAt()) {
+        if ($user->getDeletedAt()) {
             throw new AccessDeniedHttpException();
         }
     }

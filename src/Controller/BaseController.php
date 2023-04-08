@@ -19,10 +19,9 @@ class BaseController extends AbstractController
     #[Route('/', name: 'app_base')]
     public function index(): Response
     {
-
         return $this->render('base/index.html.twig', [
             'controller_name' => 'BaseController',
-            'articles' => $this->manager->getRepository(Article::class)->findAll()
+            'articles' => $this->manager->getRepository(Article::class)->findAll(),
         ]);
     }
 
@@ -30,13 +29,13 @@ class BaseController extends AbstractController
     public function getArticle(string $slug): Response
     {
         $article = $this->manager->getRepository(Article::class)->findOneBy(['slug' => $slug, 'deletedAt' => null]);
-        if(!$article) {
+        if (!$article) {
             throw new NotFoundHttpException();
         }
 
         return $this->render('base/article.html.twig', [
             'controller_name' => 'BaseController',
-            'article' => $article
+            'article' => $article,
         ]);
     }
 
@@ -44,13 +43,13 @@ class BaseController extends AbstractController
     public function getAuthor(string $slug): Response
     {
         $author = $this->manager->getRepository(User::class)->findOneBy(['slug' => $slug, 'deletedAt' => null]);
-        if(!$author) {
+        if (!$author) {
             throw new NotFoundHttpException();
         }
 
         return $this->render('base/author.html.twig', [
             'controller_name' => 'BaseController',
-            'author' => $author
+            'author' => $author,
         ]);
     }
 }

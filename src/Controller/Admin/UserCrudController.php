@@ -19,7 +19,6 @@ class UserCrudController extends AbstractCrudController
 {
     public function __construct(protected TranslatorInterface $translator)
     {
-
     }
 
     public static function getEntityFqcn(): string
@@ -46,10 +45,6 @@ class UserCrudController extends AbstractCrudController
         $user->setDeletedAt();
     }
 
-    /**
-     * @param string $pageName
-     * @return array
-     */
     public function configureFields(string $pageName): array
     {
         return [

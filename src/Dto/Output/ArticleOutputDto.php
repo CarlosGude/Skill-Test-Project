@@ -19,13 +19,13 @@ class ArticleOutputDto implements OutputInterface
     }
 
     /**
-     * @param AbstractEntity $entity
      * @return $this
+     *
      * @throws EntityOutputException
      */
     public function get(AbstractEntity $entity): self
     {
-        if(!$entity instanceof Article) {
+        if (!$entity instanceof Article) {
             throw new EntityOutputException();
         }
 
@@ -34,11 +34,10 @@ class ArticleOutputDto implements OutputInterface
         $this->slug = $entity->getSlug();
         $this->body = $entity->getBody();
 
-        if($this->getNestedElements) {
+        if ($this->getNestedElements) {
             $this->author = (new UserOutputDto())->get($entity->getUser());
         }
 
         return $this;
     }
-
 }

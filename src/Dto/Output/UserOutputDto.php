@@ -20,13 +20,13 @@ class UserOutputDto implements OutputInterface
     }
 
     /**
-     * @param AbstractEntity $entity
      * @return $this
+     *
      * @throws EntityOutputException
      */
     public function get(AbstractEntity $entity): self
     {
-        if(!$entity instanceof User) {
+        if (!$entity instanceof User) {
             throw new EntityOutputException();
         }
 
@@ -35,10 +35,10 @@ class UserOutputDto implements OutputInterface
         $this->slug = $entity->getSlug();
         $this->email = $entity->getEmail();
 
-        if($this->getNestedElements) {
+        if ($this->getNestedElements) {
             /** @var Article $article */
             foreach ($entity->getArticles() as $article) {
-                if(is_null($article->getDeletedAt())) {
+                if (is_null($article->getDeletedAt())) {
                     $this->articles[] = (new ArticleOutputDto(false))->get($article);
                 }
             }
@@ -46,5 +46,4 @@ class UserOutputDto implements OutputInterface
 
         return $this;
     }
-
 }
