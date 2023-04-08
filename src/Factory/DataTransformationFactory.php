@@ -22,12 +22,11 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
 
     /**
      * @param string $entity
-     * @param int|string|null $id
-     * @param string $field
+     * @param string|null $id
      * @return string|null
      * @throws EntityOutputException
      */
-    public function get(string $entity, int|string|null $id, string $field = 'id'):? string
+    public function get(string $entity, ?string $id = null):? string
     {
         if(!is_array($this->outputs)){
             throw new NotFoundHttpException();
@@ -38,7 +37,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
             throw new EntityOutputException();
         }
 
-        return $output->get($id,$field);
+        return $output->get($id);
     }
 
     /**
@@ -61,7 +60,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
 
         $data = $input->post($data);
         if($data instanceof AbstractEntity){
-            return $this->get($entity,$data->getId());
+            return $this->get($entity,$data->getUuid());
         }
 
         return $data;
@@ -90,7 +89,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
         if(!$data instanceof AbstractEntity){
             return null;
         }
-        return $this->get($entity,$data->getId());
+        return $this->get($entity,$data->getUuid());
     }
 
     /**
@@ -110,12 +109,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
             throw new EntityOutputException();
         }
 
-        $data = $input->delete($id);
-        if(!$data instanceof AbstractEntity){
-            return null;
-        }
-
-        return $data;
+        return $input->delete($id);
 
     }
 }

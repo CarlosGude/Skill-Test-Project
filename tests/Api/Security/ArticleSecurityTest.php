@@ -43,7 +43,7 @@ class ArticleSecurityTest extends AbstractTest
         /** @var Article $article */
         $article = $articles[0];
 
-        $response = $this->makeRequest(self::METHOD_PUT,ArticleTest::API_ARTICLE.'/'.$article->getId(),[
+        $response = $this->makeRequest(self::METHOD_PUT,ArticleTest::API_ARTICLE.'/'.$article->getUuid(),[
             'title' => 'TITLE TEST UPDATED',
         ]);
         $this->assertEquals(200,$response->getStatusCode());
@@ -63,7 +63,7 @@ class ArticleSecurityTest extends AbstractTest
         /** @var Article $article */
         $article = $articles[0];
 
-        $response = $this->makeRequest(self::METHOD_PUT,ArticleTest::API_ARTICLE.'/'.$article->getId(),[
+        $response = $this->makeRequest(self::METHOD_PUT,ArticleTest::API_ARTICLE.'/'.$article->getUuid(),[
             'title' => 'TITLE TEST UPDATED'
         ]);
 
@@ -82,7 +82,7 @@ class ArticleSecurityTest extends AbstractTest
         /** @var Article $article */
         $article = $articles[0];
 
-        $response = $this->makeRequest(self::METHOD_DELETE,ArticleTest::API_ARTICLE.'/'.$article->getId());
+        $response = $this->makeRequest(self::METHOD_DELETE,ArticleTest::API_ARTICLE.'/'.$article->getUuid());
 
         $this->assertEquals(204,$response->getStatusCode());
 
@@ -98,7 +98,7 @@ class ArticleSecurityTest extends AbstractTest
         /** @var Article $article */
         $article = $articles[0];
 
-        $response = $this->makeRequest(self::METHOD_DELETE,ArticleTest::API_ARTICLE.'/'.$article->getId());
+        $response = $this->makeRequest(self::METHOD_DELETE,ArticleTest::API_ARTICLE.'/'.$article->getUuid());
 
         $this->assertEquals(403,$response->getStatusCode());
 

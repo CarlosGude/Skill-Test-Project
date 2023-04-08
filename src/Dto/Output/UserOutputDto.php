@@ -12,7 +12,6 @@ use App\Exceptions\EntityOutputException;
 
 class UserOutputDto implements OutputInterface
 {
-    public ?int $id;
     public ?string $uuid;
     public ?string $email;
     public ?string $name;
@@ -34,7 +33,6 @@ class UserOutputDto implements OutputInterface
             throw new EntityOutputException();
         }
 
-        $this->id = $entity->getId();
         $this->uuid = $entity->getUuid();
         $this->name = $entity->getName();
         $this->slug = $entity->getSlug();

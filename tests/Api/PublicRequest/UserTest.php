@@ -34,7 +34,7 @@ class UserTest extends AbstractTest
         /** @var User $user */
         $user = $users[0];
 
-        $response = $this->makeRequest(self::METHOD_GET,self::API_USER.'/'.$user->getId());
+        $response = $this->makeRequest(self::METHOD_GET,self::API_USER.'/'.$user->getUuid());
 
         $this->assertEquals(200,$response->getStatusCode());
         $this->assertIsArray($body = $response->toArray());

@@ -11,7 +11,6 @@ use App\Exceptions\EntityOutputException;
 
 class ArticleOutputDto implements OutputInterface
 {
-    public ?int $id;
     public ?string $uuid;
     public ?string $title;
     public ?string $slug;
@@ -33,7 +32,6 @@ class ArticleOutputDto implements OutputInterface
             throw new EntityOutputException();
         }
 
-        $this->id = $entity->getId();
         $this->uuid = $entity->getUuid();
         $this->title = $entity->getTitle();
         $this->slug = $entity->getSlug();

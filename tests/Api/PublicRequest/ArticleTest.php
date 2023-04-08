@@ -38,7 +38,7 @@ class ArticleTest extends AbstractTest
         /** @var Article $article */
         $article = $articles[0];
 
-        $response = $this->makeRequest(self::METHOD_GET,self::API_ARTICLE.'/'.$article->getId());
+        $response = $this->makeRequest(self::METHOD_GET,self::API_ARTICLE.'/'.$article->getUuid());
         $this->assertEquals(200,$response->getStatusCode());
         $this->assertGreaterThan(1,$body = $response->toArray());
         $this->assertNotNull($body['title']);
@@ -64,7 +64,7 @@ class ArticleTest extends AbstractTest
         /** @var Article $article */
         $article = $articles[0];
 
-        $response = $this->makeRequest(self::METHOD_DELETE,self::API_ARTICLE.'/'.$article->getId(),[],null);
+        $response = $this->makeRequest(self::METHOD_DELETE,self::API_ARTICLE.'/'.$article->getUuid(),[],null);
         $this->assertEquals(401,$response->getStatusCode());
     }
 }

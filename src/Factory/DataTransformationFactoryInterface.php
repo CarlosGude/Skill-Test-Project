@@ -7,7 +7,7 @@ namespace App\Factory;
 
  interface DataTransformationFactoryInterface
 {
-    public function get(string $entity, int|string $id, string $field = 'id'):? string;
+    public function get(string $entity, ?string $id = null):? string;
     public function post(string $entity, array $data): string | array;
      public function delete(string $entity, int|string $id):? AbstractEntity;
      public function put(string $entity, int|string $id, array $body):? string;

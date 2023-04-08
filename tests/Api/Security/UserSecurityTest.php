@@ -49,7 +49,7 @@ class UserSecurityTest extends AbstractTest
         /** @var User $user */
         $user = $this->getRepository(User::class)->findOneBy(['email' => UserFixtures::getUsers()['admin']['email']]);
 
-        $response = $this->makeRequest(self::METHOD_PUT,UserTest::API_USER.'/'.$user->getId(),['name' => 'TEST CHANGE NAME']);
+        $response = $this->makeRequest(self::METHOD_PUT,UserTest::API_USER.'/'.$user->getUuid(),['name' => 'TEST CHANGE NAME']);
 
         $body = $response->toArray();
         $this->assertEquals(200,$response->getStatusCode());
@@ -62,7 +62,7 @@ class UserSecurityTest extends AbstractTest
         /** @var User $user */
         $user = $this->getRepository(User::class)->findOneBy(['email' => UserFixtures::getUsers()['anotherUser']['email']]);
 
-        $response = $this->makeRequest(self::METHOD_PUT,UserTest::API_USER.'/'.$user->getId(),['name' => 'TEST CHANGE NAME']);
+        $response = $this->makeRequest(self::METHOD_PUT,UserTest::API_USER.'/'.$user->getUuid(),['name' => 'TEST CHANGE NAME']);
         $this->assertEquals(403,$response->getStatusCode());
     }
 
@@ -93,10 +93,10 @@ class UserSecurityTest extends AbstractTest
         /** @var User $user */
         $user = $this->getRepository(User::class)->findOneBy(['email' => UserFixtures::getUsers()['anotherUser']['email']]);
 
-        $response = $this->makeRequest(self::METHOD_DELETE,UserTest::API_USER.'/'.$user->getId());
+        $response = $this->makeRequest(self::METHOD_DELETE,UserTest::API_USER.'/'.$user->getUuid());
 
         $this->assertEquals(204,$response->getStatusCode());
-        $response = $this->makeRequest(self::METHOD_GET,UserTest::API_USER.'/'.$user->getId());
+        $response = $this->makeRequest(self::METHOD_GET,UserTest::API_USER.'/'.$user->getUuid());
 
         $this->assertEquals(404,$response->getStatusCode());
 
@@ -107,7 +107,7 @@ class UserSecurityTest extends AbstractTest
         /** @var User $user */
         $user = $this->getRepository(User::class)->findOneBy(['email' => UserFixtures::getUsers()['admin']['email']]);
 
-        $response = $this->makeRequest(self::METHOD_DELETE,UserTest::API_USER.'/'.$user->getId());
+        $response = $this->makeRequest(self::METHOD_DELETE,UserTest::API_USER.'/'.$user->getUuid());
 
         $this->assertEquals(403,$response->getStatusCode());
 
@@ -118,7 +118,7 @@ class UserSecurityTest extends AbstractTest
         /** @var User $user */
         $user = $this->getRepository(User::class)->findOneBy(['email' => UserFixtures::getUsers()['admin']['email']]);
 
-        $response = $this->makeRequest(self::METHOD_DELETE,UserTest::API_USER.'/'.$user->getId(),[],'anotherUser');
+        $response = $this->makeRequest(self::METHOD_DELETE,UserTest::API_USER.'/'.$user->getUuid(),[],'anotherUser');
 
         $this->assertEquals(403,$response->getStatusCode());
 
@@ -130,7 +130,7 @@ class UserSecurityTest extends AbstractTest
         /** @var User $user */
         $user = $this->getRepository(User::class)->findOneBy(['email' => UserFixtures::getUsers()['anotherUser']['email']]);
 
-        $response = $this->makeRequest(self::METHOD_PUT,UserTest::API_USER.'/'.$user->getId(),['password' => 'TEST_CHANGE_NAME'],'anotherUser');
+        $response = $this->makeRequest(self::METHOD_PUT,UserTest::API_USER.'/'.$user->getUuid(),['password' => 'TEST_CHANGE_NAME'],'anotherUser');
         $this->assertEquals(200,$response->getStatusCode());
     }
 }

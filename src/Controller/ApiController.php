@@ -18,10 +18,10 @@ class ApiController extends AbstractController
      * @throws Exception
      */
     #[Route('/api/{entity}', name: 'get_entity',methods: ['GET'])]
-    #[Route('/api/{entity}/{id}/{field}', name: 'get_entity_one',methods: ['GET'])]
-    public function get(string $entity, ?string $id, ?string $field = 'id'): Response
+    #[Route('/api/{entity}/{id}', name: 'get_entity_one',methods: ['GET'])]
+    public function get(string $entity, ?string $id): Response
     {
-        $data = $this->factory->get($entity,$id,$field);
+        $data = $this->factory->get($entity,$id);
         $response = new Response($data);
         if(!$data){
             $response->setStatusCode(404);

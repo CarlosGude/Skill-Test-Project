@@ -27,9 +27,9 @@ abstract class AbstractInputDataTransformer
     protected abstract function getClass(): string;
     protected abstract function getInputDto($data): InputInterface;
 
-    protected function find(int $id):? AbstractEntity
+    protected function find(string $id):? AbstractEntity
     {
-        return $this->entityManager->getRepository($this->getClass())->findOneBy(['id' => $id,'deletedAt' => null]);
+        return $this->entityManager->getRepository($this->getClass())->findOneBy(['uuid' => $id,'deletedAt' => null]);
     }
 
 

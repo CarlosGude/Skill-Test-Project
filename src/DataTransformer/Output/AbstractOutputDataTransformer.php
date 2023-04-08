@@ -19,9 +19,9 @@ abstract class AbstractOutputDataTransformer
     protected abstract function getClass();
     protected abstract function getOutputDto();
 
-    public function get( ?string $uuid, ?string $field):? string
+    public function get( ?string $uuid):? string
     {
-        $data = ($uuid) ? $this->getItem($field,$uuid) : $this->getAllItems();
+        $data = ($uuid) ? $this->getItem($uuid) : $this->getAllItems();
 
         if(empty($data)){
             return null;
@@ -52,8 +52,8 @@ abstract class AbstractOutputDataTransformer
         return $this->entityManager->getRepository($this->getClass())->findBy(['deletedAt' => null]);
     }
 
-    protected function getItem( string $field, int|string $id)
+    protected function getItem(string $id)
     {
-        return $this->entityManager->getRepository($this->getClass())->findOneBy([$field => $id,'deletedAt' => null]);
+        return $this->entityManager->getRepository($this->getClass())->findOneBy(['uuid' => $id,'deletedAt' => null]);
     }
 }
