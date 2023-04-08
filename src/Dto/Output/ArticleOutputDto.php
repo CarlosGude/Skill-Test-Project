@@ -14,6 +14,7 @@ class ArticleOutputDto implements OutputInterface
     public ?int $id;
     public ?string $uuid;
     public ?string $title;
+    public ?string $slug;
     public ?string $body;
     public ?UserOutputDto $author;
 
@@ -35,6 +36,7 @@ class ArticleOutputDto implements OutputInterface
         $this->id = $entity->getId();
         $this->uuid = $entity->getUuid();
         $this->title = $entity->getTitle();
+        $this->slug = $entity->getSlug();
         $this->body = $entity->getBody();
 
         if($this->getNestedElements){

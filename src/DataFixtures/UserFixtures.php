@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 
 
 use App\Entity\User;
+use App\Services\StringToSlugService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -17,6 +18,7 @@ class UserFixtures extends Fixture
             $user = new User();
             $user->setName($userData['name']);
             $user->setEmail($userData['email']);
+            $user->setSlug(StringToSlugService::transformation($user->getFieldToSlug()));
             $user->setPassword($userData['password']);
             $user->setRoles($userData['roles']);
             $user->setActive($userData['active']);

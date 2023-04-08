@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\SlugInterface;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,7 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
     errorPath: 'email',
     message: 'This email is already in use.',
 )]
-class User extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface
+class User extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface, SlugInterface
 {
 
     #[ORM\Id]
@@ -46,6 +47,9 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
 
     #[ORM\Column]
     private bool $active = false;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
 
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_USER = 'ROLE_USER';
@@ -216,5 +220,27 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         $this->active = $active;
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getFieldName(): string
+    {
+        return 'name';
+    }
+
+    public function getFieldToSlug(): string
+    {
+        return $this->getName();
     }
 }

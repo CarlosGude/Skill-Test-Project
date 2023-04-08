@@ -7,7 +7,7 @@ namespace App\Tests\Api\Security;
 use App\Entity\Article;
 use App\Entity\User;
 use App\Tests\Api\AbstractTest;
-use App\Tests\Api\Success\ArticleTest;
+use App\Tests\Api\PublicRequest\ArticleTest;
 
 /**
  * Class ArticleSecurityTest

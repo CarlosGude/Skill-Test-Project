@@ -4,7 +4,7 @@
 namespace App\DoctrineEvent;
 
 
-use App\Entity\OwnerInterface;
+use App\Entity\Interfaces\OwnerInterface;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Symfony\Bundle\SecurityBundle\Security;

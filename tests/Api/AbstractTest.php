@@ -5,6 +5,7 @@ namespace App\Tests\Api;
 
 
 
+use App\MessageHandler\GenerateSlugMessageHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Exception;
@@ -36,6 +37,7 @@ abstract class AbstractTest extends KernelTestCase
     protected ?HttpClientInterface $httpClient;
     protected ?EntityManagerInterface $manager;
     protected ?DoctrineTransport $transport;
+    protected ?GenerateSlugMessageHandler $slugEventHandler;
 
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
@@ -47,6 +49,7 @@ abstract class AbstractTest extends KernelTestCase
         $this->httpClient = $container->get(HttpClientInterface::class);
         $this->manager = $container->get(EntityManagerInterface::class);
         $this->transport = $container->get('messenger.transport.events');
+        $this->slugEventHandler = $container->get(GenerateSlugMessageHandler::class);
     }
 
     protected function setUp(): void

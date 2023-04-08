@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
+use App\Entity\Interfaces\OwnerInterface;
+use App\Entity\Interfaces\SlugInterface;
 use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
-class Article extends AbstractEntity implements OwnerInterface
+class Article extends AbstractEntity implements OwnerInterface, SlugInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,6 +27,9 @@ class Article extends AbstractEntity implements OwnerInterface
     #[ORM\ManyToOne(inversedBy: 'articles')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
 
     /**
      * @return int|null
@@ -65,6 +71,28 @@ class Article extends AbstractEntity implements OwnerInterface
     public function setUser(?UserInterface $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    #[Pure] public function getFieldToSlug(): string
+    {
+        return $this->getTitle();
+    }
+
+    public function getFieldName(): string
+    {
+        return 'title';
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Api\Success;
+namespace App\Tests\Api\PublicRequest;
 
 
 use App\Entity\User;
@@ -8,7 +8,7 @@ use App\Tests\Api\AbstractTest;
 
 /**
  * Class UserTest
- * @package App\Tests\Api\Success
+ * @package App\Tests\Api\PublicRequest
  */
 class UserTest extends AbstractTest
 {

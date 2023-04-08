@@ -25,30 +25,30 @@ class BaseController extends AbstractController
         ]);
     }
 
-    #[Route('/article/{id}', name: 'article_detail')]
-    public function getArticle(int $id): Response
+    #[Route('/article/{slug}', name: 'article_detail')]
+    public function getArticle(string $slug): Response
     {
-        $article = $this->manager->getRepository(Article::class)->findOneBy(['id' => $id, 'deletedAt' => null]);
+        $article = $this->manager->getRepository(Article::class)->findOneBy(['slug' => $slug, 'deletedAt' => null]);
         if(!$article){
             throw new NotFoundHttpException();
         }
 
-        // TODO: Pendiente de crear la vista. la url debe de ser el slug del titulo.
+        // TODO: Pendiente de crear la vista.
         return $this->render('base/index.html.twig', [
             'controller_name' => 'BaseController',
             'article' => $article
         ]);
     }
 
-    #[Route('/author/{id}', name: 'author_detail')]
-    public function getAuthor(int $id): Response
+    #[Route('/author/{slug}', name: 'author_detail')]
+    public function getAuthor(string $slug): Response
     {
-        $author = $this->manager->getRepository(User::class)->findOneBy(['id' => $id, 'deletedAt' => null]);
+        $author = $this->manager->getRepository(User::class)->findOneBy(['slug' => $slug, 'deletedAt' => null]);
         if(!$author){
             throw new NotFoundHttpException();
         }
 
-        // TODO: Pendiente de crear la vista. la url debe de ser el slug del nombre del autor.
+        // TODO: Pendiente de crear la vista.
         return $this->render('base/index.html.twig', [
             'controller_name' => 'BaseController',
             'author' => $author

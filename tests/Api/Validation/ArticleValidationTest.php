@@ -4,7 +4,7 @@
 namespace App\Tests\Api\Validation;
 
 use App\Tests\Api\AbstractTest;
-use App\Tests\Api\Success\ArticleTest;
+use App\Tests\Api\PublicRequest\ArticleTest;
 
 /**
  * Class ArticleValidationTest

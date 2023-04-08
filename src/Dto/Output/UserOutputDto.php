@@ -16,6 +16,7 @@ class UserOutputDto implements OutputInterface
     public ?string $uuid;
     public ?string $email;
     public ?string $name;
+    public ?string $slug;
     public array $articles = [];
 
     public function __construct(protected bool $getNestedElements = true)
@@ -36,6 +37,7 @@ class UserOutputDto implements OutputInterface
         $this->id = $entity->getId();
         $this->uuid = $entity->getUuid();
         $this->name = $entity->getName();
+        $this->slug = $entity->getSlug();
         $this->email = $entity->getEmail();
 
         if($this->getNestedElements){
