@@ -71,3 +71,5 @@
 
 /public/bundles/*
 /config/secrets/dev/dev.decrypt.private.php
+
+.php-cs-fixer.cache
