@@ -7,14 +7,13 @@ use App\Message\EntityEvent;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use Doctrine\ORM\UnitOfWork;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-#[AsDoctrineListener('onFlush'/*, 500, 'default'*/)]
-#[AsDoctrineListener('postFlush'/*, 500, 'default'*/)]
+#[AsDoctrineListener('onFlush'/* , 500, 'default' */)]
+#[AsDoctrineListener('postFlush'/* , 500, 'default' */)]
 class EntityEventPosFlush
 {
-    protected array $events = array();
+    protected array $events = [];
 
     public function __construct(protected MessageBusInterface $bus)
     {

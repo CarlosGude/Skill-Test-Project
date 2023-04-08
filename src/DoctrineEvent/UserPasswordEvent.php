@@ -8,9 +8,8 @@ use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[AsDoctrineListener('prePersist'/*, 500, 'default'*/)]
-#[AsDoctrineListener('preUpdate'/*, 500, 'default'*/)]
-
+#[AsDoctrineListener('prePersist'/* , 500, 'default' */)]
+#[AsDoctrineListener('preUpdate'/* , 500, 'default' */)]
 class UserPasswordEvent
 {
     public function __construct(protected UserPasswordHasherInterface $passwordHasher)
@@ -21,7 +20,7 @@ class UserPasswordEvent
     {
         $entity = $args->getObject();
 
-        if(!$entity instanceof User) {
+        if (!$entity instanceof User) {
             return;
         }
 
@@ -32,11 +31,11 @@ class UserPasswordEvent
     {
         $entity = $args->getObject();
 
-        if(!$entity instanceof User) {
+        if (!$entity instanceof User) {
             return;
         }
 
-        if(!$args->hasChangedField('password')) {
+        if (!$args->hasChangedField('password')) {
             return;
         }
 

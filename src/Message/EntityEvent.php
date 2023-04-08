@@ -11,7 +11,7 @@ class EntityEvent
         public string $class,
         public string $event,
         public string $uuid,
-        public array $changeFields = array()
+        public array $changeFields = []
     ) {
     }
 
@@ -22,7 +22,7 @@ class EntityEvent
 
     public function getNewValue(string $field): mixed
     {
-        if(!$this->hasChangeField($field)) {
+        if (!$this->hasChangeField($field)) {
             return null;
         }
 
@@ -31,37 +31,25 @@ class EntityEvent
 
     public function getOldValue(string $field): mixed
     {
-        if(!$this->hasChangeField($field)) {
+        if (!$this->hasChangeField($field)) {
             return null;
         }
 
         return $this->changeFields[$field][0];
     }
 
-    /**
-     * @return string
-     */
     public function getClass(): string
     {
         return $this->class;
     }
 
-    /**
-     * @return string
-     */
     public function getEvent(): string
     {
         return $this->event;
     }
 
-    /**
-     * @return array
-     */
     public function getChangeFields(): array
     {
         return $this->changeFields;
     }
-
-
-
 }

@@ -32,7 +32,6 @@ class ArticleCrudController extends AbstractCrudController
         protected TranslatorInterface $translator,
         protected Security $security
     ) {
-
     }
 
     public function configureActions(Actions $actions): Actions
@@ -67,6 +66,7 @@ class ArticleCrudController extends AbstractCrudController
 
         return $qb;
     }
+
     public static function getEntityFqcn(): string
     {
         return Article::class;
@@ -80,10 +80,6 @@ class ArticleCrudController extends AbstractCrudController
         ;
     }
 
-    /**
-     * @param string $pageName
-     * @return array
-     */
     public function configureFields(string $pageName): array
     {
         return [

@@ -7,8 +7,6 @@ use App\Entity\Interfaces\SlugInterface;
 use App\Repository\ArticleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article extends AbstractEntity implements OwnerInterface, SlugInterface
@@ -31,9 +29,6 @@ class Article extends AbstractEntity implements OwnerInterface, SlugInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;

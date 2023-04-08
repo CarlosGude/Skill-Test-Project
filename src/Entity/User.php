@@ -7,7 +7,6 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -66,7 +65,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return $this->getName().'['.$this->getEmail().']';
     }
 
-    public function getEmail(): string
+    public function getEmail():? string
     {
         return $this->email;
     }
@@ -134,36 +133,27 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     /**
      * @return string|null
      */
-    public function getName(): string
+    public function getName():? string
     {
         return $this->name;
     }
 
-    /**
-     * @param string|null $name
-     * @return User
-     */
     public function setName(?string $name): User
     {
         $this->name = $name;
+
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param int|null $id
-     * @return User
-     */
     public function setId(?int $id): User
     {
         $this->id = $id;
+
         return $this;
     }
 

@@ -21,7 +21,7 @@ class UserInputDto implements InputInterface
     #[NotNull]
     public ?string $name;
 
-    #[Regex("/^(?=.*[a-z])(?=.*\\d).{6,}$/i")]
+    #[Regex('/^(?=.*[a-z])(?=.*\\d).{6,}$/i')]
     #[NotBlank]
     #[NotNull]
     public ?string $password;
@@ -35,7 +35,7 @@ class UserInputDto implements InputInterface
 
     public function initialized(AbstractEntity $entity): void
     {
-        if(!$entity instanceof User) {
+        if (!$entity instanceof User) {
             throw new NotExceptedEntityException();
         }
         $this->name = $this->name ?? $entity->getName();
@@ -45,7 +45,7 @@ class UserInputDto implements InputInterface
 
     public function put(AbstractEntity $entity, array $data): AbstractEntity
     {
-        if(!$entity instanceof User) {
+        if (!$entity instanceof User) {
             throw new NotExceptedEntityException();
         }
 

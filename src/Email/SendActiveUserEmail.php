@@ -6,14 +6,13 @@ use App\Entity\AbstractEntity;
 use App\Entity\User;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SendActiveUserEmail extends AbstractEmail
 {
     public function prepareEmail(AbstractEntity $data): ?self
     {
-        if(!$data instanceof  User) {
+        if (!$data instanceof User) {
             return null;
         }
 

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -32,16 +31,16 @@ class SecurityController extends AbstractController
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {
-        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
     #[Route('/activate/user/{token}', name: 'app_activate_user')]
     public function index(string $token, EntityManagerInterface $manager, TranslatorInterface $translator): Response
     {
-        /** @var null|User $user */
+        /** @var User|null $user */
         $user = $manager->getRepository(User::class)->findOneBy(['token' => $token]);
 
-        if(!$user) {
+        if (!$user) {
             throw new NotFoundHttpException();
         }
 
@@ -51,7 +50,7 @@ class SecurityController extends AbstractController
         $manager->flush();
 
         $this->addFlash('success', $translator->trans('user.activated'));
-        return $this->redirectToRoute('app_base');
 
+        return $this->redirectToRoute('app_base');
     }
 }

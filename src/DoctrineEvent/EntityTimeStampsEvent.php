@@ -8,8 +8,8 @@ use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Bundle\SecurityBundle\Security;
 
-#[AsDoctrineListener('prePersist'/*, 500, 'default'*/)]
-#[AsDoctrineListener('preUpdate'/*, 500, 'default'*/)]
+#[AsDoctrineListener('prePersist'/* , 500, 'default' */)]
+#[AsDoctrineListener('preUpdate'/* , 500, 'default' */)]
 class EntityTimeStampsEvent
 {
     public function __construct(protected Security $security)
@@ -20,7 +20,7 @@ class EntityTimeStampsEvent
     {
         $entity = $args->getObject();
 
-        if(!$entity instanceof AbstractEntity) {
+        if (!$entity instanceof AbstractEntity) {
             return;
         }
 
@@ -31,11 +31,10 @@ class EntityTimeStampsEvent
     {
         $entity = $args->getObject();
 
-        if(!$entity instanceof AbstractEntity) {
+        if (!$entity instanceof AbstractEntity) {
             return;
         }
 
         $entity->setUpdatedAt();
     }
-
 }

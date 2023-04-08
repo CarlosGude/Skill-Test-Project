@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
-class NotExceptedEntityException extends Exception
+class NotExceptedEntityException extends \Exception
 {
 }

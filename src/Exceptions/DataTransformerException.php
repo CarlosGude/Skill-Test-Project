@@ -2,8 +2,6 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
-class DataTransformerException extends Exception
+class DataTransformerException extends \Exception
 {
 }

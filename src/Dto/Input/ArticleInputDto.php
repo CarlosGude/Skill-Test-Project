@@ -26,7 +26,7 @@ class ArticleInputDto implements InputInterface
 
     public function initialized(AbstractEntity $entity): void
     {
-        if(!$entity instanceof Article) {
+        if (!$entity instanceof Article) {
             throw new NotExceptedEntityException();
         }
         $this->title = $this->title ?? $entity->getTitle();
@@ -35,7 +35,7 @@ class ArticleInputDto implements InputInterface
 
     public function put(AbstractEntity $entity, array $data): AbstractEntity
     {
-        if(!$entity instanceof Article) {
+        if (!$entity instanceof Article) {
             throw new NotExceptedEntityException();
         }
 

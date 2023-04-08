@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Tests\Api\Validation;
 
 use App\Tests\Api\AbstractTest;
@@ -12,24 +11,20 @@ use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
- * Class UserValidationTest
- * @package App\Tests\Api\Validation
- *
+ * Class UserValidationTest.
  */
 class UserValidationTest extends AbstractTest
 {
-
     /**
-     * @return void
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function testEmailError():void
+    public function testEmailError(): void
     {
-        $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
+        $response = $this->makeRequest(self::METHOD_POST, UserTest::API_USER, [
             'name' => 'TEST CHANGE NAME',
             'email' => 'INVALID',
             'password' => 'TEST_PASSWORD',
@@ -37,22 +32,21 @@ class UserValidationTest extends AbstractTest
 
         $body = $response->toArray(false);
 
-        $this->assertEquals(400,$response->getStatusCode());
-        $this->assertArrayHasKey('email',$body);
-        $this->assertEquals('This value is not a valid email address.',$body['email']);
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertArrayHasKey('email', $body);
+        $this->assertEquals('This value is not a valid email address.', $body['email']);
     }
 
     /**
-     * @return void
      * @throws ClientExceptionInterface
      * @throws DecodingExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function testPasswordError():void
+    public function testPasswordError(): void
     {
-        $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
+        $response = $this->makeRequest(self::METHOD_POST, UserTest::API_USER, [
             'name' => 'TEST CHANGE NAME',
             'email' => 'INVALID',
             'password' => 'pass',
@@ -60,9 +54,9 @@ class UserValidationTest extends AbstractTest
 
         $body = $response->toArray(false);
 
-        $this->assertEquals(400,$response->getStatusCode());
-        $this->assertArrayHasKey('password',$body);
-        $this->assertEquals('This value is not valid.',$body['password']);
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertArrayHasKey('password', $body);
+        $this->assertEquals('This value is not valid.', $body['password']);
     }
 
     /**
@@ -72,9 +66,9 @@ class UserValidationTest extends AbstractTest
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function testEmailExistError():void
+    public function testEmailExistError(): void
     {
-        $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
+        $response = $this->makeRequest(self::METHOD_POST, UserTest::API_USER, [
             'name' => 'TEST CHANGE NAME',
             'email' => 'admin@email.test',
             'password' => 'pass',
@@ -82,9 +76,9 @@ class UserValidationTest extends AbstractTest
 
         $body = $response->toArray(false);
 
-        $this->assertEquals(400,$response->getStatusCode());
-        $this->assertArrayHasKey('email',$body);
-        $this->assertEquals('This email is already in use.',$body['email']);
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertArrayHasKey('email', $body);
+        $this->assertEquals('This email is already in use.', $body['email']);
     }
 
     /**
@@ -94,18 +88,18 @@ class UserValidationTest extends AbstractTest
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function testNameNotSent():void
+    public function testNameNotSent(): void
     {
-        $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
+        $response = $this->makeRequest(self::METHOD_POST, UserTest::API_USER, [
             'email' => 'test_created@email.com',
             'password' => 'TEST_PASSWORD',
         ]);
 
         $body = $response->toArray(false);
 
-        $this->assertEquals(400,$response->getStatusCode());
-        $this->assertArrayHasKey('name',$body);
-        $this->assertEquals('This value should not be null.',$body['name']);
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertArrayHasKey('name', $body);
+        $this->assertEquals('This value should not be null.', $body['name']);
     }
 
     /**
@@ -115,18 +109,18 @@ class UserValidationTest extends AbstractTest
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function testEmailNotSent():void
+    public function testEmailNotSent(): void
     {
-        $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
+        $response = $this->makeRequest(self::METHOD_POST, UserTest::API_USER, [
             'name' => 'TEST CHANGE NAME',
             'password' => 'TEST_PASSWORD',
         ]);
 
         $body = $response->toArray(false);
 
-        $this->assertEquals(400,$response->getStatusCode());
-        $this->assertArrayHasKey('email',$body);
-        $this->assertEquals('This value should not be null.',$body['email']);
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertArrayHasKey('email', $body);
+        $this->assertEquals('This value should not be null.', $body['email']);
     }
 
     /**
@@ -136,17 +130,17 @@ class UserValidationTest extends AbstractTest
      * @throws DecodingExceptionInterface
      * @throws ClientExceptionInterface
      */
-    public function testPasswordNotSent():void
+    public function testPasswordNotSent(): void
     {
-        $response = $this->makeRequest(self::METHOD_POST,UserTest::API_USER,[
+        $response = $this->makeRequest(self::METHOD_POST, UserTest::API_USER, [
             'name' => 'TEST CHANGE NAME',
             'email' => 'test_created@email.com',
         ]);
 
         $body = $response->toArray(false);
 
-        $this->assertEquals(400,$response->getStatusCode());
-        $this->assertArrayHasKey('password',$body);
-        $this->assertEquals('This value should not be null.',$body['password']);
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertArrayHasKey('password', $body);
+        $this->assertEquals('This value should not be null.', $body['password']);
     }
 }
