@@ -27,7 +27,6 @@ abstract class AbstractEmail
     {
         if (!$this->email) {
             $this->logger->error(EmailLogger::ERROR_EMAIL_NOT_CREATED);
-
             return;
         }
         try {
