@@ -43,7 +43,7 @@ class ArticleRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('a')
             ->where('a.deletedAt is null')
-            ->andWhere('a.slung is not null')
+            ->andWhere('a.slug is not null')
             ->getQuery()
             ->getResult()
         ;
