@@ -116,7 +116,6 @@ abstract class AbstractInputDataTransformer
                 'violationList' => $violationList,
             ]);
 
-        if (0 !== $violationList->count()) {
             return $this->getErrors($violationList);
         }
 
