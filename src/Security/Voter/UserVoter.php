@@ -30,10 +30,6 @@ class UserVoter extends Voter
         /** @var User|null $user */
         $user = $token->getUser();
 
-        if (!$user) {
-            return false;
-        }
-
         return match ($attribute) {
             self::POST => true,
             self::PUT => $user === $subject,

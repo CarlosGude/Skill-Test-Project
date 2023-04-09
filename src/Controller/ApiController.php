@@ -6,7 +6,6 @@ use App\Factory\DataTransformationFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
@@ -40,7 +39,7 @@ class ApiController extends AbstractController
         $response = $this->factory->post($entity, $body);
 
         if (is_array($response)) {
-            return $this->json($response, 400);
+            return $this->json($response['errors'], $response['errorCode']);
         }
 
         $response = new Response($response, 201);
@@ -54,16 +53,22 @@ class ApiController extends AbstractController
     {
         $user = $this->getUser();
         if (!$user) {
-            throw new AccessDeniedHttpException();
+            return $this->json(['error' => 'User not authorized'], Response::HTTP_FORBIDDEN);
         }
 
         /** @var array $body */
         $body = json_decode($request->getMainRequest()->getContent(), true);
-        $response = $this->factory->put($entity, $id, $body);
-
-        $response = new Response($response, 200);
+        $data = $this->factory->put($entity, $id, $body);
+        $response = new Response();
         $response->headers->set('Content-Type', 'text/json');
 
+        if(is_array($data) && array_key_exists('errors',$data) && array_key_exists('errorCode',$data)){
+            $response->setContent(json_encode($data['errors']))->setStatusCode($data['errorCode']);
+
+            return $response;
+        }
+
+        $response->setContent($response);
         return $response;
     }
 
@@ -72,7 +77,7 @@ class ApiController extends AbstractController
     {
         $user = $this->getUser();
         if (!$user) {
-            throw new AccessDeniedHttpException();
+            return $this->json(['error' => 'User not authorized'], Response::HTTP_FORBIDDEN);
         }
 
         $response = $this->factory->delete($entity, $id);

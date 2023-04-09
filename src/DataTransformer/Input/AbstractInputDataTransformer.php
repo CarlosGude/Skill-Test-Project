@@ -8,6 +8,7 @@ use App\Logger\DataTransformationLogger;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -49,24 +50,11 @@ abstract class AbstractInputDataTransformer
                 'class' => $this->getClass(),
                 'user' => $this->security->getUser(),
             ]);
-            throw new AccessDeniedException();
+            return ['errorCode' => Response::HTTP_UNAUTHORIZED, 'errors' => []];
         }
 
-        $violationList = $this->validator->validate($input);
-
-        foreach ($this->validator->validate($entity) as $entityError) {
-            $violationList->add($entityError);
-        }
-
-        if (0 !== $violationList->count()) {
-            $this->logger->warning(DataTransformationLogger::ERROR_IN_DATA_VALIDATION, [
-                'method' => 'POST',
-                'class' => $this->getClass(),
-                'data' => $entity,
-                'violationList' => $violationList,
-            ]);
-
-            return $this->getErrors($violationList);
+        if (!empty($errors = $this->validateData($input, $entity))) {
+            return ['errorCode' => Response::HTTP_BAD_REQUEST, 'errors' => $errors];
         }
 
         $this->entityManager->persist($entity);
@@ -85,7 +73,7 @@ abstract class AbstractInputDataTransformer
                 'class' => $this->getClass(),
                 'id' => $id,
             ]);
-            throw new NotFoundHttpException();
+            return ['errorCode' => Response::HTTP_NOT_FOUND, 'errors' => ['message' => 'Data not found']];
         }
 
         $input->initialized($entity);
@@ -99,24 +87,11 @@ abstract class AbstractInputDataTransformer
                 'data' => $entity,
                 'user' => $this->security->getUser(),
             ]);
-            throw new AccessDeniedException();
+            return ['errorCode' => Response::HTTP_UNAUTHORIZED, 'errors' => ['message' => 'User not authorized for this action']];
         }
 
-        $violationList = $this->validator->validate($input);
-
-        foreach ($this->validator->validate($entity) as $entityError) {
-            $violationList->add($entityError);
-        }
-
-        if (0 !== $violationList->count()) {
-            $this->logger->warning(DataTransformationLogger::ERROR_IN_DATA_VALIDATION, [
-                'method' => 'POST',
-                'class' => $this->getClass(),
-                'data' => $entity,
-                'violationList' => $violationList,
-            ]);
-
-            return $this->getErrors($violationList);
+        if (!empty($errors = $this->validateData($input, $entity))) {
+            return ['errorCode' => Response::HTTP_BAD_REQUEST, 'errors' => $errors];
         }
 
         $this->entityManager->flush();
@@ -124,7 +99,7 @@ abstract class AbstractInputDataTransformer
         return $entity;
     }
 
-    public function delete(int|string $id): AbstractEntity
+    public function delete(int|string $id): array|AbstractEntity
     {
         $entity = $this->find($id);
 
@@ -133,7 +108,7 @@ abstract class AbstractInputDataTransformer
                 'class' => $this->getClass(),
                 'id' => $id,
             ]);
-            throw new NotFoundHttpException();
+            return ['errorCode' => Response::HTTP_NOT_FOUND, 'errors' => ['message' => 'Data not found']];
         }
 
         if (!$this->voter->isGranted('DELETE', $entity)) {
@@ -143,7 +118,7 @@ abstract class AbstractInputDataTransformer
                 'data' => $entity,
                 'user' => $this->security->getUser(),
             ]);
-            throw new AccessDeniedException();
+            return ['errorCode' => Response::HTTP_UNAUTHORIZED, 'errors' => ['message' => 'User not authorized for this action']];
         }
 
         $entity->setDeletedAt();
@@ -162,5 +137,27 @@ abstract class AbstractInputDataTransformer
         }
 
         return $errors;
+    }
+
+    protected function validateData(InputInterface $input, AbstractEntity $entity): array
+    {
+        $violationList = $this->validator->validate($input);
+
+        foreach ($this->validator->validate($entity) as $entityError) {
+            $violationList->add($entityError);
+        }
+
+        if (0 !== $violationList->count()) {
+            $this->logger->warning(DataTransformationLogger::ERROR_IN_DATA_VALIDATION, [
+                'method' => 'POST',
+                'class' => $this->getClass(),
+                'data' => $entity,
+                'violationList' => $violationList,
+            ]);
+
+            return $this->getErrors($violationList);
+        }
+
+        return [];
     }
 }

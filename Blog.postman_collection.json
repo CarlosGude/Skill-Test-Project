@@ -1,0 +1,748 @@
+{
+	"info": {
+		"_postman_id": "2f75e87f-2070-484c-977f-6e6ef53d6c48",
+		"name": "Blog",
+		"description": "Documentation of the blog project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3912415"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}api/user",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "Get a list of all users of the blog and his articles."
+					},
+					"response": []
+				},
+				{
+					"name": "Get user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}api/user/{{id-user}}",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"user",
+								"{{id-user}}"
+							]
+						},
+						"description": "Get the data os one user, with the articles who the author created."
+					},
+					"response": [
+						{
+							"name": "Error: User not exist",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/user/FAIL_REQUEST_UUID",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"user",
+										"FAIL_REQUEST_UUID"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"NAME OF USER\",\r\n    \"email\": \"email@email.com\",\r\n    \"password\": \"password1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/user",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "Create an user."
+					},
+					"response": [
+						{
+							"name": "Error: Name not sent",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"email@email.com\",\r\n    \"password\": \"password1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost/api/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": \"This value should not be null.\"\n}"
+						},
+						{
+							"name": "Error: Email not sent",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"TEST NAME\",\r\n    \"password\": \"password1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}api/user",
+									"host": [
+										"{{baseUrl}}api"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": \"This value should not be null.\"\n}"
+						},
+						{
+							"name": "Error: Password not sent",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"NAME OF USER\",\r\n    \"email\": \"email@email.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}api/user",
+									"host": [
+										"{{baseUrl}}api"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"password\": \"This value should not be null.\"\n}"
+						},
+						{
+							"name": "Error: Password must contain a number",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"NAME OF USER\",\r\n    \"email\": \"email@email.com\",\r\n    \"password\": \"fail\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}api/user",
+									"host": [
+										"{{baseUrl}}api"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"password\": \"This value is not valid.\"\n}"
+						},
+						{
+							"name": "Error: Email exist",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"NAME OF USER\",\r\n    \"email\": \"{{test_email_login}}\",\r\n    \"password\": \"password1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}api/user",
+									"host": [
+										"{{baseUrl}}api"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"email\": \"This email is already in use.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Edit user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"NAME OF USER\",\r\n    \"email\": \"email@email.com\",\r\n    \"password\": \"password1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/user/{{id-user}}",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"user",
+								"{{id-user}}"
+							]
+						},
+						"description": "Edit an user. This EP requires authorization."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}api/user/{{id-user}}",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"user",
+								"{{id-user}}"
+							]
+						},
+						"description": "Delete an user. This EP requires authorization."
+					},
+					"response": []
+				}
+			],
+			"description": "This is te User related EP",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Articles",
+			"item": [
+				{
+					"name": "Get articles",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}api/article",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"article"
+							]
+						},
+						"description": "Get a list of all articles of the blog with te user information"
+					},
+					"response": []
+				},
+				{
+					"name": "Get article",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}api/article/d5b1e9b2-8160-433b-b069-406831ffeca3",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"article",
+								"d5b1e9b2-8160-433b-b069-406831ffeca3"
+							]
+						},
+						"description": "Get the data of one article, with the author data and the articles who the author created."
+					},
+					"response": [
+						{
+							"name": "Get article",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/api/article/FAIL_REQUEST_UUID",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"article",
+										"FAIL_REQUEST_UUID"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Create article",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"TEST ARTICLE TITLE\",\r\n    \"body\": \"TEST ARTICLE BODY\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/article",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"article"
+							]
+						},
+						"description": "Create an article. This EP requires authorization. The article  \nautomatically assigns the authority of the post to the logged-in user."
+					},
+					"response": [
+						{
+							"name": "Error: Not Title sent",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"body\": \"TEST ARTICLE BODY\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost/api/article",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"article"
+									]
+								}
+							},
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"title\": \"This value should not be null.\"\r\n}"
+						},
+						{
+							"name": "Error: Not Body sent",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"TEST ARTICLE TITLE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}api/article",
+									"host": [
+										"{{baseUrl}}api"
+									],
+									"path": [
+										"article"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"body\": \"This value should not be null.\"\r\n}"
+						}
+					]
+				},
+				{
+					"name": "Edit article",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"TEST ARTICLE TITLE\",\r\n    \"body\": \"TEST ARTICLE BODY\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/article/{{id-article}}",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"article",
+								"{{id-article}}"
+							]
+						},
+						"description": "Edit an article. This EP requires authorization. The article  \nmust be owned to the user logged."
+					},
+					"response": [
+						{
+							"name": "Error: Not auth token sent",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "bearer ERROR_TOKEN",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"TEST ARTICLE TITLE\",\r\n    \"body\": \"TEST ARTICLE BODY\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost/api/article/f9e03ce4-c44c-4861-bb9c-8a466119c8ef",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"api",
+										"article",
+										"f9e03ce4-c44c-4861-bb9c-8a466119c8ef"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"message\": \"User not authorized for this action\"\r\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete article",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}api/article/{{id-article}}",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"article",
+								"{{id-article}}"
+							]
+						},
+						"description": "Delete an article. This EP requires authorization. The article  \nmust be owned to the user logged."
+					},
+					"response": []
+				}
+			],
+			"description": "This is the Articles EP related.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\" :\"{{test_email_login}}\",\r\n    \"password\" :\"{{test_email_password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}api/login_check",
+					"host": [
+						"{{baseUrl}}api"
+					],
+					"path": [
+						"login_check"
+					]
+				},
+				"description": "Obtain the auth token."
+			},
+			"response": [
+				{
+					"name": "ERROR: User not exist/wrong passord",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" :\"{{test_email_login}}\",\r\n    \"password\" :\"ERROR_PASS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}api/login_check",
+							"host": [
+								"{{baseUrl}}api"
+							],
+							"path": [
+								"login_check"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"code\": 401,\n    \"message\": \"Invalid credentials.\"\n}"
+				}
+			]
+		}
+	]
+}

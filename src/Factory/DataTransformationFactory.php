@@ -68,17 +68,14 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
         }
 
         $data = $input->post($data);
-        if ($data instanceof AbstractEntity) {
-            return $this->get($entity, $data->getUuid());
-        }
 
-        return $data;
+        return ($data instanceof AbstractEntity) ? $this->get($entity, $data->getUuid()) : $data;
     }
 
     /**
      * @throws EntityOutputException
      */
-    public function put(string $entity, string $id, array $body): ?string
+    public function put(string $entity, string $id, array $body): string|array
     {
         if (!is_array($this->inputs)) {
             $this->logger->error(DataTransformationFactoryLogger::ERROR_ENTITY_NOT_FOUND, [
@@ -99,11 +96,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
 
         $data = $input->put($id, $body);
 
-        if (!$data instanceof AbstractEntity) {
-            return null;
-        }
-
-        return $this->get($entity, $data->getUuid());
+        return ($data instanceof AbstractEntity) ? $this->get($entity, $data->getUuid()) : $data;
     }
 
     /**
