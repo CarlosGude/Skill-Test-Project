@@ -17,5 +17,5 @@ This is a skills test code. The idea is created a simple blog.
 11. Have two user for log in this panel:
     1. `'email' => 'admin@email.test', 'password' => 'password1admin'` This user is admin and can see all articles and users, and active them.
     2. `'email' => 'test@email.test', 'password' => 'password1'` This user only see his articles.
-12. The user must be activated by email, if the sent don't work (Is a three party email sender), the `admin` user can be activated in th panel control.
+12. The user must be activated by email, if the sent don't work (Is a three party email sender), the `admin` user can be activate users in the panel control.
 13. For the events send an email and generate of slugs of user and articles, must be use the command `php bin/console messenger:consume events -vv`
