@@ -102,7 +102,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
     /**
      * @throws EntityOutputException
      */
-    public function delete(string $entity, int|string $id): ?AbstractEntity
+    public function delete(string $entity, int|string $id): null|array|AbstractEntity
     {
         if (!is_array($this->inputs)) {
             $this->logger->error(DataTransformationFactoryLogger::ERROR_ENTITY_NOT_FOUND, [

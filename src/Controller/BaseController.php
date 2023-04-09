@@ -21,7 +21,7 @@ class BaseController extends AbstractController
     {
         return $this->render('base/index.html.twig', [
             'controller_name' => 'BaseController',
-            'articles' => $this->manager->getRepository(Article::class)->findAll(),
+            'articles' => $this->manager->getRepository(Article::class)->findNotDeletedAndWithSlug(),
         ]);
     }
 

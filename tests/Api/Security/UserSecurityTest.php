@@ -59,7 +59,7 @@ class UserSecurityTest extends AbstractTest
         $user = $this->getRepository(User::class)->findOneBy(['email' => UserFixtures::getUsers()['anotherUser']['email']]);
 
         $response = $this->makeRequest(self::METHOD_PUT, UserTest::API_USER.'/'.$user->getUuid(), ['name' => 'TEST CHANGE NAME']);
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(401, $response->getStatusCode());
     }
 
     public function testSuccessLogin(): void
@@ -104,7 +104,7 @@ class UserSecurityTest extends AbstractTest
 
         $response = $this->makeRequest(self::METHOD_DELETE, UserTest::API_USER.'/'.$user->getUuid());
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(401, $response->getStatusCode());
     }
 
     public function testAnRoleNormalCanDeleteRoleAdmin(): void
@@ -114,7 +114,7 @@ class UserSecurityTest extends AbstractTest
 
         $response = $this->makeRequest(self::METHOD_DELETE, UserTest::API_USER.'/'.$user->getUuid(), [], 'anotherUser');
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(401, $response->getStatusCode());
     }
 
     public function testUpdatePassword(): void
@@ -122,7 +122,7 @@ class UserSecurityTest extends AbstractTest
         /** @var User $user */
         $user = $this->getRepository(User::class)->findOneBy(['email' => UserFixtures::getUsers()['anotherUser']['email']]);
 
-        $response = $this->makeRequest(self::METHOD_PUT, UserTest::API_USER.'/'.$user->getUuid(), ['password' => 'TEST_CHANGE_NAME'], 'anotherUser');
+        $response = $this->makeRequest(self::METHOD_PUT, UserTest::API_USER.'/'.$user->getUuid(), ['password' => 'TEST_CHANGE_NAME1'], 'anotherUser');
         $this->assertEquals(200, $response->getStatusCode());
     }
 }

@@ -61,20 +61,23 @@ class ArticleSecurityTest extends AbstractTest
             'title' => 'TITLE TEST UPDATED',
         ]);
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(401, $response->getStatusCode());
     }
 
     public function testDeleteArticle(): void
     {
-        $user = $this->getRepository(User::class)->findOneBy(['email' => 'admin@email.test']);
-        $articles = $this->getRepository(Article::class)->findBy(['user' => $user]);
+        $response = $this->makeRequest(self::METHOD_POST, ArticleTest::API_ARTICLE, [
+            'title' => 'TITLE TEST',
+            'body' => 'TEST BODY',
+        ]);
 
-        $this->assertGreaterThan(1, $articles);
+        $body = $response->toArray();
 
-        /** @var Article $article */
-        $article = $articles[0];
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals('TITLE TEST', $body['title']);
+        $this->assertEquals('TEST BODY', $body['body']);
 
-        $response = $this->makeRequest(self::METHOD_DELETE, ArticleTest::API_ARTICLE.'/'.$article->getUuid());
+        $response = $this->makeRequest(self::METHOD_DELETE, ArticleTest::API_ARTICLE.'/'.$body['uuid']);
 
         $this->assertEquals(204, $response->getStatusCode());
     }
@@ -91,6 +94,6 @@ class ArticleSecurityTest extends AbstractTest
 
         $response = $this->makeRequest(self::METHOD_DELETE, ArticleTest::API_ARTICLE.'/'.$article->getUuid());
 
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(401, $response->getStatusCode());
     }
 }

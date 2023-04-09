@@ -10,7 +10,7 @@ interface DataTransformationFactoryInterface
 
     public function post(string $entity, array $data): string|array;
 
-    public function delete(string $entity, int|string $id): ?AbstractEntity;
+    public function delete(string $entity, int|string $id): null|array|AbstractEntity;
 
     public function put(string $entity, string $id, array $body): string|array;
 }

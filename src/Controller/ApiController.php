@@ -59,16 +59,18 @@ class ApiController extends AbstractController
         /** @var array $body */
         $body = json_decode($request->getMainRequest()->getContent(), true);
         $data = $this->factory->put($entity, $id, $body);
+
         $response = new Response();
         $response->headers->set('Content-Type', 'text/json');
 
-        if(is_array($data) && array_key_exists('errors',$data) && array_key_exists('errorCode',$data)){
+        if (is_array($data) && array_key_exists('errors', $data) && array_key_exists('errorCode', $data)) {
             $response->setContent(json_encode($data['errors']))->setStatusCode($data['errorCode']);
 
             return $response;
         }
 
-        $response->setContent($response);
+        $response->setContent($data);
+
         return $response;
     }
 
@@ -80,8 +82,16 @@ class ApiController extends AbstractController
             return $this->json(['error' => 'User not authorized'], Response::HTTP_FORBIDDEN);
         }
 
-        $response = $this->factory->delete($entity, $id);
+        $data = $this->factory->delete($entity, $id);
 
-        return new Response(null, $response ? 204 : 404);
+        $response = new Response();
+        if (is_array($data) && array_key_exists('errors', $data) && array_key_exists('errorCode', $data)) {
+            $response->headers->set('Content-Type', 'text/json');
+            $response->setContent(json_encode($data['errors']))->setStatusCode($data['errorCode']);
+
+            return $response;
+        }
+
+        return new Response(null, $data ? 204 : 404);
     }
 }

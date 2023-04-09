@@ -9,9 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -50,6 +48,7 @@ abstract class AbstractInputDataTransformer
                 'class' => $this->getClass(),
                 'user' => $this->security->getUser(),
             ]);
+
             return ['errorCode' => Response::HTTP_UNAUTHORIZED, 'errors' => []];
         }
 
@@ -73,6 +72,7 @@ abstract class AbstractInputDataTransformer
                 'class' => $this->getClass(),
                 'id' => $id,
             ]);
+
             return ['errorCode' => Response::HTTP_NOT_FOUND, 'errors' => ['message' => 'Data not found']];
         }
 
@@ -87,6 +87,7 @@ abstract class AbstractInputDataTransformer
                 'data' => $entity,
                 'user' => $this->security->getUser(),
             ]);
+
             return ['errorCode' => Response::HTTP_UNAUTHORIZED, 'errors' => ['message' => 'User not authorized for this action']];
         }
 
@@ -108,6 +109,7 @@ abstract class AbstractInputDataTransformer
                 'class' => $this->getClass(),
                 'id' => $id,
             ]);
+
             return ['errorCode' => Response::HTTP_NOT_FOUND, 'errors' => ['message' => 'Data not found']];
         }
 
@@ -118,6 +120,7 @@ abstract class AbstractInputDataTransformer
                 'data' => $entity,
                 'user' => $this->security->getUser(),
             ]);
+
             return ['errorCode' => Response::HTTP_UNAUTHORIZED, 'errors' => ['message' => 'User not authorized for this action']];
         }
 
