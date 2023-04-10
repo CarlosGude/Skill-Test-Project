@@ -93,7 +93,7 @@ class UserSecurityTest extends AbstractTest
         // The user has articles.
         $articles = $this->getRepository(Article::class)->findBy(['user' => $user, 'deletedAt' => null]);
 
-        $this->assertNotEmpty( $articles);
+        $this->assertNotEmpty($articles);
 
         $response = $this->makeRequest(self::METHOD_DELETE, UserTest::API_USER.'/'.$user->getUuid());
 
@@ -104,7 +104,7 @@ class UserSecurityTest extends AbstractTest
 
         // After delete the user, his articles now are marked as deleted
         $articles = $this->getRepository(Article::class)->findBy(['user' => $user, 'deletedAt' => null]);
-        $this->assertEmpty( $articles);
+        $this->assertEmpty($articles);
     }
 
     public function testAnRoleAdminCanDeleteHimself(): void

@@ -126,7 +126,6 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
      */
     public function eraseCredentials(): void
     {
-
         $this->plainPassword = null;
     }
 
@@ -234,7 +233,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     {
         $this->deletedAt = new \DateTime();
 
-        foreach ($this->getArticles() as $article){
+        foreach ($this->getArticles() as $article) {
             $article->setDeletedAt();
         }
 
