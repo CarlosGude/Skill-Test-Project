@@ -1,0 +1,20 @@
+<?php
+
+namespace App\DataTransformer\Output;
+
+use App\Dto\Output\{{entity}}OutputDto;
+use App\Dto\Output\OutputInterface;
+use App\Entity\{{entity}};
+
+class {{entity}}OutputDataTransformer extends AbstractOutputDataTransformer
+{
+    protected function getOutputDto(): OutputInterface
+    {
+        return new {{entity}}OutputDto();
+    }
+
+    protected function getClass(): string
+    {
+        return {{entity}}::class;
+    }
+}

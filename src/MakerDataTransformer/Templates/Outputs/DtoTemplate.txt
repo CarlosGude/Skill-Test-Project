@@ -3,16 +3,12 @@
 namespace App\Dto\Output;
 
 use App\Entity\AbstractEntity;
-use App\Entity\Article;
+use App\Entity\{{entity}};
 use App\Exceptions\EntityOutputException;
 
-class ArticleOutputDto implements OutputInterface
+class {{entity}}OutputDto implements OutputInterface
 {
     public ?string $uuid;
-    public ?string $title;
-    public ?string $slug;
-    public ?string $body;
-    public ?UserOutputDto $author;
 
     public function __construct(protected bool $getNestedElements = true)
     {
@@ -25,18 +21,11 @@ class ArticleOutputDto implements OutputInterface
      */
     public function get(AbstractEntity $entity): self
     {
-        if (!$entity instanceof Article) {
+        if (!$entity instanceof {{entity}}) {
             throw new EntityOutputException();
         }
 
         $this->uuid = $entity->getUuid();
-        $this->title = $entity->getTitle();
-        $this->slug = $entity->getSlug();
-        $this->body = $entity->getBody();
-
-        if ($this->getNestedElements) {
-            $this->author = (new UserOutputDto())->get($entity->getUser());
-        }
 
         return $this;
     }

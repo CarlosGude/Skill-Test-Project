@@ -31,6 +31,14 @@ services:
         arguments:
             $factory: "@App\\Factory\\DataTransformationFactory"
 
+    App\MakerDataTransformer\MakerDataTransformer:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+            $outputDataTransformerTemplate: 'MakerDataTransformer/Templates/Outputs/DataTransformerTemplate.txt'
+            $outputDtoTemplate: 'MakerDataTransformer/Templates/Outputs/DtoTemplate.txt'
+            $inputDataTransformerTemplate: 'MakerDataTransformer/Templates/Inputs/DataTransformerTemplate.txt'
+            $inputDtoTemplate: 'MakerDataTransformer/Templates/Inputs/DtoTemplate.txt'
+
     App\Factory\DataTransformationFactory:
         public: false
         arguments:

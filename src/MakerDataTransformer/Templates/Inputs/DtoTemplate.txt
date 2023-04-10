@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Dto\Input;
+
+use App\Entity\AbstractEntity;
+use App\Entity\{{entity}};
+use App\Exceptions\NotExceptedEntityException;
+
+class {{entity}}InputDto implements InputInterface
+{
+
+    public function __construct(array $data)
+    {
+
+    }
+
+    public function initialized(AbstractEntity $entity): void
+    {
+        if (!$entity instanceof {{entity}}) {
+            throw new NotExceptedEntityException();
+        }
+    }
+
+    public function put(AbstractEntity $entity, array $data): AbstractEntity
+    {
+        if (!$entity instanceof {{entity}}) {
+            throw new NotExceptedEntityException();
+        }
+
+        return $entity;
+    }
+
+    public function post(): AbstractEntity
+    {
+        ${{entity_lowercase}} = new {{entity}}();
+
+        return ${{entity_lowercase}};
+    }
+}
