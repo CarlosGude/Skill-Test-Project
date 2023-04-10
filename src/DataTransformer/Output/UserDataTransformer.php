@@ -3,14 +3,14 @@
 namespace App\DataTransformer\Output;
 
 use App\Dto\Output\OutputInterface;
-use App\Dto\Output\UserOutputDto;
+use App\Dto\Output\UserDto;
 use App\Entity\User;
 
-class UserOutputDataTransformer extends AbstractOutputDataTransformer
+class UserDataTransformer extends AbstractDataTransformer
 {
     protected function getOutputDto(): OutputInterface
     {
-        return new UserOutputDto();
+        return new UserDto();
     }
 
     protected function getClass(): string

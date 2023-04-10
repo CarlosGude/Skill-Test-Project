@@ -2,8 +2,8 @@
 
 namespace App\Factory;
 
-use App\DataTransformer\Input\AbstractInputDataTransformer;
-use App\DataTransformer\Output\AbstractOutputDataTransformer;
+use App\DataTransformer\Input\AbstractDataTransformer as InputDataTransformer;
+use App\DataTransformer\Output\AbstractDataTransformer as OutputDataTransformer;
 use App\Entity\AbstractEntity;
 use App\Exceptions\EntityOutputException;
 use App\Logger\DataTransformationFactoryLogger;
@@ -25,7 +25,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
     ) {
     }
 
-    protected function getOutput(string $entity): AbstractOutputDataTransformer
+    protected function getOutput(string $entity): OutputDataTransformer
     {
         $class = $this->outputNamespace.ucfirst($entity).$this->outputNamespaceSubFix;
         if (!class_exists($class)) {
@@ -35,7 +35,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
 
         $output = $this->container->get($class);
 
-        if (!$output instanceof AbstractOutputDataTransformer) {
+        if (!$output instanceof OutputDataTransformer) {
             $this->logger->error(DataTransformationFactoryLogger::ERROR_OUTPUT_DATA_TRANSFORMER, [
                 'outputClass' => $class,
             ]);
@@ -45,7 +45,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
         return $output;
     }
 
-    protected function getInput(string $entity): AbstractInputDataTransformer
+    protected function getInput(string $entity): InputDataTransformer
     {
         $class = $this->inputNamespace.ucfirst($entity).$this->inputNamespaceSubFix;
         if (!class_exists($class)) {
@@ -55,7 +55,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
 
         $input = $this->container->get($class);
 
-        if (!$input instanceof AbstractInputDataTransformer) {
+        if (!$input instanceof InputDataTransformer) {
             $this->logger->error(DataTransformationFactoryLogger::ERROR_OUTPUT_DATA_TRANSFORMER, [
                 'outputClass' => $class,
             ]);

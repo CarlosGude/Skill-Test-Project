@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class UserInputDto implements InputInterface
+class UserDto implements InputInterface
 {
     #[Email]
     #[NotBlank]

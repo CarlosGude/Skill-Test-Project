@@ -7,7 +7,7 @@ use App\Entity\AbstractEntity;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-abstract class AbstractOutputDataTransformer
+abstract class AbstractDataTransformer
 {
     public function __construct(
         protected EntityManagerInterface $entityManager,

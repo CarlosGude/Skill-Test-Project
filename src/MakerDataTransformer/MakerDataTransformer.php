@@ -72,7 +72,7 @@ class MakerDataTransformer
             DIRECTORY_SEPARATOR.'src'.
             DIRECTORY_SEPARATOR.'DataTransformer'.
             DIRECTORY_SEPARATOR.ucfirst($type).
-            DIRECTORY_SEPARATOR.$entity.ucfirst($type).'DataTransformer.php';
+            DIRECTORY_SEPARATOR.$entity.'DataTransformer.php';
     }
 
     protected function dtoPath(string $type, string $entity): string
@@ -81,6 +81,6 @@ class MakerDataTransformer
             DIRECTORY_SEPARATOR.'src'.
             DIRECTORY_SEPARATOR.'Dto'.
             DIRECTORY_SEPARATOR.ucfirst($type).
-            DIRECTORY_SEPARATOR.$entity.ucfirst($type).'Dto.php';
+            DIRECTORY_SEPARATOR.$entity.'Dto.php';
     }
 }

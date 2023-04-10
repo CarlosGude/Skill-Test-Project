@@ -2,19 +2,19 @@
 
 namespace App\DataTransformer\Input;
 
-use App\Dto\Input\ArticleInputDto;
 use App\Dto\Input\InputInterface;
-use App\Entity\Article;
+use App\Dto\Input\UserDto;
+use App\Entity\User;
 
-class ArticleInputDataTransformer extends AbstractInputDataTransformer
+class UserDataTransformer extends AbstractDataTransformer
 {
     protected function getClass(): string
     {
-        return Article::class;
+        return User::class;
     }
 
     protected function getInputDto(array $data): InputInterface
     {
-        return new ArticleInputDto($data);
+        return new UserDto($data);
     }
 }

@@ -8,7 +8,7 @@ use App\Exceptions\NotExceptedEntityException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 
-class ArticleInputDto implements InputInterface
+class ArticleDto implements InputInterface
 {
     #[NotBlank]
     #[NotNull]

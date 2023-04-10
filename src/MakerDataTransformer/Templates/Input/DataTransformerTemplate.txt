@@ -2,11 +2,11 @@
 
 namespace App\DataTransformer\Input;
 
-use App\Dto\Input\{{entity}}InputDto;
+use App\Dto\Input\{{entity}}Dto;
 use App\Dto\Input\InputInterface;
 use App\Entity\{{entity}};
 
-class {{entity}}InputDataTransformer extends AbstractInputDataTransformer
+class {{entity}}DataTransformer extends AbstractDataTransformer
 {
     protected function getClass(): string
     {
@@ -15,6 +15,6 @@ class {{entity}}InputDataTransformer extends AbstractInputDataTransformer
 
     protected function getInputDto(array $data): InputInterface
     {
-        return new {{entity}}InputDto($data);
+        return new {{entity}}Dto($data);
     }
 }

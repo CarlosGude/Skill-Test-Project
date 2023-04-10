@@ -6,7 +6,7 @@ use App\Entity\AbstractEntity;
 use App\Entity\{{entity}};
 use App\Exceptions\NotExceptedEntityException;
 
-class {{entity}}InputDto implements InputInterface
+class {{entity}}Dto implements InputInterface
 {
 
     public function __construct(array $data)

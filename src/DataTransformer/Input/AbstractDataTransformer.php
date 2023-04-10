@@ -15,7 +15,7 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-abstract class AbstractInputDataTransformer
+abstract class AbstractDataTransformer
 {
     public function __construct(
         protected Security $security,
