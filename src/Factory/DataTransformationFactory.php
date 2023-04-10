@@ -8,6 +8,7 @@ use App\Entity\AbstractEntity;
 use App\Exceptions\EntityOutputException;
 use App\Logger\DataTransformationFactoryLogger;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -16,9 +17,52 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
     public function __construct(
         protected LoggerInterface $logger,
         protected ValidatorInterface $validator,
-        protected array $outputs,
-        protected array $inputs,
+        protected ContainerInterface $container,
+        protected string $outputNamespace = 'App\DataTransformer\Output\\',
+        protected string $inputNamespace = 'App\DataTransformer\Input\\',
+        protected string $outputNamespaceSubFix = 'OutputDataTransformer',
+        protected string $inputNamespaceSubFix = 'InputDataTransformer'
     ) {
+    }
+
+    protected function getOutput(string $entity): AbstractOutputDataTransformer
+    {
+        $class = $this->outputNamespace.ucfirst($entity).$this->outputNamespaceSubFix;
+        if (!class_exists($class)) {
+            $this->logger->error(DataTransformationFactoryLogger::ERROR_ENTITY_NOT_FOUND, ['class' => $entity]);
+            throw new NotFoundHttpException();
+        }
+
+        $output = $this->container->get($class);
+
+        if (!$output instanceof AbstractOutputDataTransformer) {
+            $this->logger->error(DataTransformationFactoryLogger::ERROR_OUTPUT_DATA_TRANSFORMER, [
+                'outputClass' => $class,
+            ]);
+            throw new EntityOutputException();
+        }
+
+        return $output;
+    }
+
+    protected function getInput(string $entity): AbstractInputDataTransformer
+    {
+        $class = $this->inputNamespace.ucfirst($entity).$this->inputNamespaceSubFix;
+        if (!class_exists($class)) {
+            $this->logger->error(DataTransformationFactoryLogger::ERROR_ENTITY_NOT_FOUND, ['class' => $entity]);
+            throw new NotFoundHttpException();
+        }
+
+        $input = $this->container->get($class);
+
+        if (!$input instanceof AbstractInputDataTransformer) {
+            $this->logger->error(DataTransformationFactoryLogger::ERROR_OUTPUT_DATA_TRANSFORMER, [
+                'outputClass' => $class,
+            ]);
+            throw new EntityOutputException();
+        }
+
+        return $input;
     }
 
     /**
@@ -26,21 +70,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      */
     public function get(string $entity, ?string $id = null): ?string
     {
-        if (!is_array($this->outputs)) {
-            $this->logger->error(DataTransformationFactoryLogger::ERROR_ENTITY_NOT_FOUND, [
-                'class' => $entity,
-                'id' => $id,
-            ]);
-            throw new NotFoundHttpException();
-        }
-
-        $output = $this->outputs[$entity];
-        if (!$output instanceof AbstractOutputDataTransformer) {
-            $this->logger->error(DataTransformationFactoryLogger::ERROR_OUTPUT_DATA_TRANSFORMER, [
-                'outputClass' => $output::class,
-            ]);
-            throw new EntityOutputException();
-        }
+        $output = $this->getOutput($entity);
 
         return $output->get($id);
     }
@@ -52,22 +82,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      */
     public function post(string $entity, array $data): array|string
     {
-        if (!is_array($this->inputs)) {
-            $this->logger->error(DataTransformationFactoryLogger::ERROR_ENTITY_NOT_FOUND, [
-                'class' => $entity,
-            ]);
-            throw new NotFoundHttpException();
-        }
-
-        $input = $this->inputs[$entity];
-        if (!$input instanceof AbstractInputDataTransformer) {
-            $this->logger->error(DataTransformationFactoryLogger::ERROR_OUTPUT_DATA_TRANSFORMER, [
-                'inputClass' => $input::class,
-            ]);
-            throw new EntityOutputException();
-        }
-
-        $data = $input->post($data);
+        $data = $this->getInput($entity)->post($data);
 
         return ($data instanceof AbstractEntity) ? $this->get($entity, $data->getUuid()) : $data;
     }
@@ -77,24 +92,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      */
     public function put(string $entity, string $id, array $body): string|array
     {
-        if (!is_array($this->inputs)) {
-            $this->logger->error(DataTransformationFactoryLogger::ERROR_ENTITY_NOT_FOUND, [
-                'class' => $entity,
-                'id' => $id,
-            ]);
-            throw new NotFoundHttpException();
-        }
-
-        $input = $this->inputs[$entity];
-        if (!$input instanceof AbstractInputDataTransformer) {
-            $this->logger->error(DataTransformationFactoryLogger::ERROR_INPUT_DATA_TRANSFORMER, [
-                'inputClass' => $input::class,
-                'id' => $id,
-            ]);
-            throw new EntityOutputException();
-        }
-
-        $data = $input->put($id, $body);
+        $data = $this->getInput($entity)->put($id, $body);
 
         return ($data instanceof AbstractEntity) ? $this->get($entity, $data->getUuid()) : $data;
     }
@@ -104,23 +102,6 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
      */
     public function delete(string $entity, int|string $id): null|array|AbstractEntity
     {
-        if (!is_array($this->inputs)) {
-            $this->logger->error(DataTransformationFactoryLogger::ERROR_ENTITY_NOT_FOUND, [
-                'class' => $entity,
-                'id' => $id,
-            ]);
-            throw new NotFoundHttpException();
-        }
-
-        $input = $this->inputs[$entity];
-        if (!$input instanceof AbstractInputDataTransformer) {
-            $this->logger->error(DataTransformationFactoryLogger::ERROR_INPUT_DATA_TRANSFORMER, [
-                'inputClass' => $input::class,
-                'id' => $id,
-            ]);
-            throw new EntityOutputException();
-        }
-
-        return $input->delete($id);
+        return $this->getInput($entity)->delete($id);
     }
 }

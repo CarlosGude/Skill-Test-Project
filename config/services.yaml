@@ -20,6 +20,10 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\DataTransformer\:
+        resource: '../src/DataTransformer'
+        public: true
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     App\Controller\ApiController:
@@ -27,31 +31,10 @@ services:
         arguments:
             $factory: "@App\\Factory\\DataTransformationFactory"
 
-    UserDataTransformerOutput:
-        public: false
-        class: App\DataTransformer\Output\UserOutputDataTransformer
-
-    UserDataTransformerInput:
-        public: false
-        class: App\DataTransformer\Input\UserInputDataTransformer
-
-    ArticleDataTransformerOutput:
-        public: false
-        class: App\DataTransformer\Output\ArticleOutputDataTransformer
-
-    ArticleDataTransformerInput:
-        public: false
-        class: App\DataTransformer\Input\ArticleInputDataTransformer
-
     App\Factory\DataTransformationFactory:
         public: false
         arguments:
-            $outputs:
-                user: "@UserDataTransformerOutput"
-                article: "@ArticleDataTransformerOutput"
-            $inputs:
-                user: "@UserDataTransformerInput"
-                article: "@ArticleDataTransformerInput"
+            $container: '@service_container'
 
     SendActiveUserEmail:
         public: false
