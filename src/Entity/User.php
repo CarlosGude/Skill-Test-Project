@@ -229,4 +229,15 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
     {
         return $this->getName();
     }
+
+    public function setDeletedAt(): AbstractEntity
+    {
+        $this->deletedAt = new \DateTime();
+
+        foreach ($this->getArticles() as $article){
+            $article->setDeletedAt();
+        }
+
+        return $this;
+    }
 }

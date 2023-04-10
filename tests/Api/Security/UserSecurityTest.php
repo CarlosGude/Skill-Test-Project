@@ -3,6 +3,7 @@
 namespace App\Tests\Api\Security;
 
 use App\DataFixtures\UserFixtures;
+use App\Entity\Article;
 use App\Entity\User;
 use App\Message\EntityEvent;
 use App\Tests\Api\AbstractTest;
@@ -89,12 +90,21 @@ class UserSecurityTest extends AbstractTest
         /** @var User $user */
         $user = $this->getRepository(User::class)->findOneBy(['email' => UserFixtures::getUsers()['anotherUser']['email']]);
 
+        // The user has articles.
+        $articles = $this->getRepository(Article::class)->findBy(['user' => $user, 'deletedAt' => null]);
+
+        $this->assertNotEmpty( $articles);
+
         $response = $this->makeRequest(self::METHOD_DELETE, UserTest::API_USER.'/'.$user->getUuid());
 
         $this->assertEquals(204, $response->getStatusCode());
         $response = $this->makeRequest(self::METHOD_GET, UserTest::API_USER.'/'.$user->getUuid());
 
         $this->assertEquals(404, $response->getStatusCode());
+
+        // After delete the user, his articles now are marked as deleted
+        $articles = $this->getRepository(Article::class)->findBy(['user' => $user, 'deletedAt' => null]);
+        $this->assertEmpty( $articles);
     }
 
     public function testAnRoleAdminCanDeleteHimself(): void
