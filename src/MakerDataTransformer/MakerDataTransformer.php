@@ -2,8 +2,17 @@
 
 namespace App\MakerDataTransformer;
 
+/**
+ * TODO: Test pending.
+ */
 class MakerDataTransformer
 {
+    private string $entityName;
+    /**
+     * @var array|array[]
+     */
+    private array $dataToBeGenerated;
+
     public function __construct(
         protected string $projectDir,
         protected string $outputDataTransformerTemplate,
@@ -11,60 +20,34 @@ class MakerDataTransformer
         protected string $outputDtoTemplate,
         protected string $inputDtoTemplate,
     ) {
+        $this->dataToBeGenerated = [
+            ['type' => 'input', 'template' => 'dataTransformer'],
+            ['type' => 'output', 'template' => 'dataTransformer'],
+            ['type' => 'input', 'template' => 'dto'],
+            ['type' => 'output', 'template' => 'dto'],
+        ];
     }
 
-    public function generateClass(string $entity): void
+    public function __invoke(string $entity): void
     {
-        $capitalizedEntityName = ucfirst($entity);
-
-        if (!file_exists($path = $this->dataTransformerPath('output', $capitalizedEntityName))) {
-            file_put_contents(
-                $path,
-                $this->replaceContent(
-                    ['{{entity}}'],
-                    [$capitalizedEntityName],
-                    $this->getTemplateContents('output', 'DataTransformer'),
-                    'output',
-                    'DataTransformer'
-                )
-            );
+        $this->entityName = $entity;
+        foreach ($this->dataToBeGenerated as $make) {
+            $this->generate($make['type'], $make['template']);
         }
+    }
 
-        if (!file_exists($path = $this->dtoPath('output', $capitalizedEntityName))) {
-            file_put_contents(
-                $path,
-                $this->replaceContent(
-                    ['{{entity}}'],
-                    [$capitalizedEntityName],
-                    $this->getTemplateContents('output', 'Dto'),
-                    'output',
-                    'Dto'
-                )
-            );
-        }
-
-        if (!file_exists($path = $this->dataTransformerPath('input', $capitalizedEntityName))) {
-            file_put_contents(
-                $path,
-                $this->replaceContent(
-                    ['{{entity}}'],
-                    [$capitalizedEntityName],
-                    $this->getTemplateContents('input', 'DataTransformer'),
-                    'input',
-                    'DataTransformer'
-                )
-            );
-        }
-
-        if (!file_exists($path = $this->dtoPath('input', $capitalizedEntityName))) {
+    public function generate(string $type, string $template): void
+    {
+        $templatePath = ucfirst($template).'Path';
+        if (!file_exists($path = $this->$templatePath($type, ucfirst($this->entityName)))) {
             file_put_contents(
                 $path,
                 $this->replaceContent(
                     ['{{entity}}', '{{entity_lowercase}}'],
-                    [$capitalizedEntityName, $entity],
-                    $this->getTemplateContents('input', 'Dto'),
-                    'input',
-                    'Dto'
+                    [ucfirst($this->entityName), $this->entityName],
+                    $this->getTemplateContents($type, $template),
+                    $type,
+                    $template
                 )
             );
         }
@@ -77,7 +60,7 @@ class MakerDataTransformer
 
     protected function getTemplateContents(string $type, string $template): string
     {
-        $template = $type.$template.'Template';
+        $template = $type.ucfirst($template).'Template';
         $template = str_replace('/', DIRECTORY_SEPARATOR, $this->$template);
 
         return file_get_contents($this->projectDir.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.$template);

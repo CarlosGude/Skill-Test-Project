@@ -39,7 +39,7 @@ class MakeDataTransformerCommand extends Command
             return Command::FAILURE;
         }
 
-        $this->makerDataTransformer->generateClass($entityName);
+        $this->makerDataTransformer->__invoke($entityName);
         $io->success('Inputs and Outputs created. Not forget add properties to DTOs');
 
         return Command::SUCCESS;
