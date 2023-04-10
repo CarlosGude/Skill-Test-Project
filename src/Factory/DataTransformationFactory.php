@@ -14,20 +14,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DataTransformationFactory implements DataTransformationFactoryInterface
 {
+    protected const DATA_TRANSFORMER_OUTPUT_PREFIX = 'App\DataTransformer\Output\\';
+    protected const DATA_TRANSFORMER_INPUT_PREFIX = 'App\DataTransformer\Input\\';
+    protected const DATA_TRANSFORMER_SUFFIX = 'DataTransformer';
+
     public function __construct(
         protected LoggerInterface $logger,
         protected ValidatorInterface $validator,
         protected ContainerInterface $container,
-        protected string $outputNamespace = 'App\DataTransformer\Output\\',
-        protected string $inputNamespace = 'App\DataTransformer\Input\\',
-        protected string $outputNamespaceSubFix = 'OutputDataTransformer',
-        protected string $inputNamespaceSubFix = 'InputDataTransformer'
     ) {
     }
 
     protected function getOutput(string $entity): OutputDataTransformer
     {
-        $class = $this->outputNamespace.ucfirst($entity).$this->outputNamespaceSubFix;
+        $class = self::DATA_TRANSFORMER_OUTPUT_PREFIX.ucfirst($entity).self::DATA_TRANSFORMER_SUFFIX;
         if (!class_exists($class)) {
             $this->logger->error(DataTransformationFactoryLogger::ERROR_ENTITY_NOT_FOUND, ['class' => $entity]);
             throw new NotFoundHttpException();
@@ -47,7 +47,7 @@ class DataTransformationFactory implements DataTransformationFactoryInterface
 
     protected function getInput(string $entity): InputDataTransformer
     {
-        $class = $this->inputNamespace.ucfirst($entity).$this->inputNamespaceSubFix;
+        $class = self::DATA_TRANSFORMER_INPUT_PREFIX.ucfirst($entity).self::DATA_TRANSFORMER_SUFFIX;
         if (!class_exists($class)) {
             $this->logger->error(DataTransformationFactoryLogger::ERROR_ENTITY_NOT_FOUND, ['class' => $entity]);
             throw new NotFoundHttpException();
