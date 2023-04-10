@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserDashboardController extends AbstractController
 {
-    #[Route('/dashboard', name: 'app_dashboard')]
+    #[Route('/dashboard', name: 'app_dashboard', methods: ['GET'])]
     public function index(): Response
     {
         if (!$this->getUser()) {
