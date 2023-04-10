@@ -16,7 +16,7 @@ class BaseController extends AbstractController
     {
     }
 
-    #[Route('/', name: 'app_base')]
+    #[Route('/', name: 'app_base', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('base/index.html.twig', [
@@ -25,7 +25,7 @@ class BaseController extends AbstractController
         ]);
     }
 
-    #[Route('/article/{slug}', name: 'article_detail')]
+    #[Route('/article/{slug}', name: 'article_detail', methods: ['GET'])]
     public function getArticle(string $slug): Response
     {
         $article = $this->manager->getRepository(Article::class)->findOneBy(['slug' => $slug, 'deletedAt' => null]);
@@ -39,7 +39,7 @@ class BaseController extends AbstractController
         ]);
     }
 
-    #[Route('/author/{slug}', name: 'author_detail')]
+    #[Route('/author/{slug}', name: 'author_detail', methods: ['GET'])]
     public function getAuthor(string $slug): Response
     {
         $author = $this->manager->getRepository(User::class)->findOneBy(['slug' => $slug, 'deletedAt' => null]);

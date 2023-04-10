@@ -21,7 +21,7 @@ class DashboardController extends AbstractDashboardController
     ) {
     }
 
-    #[Route('/admin', name: 'admin')]
+    #[Route('/admin', name: 'admin', methods: ['GET'])]
     public function index(): Response
     {
         /** @var AdminUrlGenerator $adminUrlGenerator */
