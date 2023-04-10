@@ -75,7 +75,7 @@ class Article extends AbstractEntity implements OwnerInterface, SlugInterface
         return $this->getTitle();
     }
 
-    public function getFieldName(): string
+    public function getSlugFieldName(): string
     {
         return 'title';
     }

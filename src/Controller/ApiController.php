@@ -92,6 +92,6 @@ class ApiController extends AbstractController
             return $response;
         }
 
-        return new Response(null, $data ? 204 : 404);
+        return $response->setStatusCode( $data ? 204 : 404);
     }
 }

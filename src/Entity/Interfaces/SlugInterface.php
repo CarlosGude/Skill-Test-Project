@@ -6,7 +6,7 @@ interface SlugInterface
 {
     public function getFieldToSlug(): ?string;
 
-    public function getFieldName(): string;
+    public function getSlugFieldName(): string;
 
     public function setSlug(string $slug): ?self;
 

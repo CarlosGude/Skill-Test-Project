@@ -219,7 +219,7 @@ class User extends AbstractEntity implements UserInterface, PasswordAuthenticate
         return $this;
     }
 
-    public function getFieldName(): string
+    public function getSlugFieldName(): string
     {
         return 'name';
     }

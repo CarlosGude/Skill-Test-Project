@@ -60,6 +60,6 @@ class GenerateSlugMessageHandler
             return true;
         }
 
-        return EntityEvent::EVENT_UPDATE === $message->getEvent() && $message->hasChangeField($entity->getFieldName());
+        return EntityEvent::EVENT_UPDATE === $message->getEvent() && $message->hasChangeField($entity->getSlugFieldName());
     }
 }
