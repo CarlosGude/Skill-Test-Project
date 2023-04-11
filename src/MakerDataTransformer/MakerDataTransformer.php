@@ -77,7 +77,7 @@ class MakerDataTransformer
         }
 
         $templatePath = ucfirst($this->template).'Path';
-        if (!$this->fileContents && !file_exists($path = $this->$templatePath($this->type, ucfirst($this->entityName)))) {
+        if ($this->fileContents && !file_exists($path = $this->$templatePath($this->type, ucfirst($this->entityName)))) {
             file_put_contents($path, $this->fileContents);
         }
     }
