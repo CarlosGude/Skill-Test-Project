@@ -2,6 +2,8 @@
 
 namespace App\MakerDataTransformer;
 
+use App\Exceptions\TypeOrTemplateNotInicializedException;
+
 /**
  * TODO: Test pending.
  */
@@ -11,7 +13,16 @@ class MakerDataTransformer
     /**
      * @var array|array[]
      */
-    private array $dataToBeGenerated;
+
+    private array $dataToBeGenerated = [
+        ['type' => 'input', 'template' => 'dataTransformer'],
+        ['type' => 'output', 'template' => 'dataTransformer'],
+        ['type' => 'input', 'template' => 'dto'],
+        ['type' => 'output', 'template' => 'dto'],
+    ];
+    private ?string $template = null;
+    private ?string $type = null;
+    private ?string $fileContents;
 
     public function __construct(
         protected string $projectDir,
@@ -20,36 +31,54 @@ class MakerDataTransformer
         protected string $outputDtoTemplate,
         protected string $inputDtoTemplate,
     ) {
-        $this->dataToBeGenerated = [
-            ['type' => 'input', 'template' => 'dataTransformer'],
-            ['type' => 'output', 'template' => 'dataTransformer'],
-            ['type' => 'input', 'template' => 'dto'],
-            ['type' => 'output', 'template' => 'dto'],
-        ];
     }
 
+    public function setTypeAndTemplate(string $type, string $template): self
+    {
+        $this->type = $type;
+        $this->template = $template;
+
+        return $this;
+    }
+
+    public function generateFileTemplates(): self
+    {
+        if(!$this->template || !$this->type){
+            throw new TypeOrTemplateNotInicializedException();
+        }
+
+        $this->fileContents = $this->replaceContent(
+            ['{{entity}}', '{{entity_lowercase}}'],
+            [ucfirst($this->entityName), $this->entityName],
+            $this->getTemplateContents($this->type, $this->template),
+            $this->type,
+            $this->template
+        );
+
+        return $this;
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function __invoke(string $entity): void
     {
         $this->entityName = $entity;
         foreach ($this->dataToBeGenerated as $make) {
-            $this->generate($make['type'], $make['template']);
+            $template = $this->setTypeAndTemplate($make['type'],$make['template'])->generateFileTemplates();
+            $template->putContents();
         }
     }
 
-    protected function generate(string $type, string $template): void
+    protected function putContents(): void
     {
-        $templatePath = ucfirst($template).'Path';
-        if (!file_exists($path = $this->$templatePath($type, ucfirst($this->entityName)))) {
-            file_put_contents(
-                $path,
-                $this->replaceContent(
-                    ['{{entity}}', '{{entity_lowercase}}'],
-                    [ucfirst($this->entityName), $this->entityName],
-                    $this->getTemplateContents($type, $template),
-                    $type,
-                    $template
-                )
-            );
+        if(!$this->template || !$this->type){
+            throw new TypeOrTemplateNotInicializedException();
+        }
+
+        $templatePath = ucfirst($this->template).'Path';
+        if (!$this->fileContents && !file_exists($path = $this->$templatePath($this->type, ucfirst($this->entityName)))) {
+            file_put_contents($path, $this->fileContents);
         }
     }
 
