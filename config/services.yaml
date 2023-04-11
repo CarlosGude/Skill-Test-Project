@@ -31,7 +31,7 @@ services:
         arguments:
             $factory: "@App\\Factory\\DataTransformationFactory"
 
-    App\MakerDataTransformer\MakerDataTransformer:
+    App\Makers\DataTransformer\SkeletonGenerator:
         arguments:
             $projectDir: '%kernel.project_dir%'
             $outputDataTransformerTemplate: '%env(OUTPUT_DATA_TRANSFORMER_TEMPLATE)%'

@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\MakerDataTransformer\MakerDataTransformer;
+use App\Makers\DataTransformer\SkeletonGenerator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class MakeDataTransformerCommand extends Command
 {
-    public function __construct(protected MakerDataTransformer $makerDataTransformer)
+    public function __construct(protected SkeletonGenerator $makerDataTransformer)
     {
         parent::__construct();
     }
@@ -28,18 +28,25 @@ class MakeDataTransformerCommand extends Command
         ;
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $entityName = $input->getArgument('entityName');
 
-        if (!$entityName) {
+        $maker = $this->makerDataTransformer;
+        if (!$entityName = $input->getArgument('entityName')) {
             $io->error('You must be pass the entity name.');
 
             return Command::FAILURE;
         }
 
-        $this->makerDataTransformer->__invoke($entityName);
+        if(!class_exists('App\Entity\\'.ucfirst($entityName))){
+            $io->warning("The class [$entityName] does not exist but the inputs and outputs will be created.");
+        }
+
+        $maker($entityName);
         $io->success('Inputs and Outputs created. Not forget add properties to DTOs');
 
         return Command::SUCCESS;

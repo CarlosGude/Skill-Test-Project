@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Dto\Input;
+
+use App\Entity\AbstractEntity;
+use App\Entity\Test;
+use App\Exceptions\NotExceptedEntityException;
+
+class TestDto implements InputInterface
+{
+
+    public function __construct(array $data)
+    {
+
+    }
+
+    public function initialized(AbstractEntity $entity): void
+    {
+        if (!$entity instanceof Test) {
+            throw new NotExceptedEntityException();
+        }
+    }
+
+    public function put(AbstractEntity $entity, array $data): AbstractEntity
+    {
+        if (!$entity instanceof Test) {
+            throw new NotExceptedEntityException();
+        }
+
+        return $entity;
+    }
+
+    public function post(): AbstractEntity
+    {
+        $test = new Test();
+
+        return $test;
+    }
+}

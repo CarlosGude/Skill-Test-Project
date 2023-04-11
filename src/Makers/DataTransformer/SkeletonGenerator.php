@@ -1,19 +1,15 @@
 <?php
 
-namespace App\MakerDataTransformer;
+namespace App\Makers\DataTransformer;
 
 use App\Exceptions\TypeOrTemplateNotInicializedException;
 
-/**
- * TODO: Test pending.
- */
-class MakerDataTransformer
+class SkeletonGenerator
 {
     private string $entityName;
     /**
      * @var array|array[]
      */
-
     private array $dataToBeGenerated = [
         ['type' => 'input', 'template' => 'dataTransformer'],
         ['type' => 'output', 'template' => 'dataTransformer'],
@@ -33,17 +29,18 @@ class MakerDataTransformer
     ) {
     }
 
-    public function setTypeAndTemplate(string $type, string $template): self
+    public function initialize(string $type, string $template, ?string $entity): self
     {
         $this->type = $type;
         $this->template = $template;
+        $this->entityName = $entity;
 
         return $this;
     }
 
-    public function generateFileTemplates(): self
+    public function generateFileContent(): self
     {
-        if(!$this->template || !$this->type){
+        if (!$this->template || !$this->type) {
             throw new TypeOrTemplateNotInicializedException();
         }
 
@@ -63,22 +60,21 @@ class MakerDataTransformer
      */
     public function __invoke(string $entity): void
     {
-        $this->entityName = $entity;
         foreach ($this->dataToBeGenerated as $make) {
-            $template = $this->setTypeAndTemplate($make['type'],$make['template'])->generateFileTemplates();
+            $template = $this->initialize($make['type'], $make['template'],$entity)->generateFileContent();
             $template->putContents();
         }
     }
 
     protected function putContents(): void
     {
-        if(!$this->template || !$this->type){
+        if (!$this->template || !$this->type) {
             throw new TypeOrTemplateNotInicializedException();
         }
 
         $templatePath = ucfirst($this->template).'Path';
-        if ($this->fileContents && !file_exists($path = $this->$templatePath($this->type, ucfirst($this->entityName)))) {
-            file_put_contents($path, $this->fileContents);
+        if ($content = $this->getContet() && !file_exists($path = $this->$templatePath($this->type, ucfirst($this->entityName)))) {
+            file_put_contents($path, $content);
         }
     }
 
@@ -111,5 +107,10 @@ class MakerDataTransformer
             DIRECTORY_SEPARATOR.'Dto'.
             DIRECTORY_SEPARATOR.ucfirst($type).
             DIRECTORY_SEPARATOR.$entity.'Dto.php';
+    }
+
+    public function getContet(): ?string
+    {
+        return $this->fileContents;
     }
 }

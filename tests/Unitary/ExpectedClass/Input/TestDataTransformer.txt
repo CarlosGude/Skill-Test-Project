@@ -1,0 +1,20 @@
+<?php
+
+namespace App\DataTransformer\Input;
+
+use App\Dto\Input\TestDto;
+use App\Dto\Input\InputInterface;
+use App\Entity\Test;
+
+class TestDataTransformer extends AbstractDataTransformer
+{
+    protected function getClass(): string
+    {
+        return Test::class;
+    }
+
+    protected function getInputDto(array $data): InputInterface
+    {
+        return new TestDto($data);
+    }
+}

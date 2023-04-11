@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Dto\Output;
+
+use App\Entity\AbstractEntity;
+use App\Entity\Test;
+use App\Exceptions\EntityOutputException;
+
+class TestDto implements OutputInterface
+{
+    public ?string $uuid;
+
+    public function __construct(protected bool $getNestedElements = true)
+    {
+    }
+
+    /**
+     * @return $this
+     *
+     * @throws EntityOutputException
+     */
+    public function get(AbstractEntity $entity): self
+    {
+        if (!$entity instanceof Test) {
+            throw new EntityOutputException();
+        }
+
+        $this->uuid = $entity->getUuid();
+
+        return $this;
+    }
+}
