@@ -36,7 +36,7 @@ class MakerDataTransformer
         }
     }
 
-    public function generate(string $type, string $template): void
+    protected function generate(string $type, string $template): void
     {
         $templatePath = ucfirst($template).'Path';
         if (!file_exists($path = $this->$templatePath($type, ucfirst($this->entityName)))) {

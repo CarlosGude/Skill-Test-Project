@@ -34,10 +34,10 @@ services:
     App\MakerDataTransformer\MakerDataTransformer:
         arguments:
             $projectDir: '%kernel.project_dir%'
-            $outputDataTransformerTemplate: 'MakerDataTransformer/Templates/Output/DataTransformerTemplate.txt'
-            $outputDtoTemplate: 'MakerDataTransformer/Templates/Output/DtoTemplate.txt'
-            $inputDataTransformerTemplate: 'MakerDataTransformer/Templates/Input/DataTransformerTemplate.txt'
-            $inputDtoTemplate: 'MakerDataTransformer/Templates/Input/DtoTemplate.txt'
+            $outputDataTransformerTemplate: '%env(OUTPUT_DATA_TRANSFORMER_TEMPLATE)%'
+            $outputDtoTemplate: '%env(OUTPUT_DTO_TEMPLATE)%'
+            $inputDataTransformerTemplate: '%env(INPUT_DATA_TRANSFORMER_TEMPLATE)%'
+            $inputDtoTemplate: '%env(INPUT_DTO_TEMPLATE)%'
 
     App\Factory\DataTransformationFactory:
         public: false
