@@ -12,7 +12,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'make:dataTransformer',
-    description: 'Add a short description for your command',
+    description: 'Makes the data transformers and DTOs for a entity',
 )]
 class MakeDataTransformerCommand extends Command
 {
@@ -42,7 +42,7 @@ class MakeDataTransformerCommand extends Command
             return Command::FAILURE;
         }
 
-        if(!class_exists('App\Entity\\'.ucfirst($entityName))){
+        if (!class_exists('App\Entity\\'.ucfirst($entityName))) {
             $io->warning("The class [$entityName] does not exist but the inputs and outputs will be created.");
         }
 

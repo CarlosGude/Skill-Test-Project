@@ -61,7 +61,7 @@ class SkeletonGenerator
     public function __invoke(string $entity): void
     {
         foreach ($this->dataToBeGenerated as $make) {
-            $template = $this->initialize($make['type'], $make['template'],$entity)->generateFileContent();
+            $template = $this->initialize($make['type'], $make['template'], $entity)->generateFileContent();
             $template->putContents();
         }
     }
