@@ -1,4 +1,4 @@
-# Blog-IPGlobal
+# Skill Test Project
 [![SymfonyInsight](https://insight.symfony.com/projects/76f2d46a-1480-4fdf-8f40-27a9e6e7e2b7/big.svg)](https://insight.symfony.com/projects/76f2d46a-1480-4fdf-8f40-27a9e6e7e2b7)
 
 This is a skills test code. The idea is created a simple blog.
